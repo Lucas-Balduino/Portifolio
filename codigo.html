@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Site com Iframes</title>
+  <style> 
+    body
+    {
+    	background-color: lightgrey
+    }
+    .menu
+    {
+        font-size: x-large;
+    }
+    td
+    {
+        padding: 20px;
+    }
+    td:hover
+    {
+        font-weight: bolder;
+    }
+    #Lucas
+    {
+    	font-family: 'Courier New', Courier;
+        font-weight: 700;
+    }
+    #topo
+    {
+        background-color: grey;
+        margin: 10px;
+        border-radius: 10px;
+    } 
+    .formatacao
+    {
+        margin: 10px;
+        padding: 20px;
+    }
+    #sobreMim
+    {
+        font-size: larger;
+        width: 70%;
+        float: left;
+    }
+    a
+    {
+        text-decoration: none;
+        color: black;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="topo">
+   	<table>
+      <tr> 
+        <td id="Lucas" class= "menu"><a href="http://127.0.0.1:5500/codigo.html" target="ProprioSite">Lucas</a></td> 
+        <td class="menu">Sobre mim </td> 
+        <td id="experiencias" class= "menu">Experiencias </td>
+        <td id="redesSocias" class= "menu"><a href="https://github.com/Lucas-Balduino" target="github">Redes sociais </a></td> 
+      </tr>
+    </table>
+  </div>
+  
+  <section>
+    <div class="formatacao"><p id="sobreMim" >
+        Meu nome é Lucas Gonçalves Balduino, tenho 19 anos,
+        e sou brasiliense. Estudo Ciencias da Computação na
+        faculdadade <a id = uniceub href="https://www.uniceub.br"
+        target="uniceub">uniceub</a>, estou em meu primeiro semestre 
+        e tendo minhas primeiras experiencias na area de programação.
+        Meus hobbies são jogar volei, jogos online e passar tempo com amigos.
+    </p></div>
+  <iframe src="" frameborder="0" height="600" width="800" name="github"></iframe>
+   <script src="script.js"></script>      
+  </section>
+  
+</body>
+
+</html>
