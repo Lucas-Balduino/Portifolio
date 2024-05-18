@@ -9,76 +9,106 @@
   <style> 
     body
     {
-    	background-color: lightgrey
+    	background-color: white
     }
     .menu
     {
         font-size: x-large;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        
     }
-    td
-    {
-        padding: 20px;
-    }
-    td:hover
-    {
+    .menu:hover{
         font-weight: bolder;
     }
+
+   
     #Lucas
     {
-    	font-family: 'Courier New', Courier;
+        float:  left;
+    	  font-family: 'Courier New', Courier;
         font-weight: 700;
+        font-size: x-large;
     }
     #topo
     {
-        background-color: grey;
-        margin: 10px;
-        border-radius: 10px;
+        
     } 
+    #topo.hover{
+  
+    }
     .formatacao
     {
         margin: 10px;
         padding: 20px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
     #sobreMim
     {
         font-size: larger;
-        width: 70%;
-        float: left;
+        float: right;
+    }
+    #SobreMim{
+      float: right;
+      margin-left: 5%;
+    }
+    #redesSocias{
+      float: right;
+      margin-left: 5%;
+      
+    }
+    #experiencias{
+      float: right;
+      margin-left: 5%;
+    }
+    #uniceub{
+      font-weight: bold;
+      color: blueviolet;
+    }
+    #lucas{
+      font-weight: bolder;
     }
     a
     {
         text-decoration: none;
         color: black;
     }
+    header{
+      padding: 2%;
+    }
+    footer{
+      background-color: lightgray;
+    }
 
   </style>
 </head>
 
 <body>
-  <div id="topo">
-   	<table>
-      <tr> 
-        <td id="Lucas" class= "menu"><a href="http://127.0.0.1:5500/codigo.html" target="ProprioSite">Lucas</a></td> 
-        <td class="menu">Sobre mim </td> 
-        <td id="experiencias" class= "menu">Experiencias </td>
-        <td id="redesSocias" class= "menu"><a href="https://github.com/Lucas-Balduino" target="github">Redes sociais </a></td> 
-      </tr>
-    </table>
-  </div>
+  <header>
+    <div id="topo">
+         <a class="menu" id="Lucas" href="http://127.0.0.1:5500/codigo.html" target="ProprioSite">Lucas</a>
+         <a class="menu" id="SobreMim" href="">Sobre mim </a> 
+         <a class="menu" id="experiencias" href="">Experiencias </a>
+         <a class="menu" id="redesSocias" href="">Redes sociais </a>
+   </div>
+  </header>
+  
   
   <section>
-    <div class="formatacao"><p id="sobreMim" >
-        Meu nome é Lucas Gonçalves Balduino, tenho 19 anos,
+    <div class="formatacao">
+      <p id="sobreMim" >
+        Meu nome é <a id="lucas" href="">Lucas Gonçalves Balduino</a>, tenho 19 anos,
         e sou brasiliense. Estudo Ciencias da Computação na
         faculdadade <a id = uniceub href="https://www.uniceub.br"
         target="uniceub">uniceub</a>, estou em meu primeiro semestre 
         e tendo minhas primeiras experiencias na area de programação.
         Meus hobbies são jogar volei, jogos online e passar tempo com amigos.
-    </p></div>
-  <iframe src="" frameborder="0" height="600" width="800" name="github"></iframe>
-   <script src="script.js"></script>      
+      </p>
+   </div>   
   </section>
   
 </body>
+<footer>
+
+</footer>
 
 </html>
