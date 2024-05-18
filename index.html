@@ -5,110 +5,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
-  <title>Site com Iframes</title>
+  <title>Meu Portifolio</title>
   <style> 
-    body
-    {
-    	background-color: white
-    }
-    .menu
-    {
-        font-size: x-large;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        
-    }
-    .menu:hover{
-        font-weight: bolder;
-    }
-
-   
-    #Lucas
-    {
-        float:  left;
-    	  font-family: 'Courier New', Courier;
-        font-weight: 700;
-        font-size: x-large;
-    }
-    #topo
-    {
-        
-    } 
-    #topo.hover{
-  
-    }
-    .formatacao
-    {
-        margin: 10px;
-        padding: 20px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    }
-    #sobreMim
-    {
-        font-size: larger;
-        float: right;
-    }
-    #SobreMim{
-      float: right;
-      margin-left: 5%;
-    }
-    #redesSocias{
-      float: right;
-      margin-left: 5%;
-      
-    }
-    #experiencias{
-      float: right;
-      margin-left: 5%;
-    }
-    #uniceub{
-      font-weight: bold;
-      color: blueviolet;
-    }
-    #lucas{
-      font-weight: bolder;
-    }
-    a
-    {
-        text-decoration: none;
-        color: black;
-    }
-    header{
-      padding: 2%;
-    }
-    footer{
-      background-color: lightgray;
-    }
-
+    
   </style>
 </head>
 
 <body>
   <header>
-    <div id="topo">
-         <a class="menu" id="Lucas" href="http://127.0.0.1:5500/codigo.html" target="ProprioSite">Lucas</a>
-         <a class="menu" id="SobreMim" href="">Sobre mim </a> 
-         <a class="menu" id="experiencias" href="">Experiencias </a>
-         <a class="menu" id="redesSocias" href="">Redes sociais </a>
-   </div>
+    <nav id="topo">
+      <a class="menu" id="Lucas" href="Lucas.html" target="ProprioSite">Lucas</a>
+      <a class="menu" id="SobreMim" href="Lucas.html" style="font-weight: bolder;">Sobre mim </a> 
+      <a class="menu" id="Projetos" href="Projetos.html">Projetos </a>
+      <a class="menu" id="contato" href="Contato.html">Contato </a>
+    </nav>
   </header>
   
+  <main>
+    <section class="imagens">
+      <img class="Fotos" id="FotoAmigos" src="img/FotoAmigos.jpg" alt="Foto Amigos">
+      <img class="Fotos" id="Minhafoto" src="img/FotoMinha.jpg" alt="Minha foto" >
+      <img class="Fotos" id="Floquinho" src="img/FotoFloquinho.jpg" alt="Floquinho">
+    </section>
+    <section class="conteudo" id="textoDeApresentacao">
+        <p class="sobreMim" >
+          Meu nome é <a id="lucas" href="">Lucas Gonçalves Balduino</a>, tenho 19 anos, e sou brasiliense. Estudo Ciencias da Computação na faculdadade <a id = uniceub href="https://www.uniceub.br"target="uniceub">uniceub</a>, estou em meu primeiro semestre e tendo minhas primeiras experiencias na area de programação. Meus hobbies são jogar volei, jogos online e passar tempo com amigos.
+        </p>
+        <p class="sobreMim">
+          Como estou tendo minhas primeiras experiencias na area minhas habilidades em programação estao em nivel iniciante, porem ja experienciei linguagens como C, Golang, Java, e HTML/CSS. Tenho bastante interesse na area de front-end e UX-Desing, porém tambem quero experienciar projetos em back-end.
+ 
+        </p>
+    </section>
+  </main>
   
-  <section>
-    <div class="formatacao">
-      <p id="sobreMim" >
-        Meu nome é <a id="lucas" href="">Lucas Gonçalves Balduino</a>, tenho 19 anos,
-        e sou brasiliense. Estudo Ciencias da Computação na
-        faculdadade <a id = uniceub href="https://www.uniceub.br"
-        target="uniceub">uniceub</a>, estou em meu primeiro semestre 
-        e tendo minhas primeiras experiencias na area de programação.
-        Meus hobbies são jogar volei, jogos online e passar tempo com amigos.
-      </p>
-   </div>   
-  </section>
+  <footer>
+      <a class="menu " id="Lucas" href="Lucas.html" target="ProprioSite">Lucas</a>
+  </footer>
   
 </body>
-<footer>
-
-</footer>
 
 </html>
