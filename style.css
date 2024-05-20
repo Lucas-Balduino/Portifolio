@@ -1,134 +1,176 @@
-body
-    {
-    	background-color: white
-    }
+body {
+  background-color: white;
+}
 
-    .menu
-    {
-        font-size: x-large;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    }
+.menu {
+  font-size: x-large;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
 
-    .menu:hover{
-        transform: scale(1.05);
-    }
+.menu:hover {
+  transform: scale(1.05);
+}
 
-    nav{
-      display: flex;
-      align-items: center;
-    }
-    #Lucas
-    {
-        float:  left;
-    	  font-family: 'Courier New', Courier;
-        font-weight: 700;
-        font-size: x-large;
-        margin-right: auto;
-    }
+nav {
+  display: flex;
+  align-items: center;
+}
+#Lucas {
+  font-family: "Courier New", Courier;
+  font-weight: 700;
+  font-size: x-large;
+  margin-right: auto;
+}
 
-    #contato{
-      margin-left: 5%;
-      
-    }
-    #Projetos{
-      margin-left: 5%;
-    }
-    p{
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    }
-    .conteudo
-    {
-        margin: 10%;
-        padding: 20px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    }
-    .sobreMim
-    {
-        font-size: x-large;
-        
-    }
-   
-    #uniceub{
-      font-weight: bold;
-      color: blueviolet;
-    }
-    #lucas{
-      font-weight: bolder;
-    }
-    a
-    {
-        text-decoration: none;
-        color: black;
-    }
-    header{
-      padding: 2%;
-    }
-    .Fotos{
-      border-radius: 10px;
-      width: 300px;
-      height: auto;
-    }
-    .imagens{
-      margin-top: 40px;
-      text-align: center;
-      
-    }
-    
-    #FotoAmigos{
-      transition: transform 0.3s ease;
-    }
-    #Floquinho{
-      transition: transform 0.3s ease;
-    }
-    #Minhafoto{
-      transition: transform 0.3s ease;
-    }
-    #FotoAmigos:hover{
-      transform: scale(1.1);
-    }
-    #Minhafoto:hover{
-      transform: scale(1.1);
-    }
-    #Floquinho:hover{
-      transform: scale(1.1);
-    }
-    #Floquinho{
-      width: 150px;
-    }
-    footer{
-      padding: 2%;
-      width: 100%;
-      height: 100px;
-      clear: both;
-      background-color: #D9D9D9;
-      border-radius: 10px;
-    }
-    /* CSS projetos*/
-    .Projeto{
-      background-color: #D9D9D9;
-      border-radius: 10px;
-      margin: 5%;
-      padding-bottom: 2%;
-      transition: transform 0.3s ease;
-    }
-    #CidadeCEUB{
-      width: 100%;
-      border-radius: 10px;
-    }
-    .DescricaoProjetos{
-      font-size: x-large;
-      padding-left: 4%;
-    }
-    .Projetos{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-evenly;
-      
-    }
-    .Projeto:hover{
-      transform: scale(1.1);
-    }
-    
-   
-   
-    
+#contato {
+  margin-left: 5%;
+}
+#Projetos {
+  margin-left: 5%;
+}
+p {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.conteudo {
+  margin: 10%;
+  padding: 20px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.sobreMim {
+  font-size: x-large;
+}
+
+#uniceub {
+  font-weight: bold;
+  color: blueviolet;
+}
+#lucas {
+  font-weight: bolder;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+header {
+  padding: 2%;
+}
+.Fotos {
+  border-radius: 10px;
+  width: 400px;
+}
+.imagens {
+  margin-top: 40px;
+  text-align: center;
+}
+
+#FotoAmigos {
+  transition: transform 0.3s ease;
+}
+#Floquinho {
+  transition: transform 0.3s ease;
+  width: 200px;
+}
+#Minhafoto {
+  transition: transform 0.3s ease;
+}
+#FotoAmigos:hover {
+  transform: scale(1.1);
+}
+#Minhafoto:hover {
+  transform: scale(1.1);
+}
+#Floquinho:hover {
+  transform: scale(1.1);
+}
+
+footer {
+  padding: 2%;
+  width: 100%;
+  clear: both;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+}
+/* CSS projetos*/
+.Projeto {
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  margin: 5%;
+  padding-bottom: 2%;
+  transition: transform 0.3s ease;
+}
+.ImagemProjeto {
+  width: 100%;
+  border-radius: 10px;
+}
+.DescricaoProjetos {
+  font-size: xx-large;
+  padding-left: 4%;
+}
+.Projetos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+}
+.Projeto:hover {
+  transform: scale(1.1);
+}
+.IconeProjeto {
+  width: 50px;
+}
+.BlocoIcone {
+  display: flex;
+  justify-content: center;
+  justify-content: space-evenly;
+}
+.IconesContato {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 300px;
+}
+.IconeContato {
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+.IconeContato:hover {
+  transform: scale(1.1);
+}
+.TextoContato {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: xx-large;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px;
+}
+.IconesHabilidades {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 100px;
+}
+.IconeHabilidades {
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+.IconeHabilidades:hover {
+  transform: scale(1.1);
+}
+.IconesFooter {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+}
+.IconeFooter {
+  width: 30px;
+}
+.LucasFooter {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+#LucasFooter{
+  font-family: "Courier New", Courier;
+  font-weight: 700;
+  font-size: x-large;
+}
