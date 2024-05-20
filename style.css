@@ -174,3 +174,7 @@ footer {
   font-weight: 700;
   font-size: x-large;
 }
+#CopyrightFooter{
+  font-size: medium;
+  color: grey;
+}
