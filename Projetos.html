@@ -1,111 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Projetos de Lucas Gonçalves Balduino." />
     <link rel="stylesheet" href="style.css" />
-    <title>Projetos</title>
+    <title>Projetos · Lucas Balduino</title>
+    <script src="main.js" defer></script>
   </head>
   <body>
     <header>
-      <nav id="topo">
-        <a class="menu" id="Lucas" href="index.html" target="ProprioSite"
-          >Lucas</a
-        >
-        <a class="menu" id="SobreMim" href="index.html">Sobre mim </a>
-        <a
-          class="menu"
-          id="Projetos"
-          href="Projetos.html"
-          style="font-weight: bolder"
-          >Projetos
-        </a>
-        <a class="menu" id="contato" href="Contato.html">Contato </a>
-      </nav>
+      <div class="container">
+        <nav id="topo">
+          <a class="brand" href="index.html">Lucas</a>
+          <div class="nav-links" role="navigation" aria-label="primária">
+            <a class="menu" href="index.html#sobre">Sobre</a>
+            <a class="menu" href="Projetos.html" style="font-weight: 600;">Projetos</a>
+            <a class="menu" href="Contato.html">Contato</a>
+          </div>
+        </nav>
+      </div>
     </header>
     <main>
-      <section class="Projetos">
-        <a href=""
-          ><div class="Projeto" id="Projeto1">
-            <img class="ImagemProjeto" src="img/CidadeCEUB.png" alt="" />
-            <p class="DescricaoProjetos">Cidade CEUB</p>
-            <div class="BlocoIcone">
-              <img class="IconeProjeto" src="img/IconeHtml.png" alt="" />
-              <img class="IconeProjeto" src="img/IconeCss.png" alt="" />
-            </div></div
-        ></a>
-        <a href=""
-          ><div class="Projeto" id="Projeto2">
-            <img class="ImagemProjeto" src="img/PrintMeuForms.png" alt="" />
-            <p class="DescricaoProjetos">Formulario</p>
-            <div class="BlocoIcone">
-              <img class="IconeProjeto" src="img/IconeHtml.png" alt="" />
-              <img class="IconeProjeto" src="img/IconeCss.png" alt="" />
-            </div></div
-        ></a>
-        <a href=""
-          ><div class="Projeto" id="Projeto3">
-            <img class="ImagemProjeto" src="img/ImagemEstoque.png" alt="" />
-            <p class="DescricaoProjetos">Gerenciamento de Estoque</p>
-            <div class="BlocoIcone">
-              <img class="IconeProjeto" src="img/IconeJava.png" alt="" />
-            </div></div
-        ></a>
-        <a href=""
-          ><div class="Projeto" id="Projeto4">
-            <img
-              class="ImagemProjeto"
-              src="img/ImagemEmDesenvolvimento.jpg"
-              alt=""
-            />
-            <p class="DescricaoProjetos">Em Desenvolvimento</p>
-            <div class="BlocoIcone">
-              <img class="IconeProjeto" src="img/IconeJava.png" alt="" />
-            </div></div
-        ></a>
+      <section class="section">
+        <div class="container">
+          <h1 class="section-title">Projetos</h1>
+          <div class="grid">
+            <a class="card" href="#">
+              <img class="card-media" src="img/CidadeCEUB.png" alt="Cidade CEUB" />
+              <div class="card-body">
+                <h3 class="card-title">Cidade CEUB</h3>
+                <div class="tech-row">
+                  <img class="tech" src="img/IconeHtml.png" alt="HTML" />
+                  <img class="tech" src="img/IconeCss.png" alt="CSS" />
+                </div>
+              </div>
+            </a>
+            <a class="card" href="#">
+              <img class="card-media" src="img/PrintMeuForms.png" alt="Formulário" />
+              <div class="card-body">
+                <h3 class="card-title">Formulário</h3>
+                <div class="tech-row">
+                  <img class="tech" src="img/IconeHtml.png" alt="HTML" />
+                  <img class="tech" src="img/IconeCss.png" alt="CSS" />
+                </div>
+              </div>
+            </a>
+            <a class="card" href="#">
+              <img class="card-media" src="img/ImagemEstoque.png" alt="Gerenciamento de Estoque" />
+              <div class="card-body">
+                <h3 class="card-title">Gerenciamento de Estoque</h3>
+                <div class="tech-row">
+                  <img class="tech" src="img/IconeJava.png" alt="Java" />
+                </div>
+              </div>
+            </a>
+            <a class="card" href="#">
+              <img class="card-media" src="img/ImagemEmDesenvolvimento.jpg" alt="Projeto em desenvolvimento" />
+              <div class="card-body">
+                <h3 class="card-title">Em Desenvolvimento</h3>
+                <div class="tech-row">
+                  <img class="tech" src="img/IconeJava.png" alt="Java" />
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
       </section>
-      <div class="TextoContato">
-        <p>Minhas Habilidades</p>
-      </div>
-      <div class="IconesHabilidades">
-        <img class="IconeHabilidades" src="img/IconeHtml.png" alt="" />
 
-        <img class="IconeHabilidades" src="img/IconeCss.png" alt="" />
-
-        <img class="IconeHabilidades" src="img/IconeFigma.png" alt="" />
-
-        <img class="IconeHabilidades" src="img/IconeJava.png" alt="" />
-
-        <img class="IconeHabilidades" src="img/IconeGithub.png" alt="" />
-
-        <img class="IconeHabilidades" src="img/IconeGitlab.png" alt="" />
-
-        <img class="IconeHabilidades" src="img/IconeLinux.png" alt="" />
-      </div>
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Habilidades</h2>
+          <div class="contact-icons" aria-label="habilidades">
+            <img class="contact-icon" src="img/IconeHtml.png" alt="HTML" />
+            <img class="contact-icon" src="img/IconeCss.png" alt="CSS" />
+            <img class="contact-icon" src="img/IconeFigma.png" alt="Figma" />
+            <img class="contact-icon" src="img/IconeJava.png" alt="Java" />
+            <img class="contact-icon" src="img/IconeGithub.png" alt="GitHub" />
+            <img class="contact-icon" src="img/IconeGitlab.png" alt="GitLab" />
+            <img class="contact-icon" src="img/IconeLinux.png" alt="Linux" />
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
-      <div class="IconesFooter">
-        <div>
-          <img class="IconeFooter" src="img/IconeEmail.png" alt="" />
-          <p>lucasgbalduino@gmail.com</p>
+      <div class="container footer-grid">
+        <div class="footer-icons" aria-label="contatos">
+          <img class="footer-icon" src="img/IconeEmail.png" alt="Email" />
+          <span class="muted">lucasgbalduino@gmail.com</span>
+          <img class="footer-icon" src="img/IconeDiscord.png" alt="Discord" />
+          <span class="muted">lucas6388</span>
+          <a href="https://x.com/LucasGonalvesB7" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeTwitter.png" alt="Twitter/X" />
+          </a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeInstagram.png" alt="Instagram" />
+          </a>
         </div>
-        <div>
-          <img class="IconeFooter" src="img/IconeDiscord.png" alt="" />
-          <p>lucas6388</p>
+        <div style="text-align:right;">
+          <p class="copyright">© 2024 Lucas Gonçalves Balduino</p>
         </div>
-        <div>
-          <img class="IconeFooter" src="img/IconeTwitter.png" alt="" />
-          <p>@LucasGonalvesB7</p>
-        </div>
-        <div>
-          <img class="IconeFooter" src="img/IconeInstagram.png" alt="" />
-          <p>@lucasgbalduino</p>
-        </div>
-      </div>
-      <hr />
-      <div class="LucasFooter">
-        <p id="CopyrightFooter">Copyright©2024LucasGonçalvesBalduino</p>
       </div>
     </footer>
   </body>
-</html>
+  </html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lucas — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Lucas<span class="brand-dot">.</span></a>
+      <nav aria-label="Principal" class="nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a class="nav-link active" href="index.html">Início</a></li>
+          <li><a class="nav-link" href="projetos.html">Projetos</a></li>
+          <li><a class="nav-link" href="contato.html">Contato</a></li>
+          <li><a class="nav-link" href="resume.html">Currículo</a></li>
+        </ul>
+      </nav>
+
+      <button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema (pronto para JS)">
+        🌓
+      </button>
+
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="hero grid">
+      <div class="hero-card">
+        <h1 class="hero-title">Olá, eu sou <span class="accent">Lucas</span></h1>
+        <p class="hero-sub">Desenvolvedor front‑end em formação — eu desenho interfaces intuitivas, pensadas para desempenho e acessibilidade.</p>
+        <div class="hero-cta">
+          <a class="btn" href="projetos.html">Ver projetos</a>
+          <a class="btn ghost" href="contato.html">Contrate-me</a>
+        </div>
+
+        <ul class="skills-quick" aria-label="Habilidades rápidas">
+          <li>HTML • CSS • JS</li>
+          <li>Figma • Git</li>
+          <li>Acessibilidade • Responsivo</li>
+        </ul>
+      </div>
+
+      <figure class="hero-figure" aria-hidden="false">
+        <img src="img/FotoMinha.jpg" alt="Foto do Lucas" class="hero-photo">
+        <figcaption class="sr-only">Foto de Lucas</figcaption>
+      </figure>
+    </section>
+
+    <section class="projects-preview">
+      <div class="section-head">
+        <h2>Projetos recentes</h2>
+        <a class="link-muted" href="projetos.html">Ver todos →</a>
+      </div>
+
+      <div class="projects-grid" id="projects-grid">
+        <article class="card project-card">
+          <img class="card-media" src="img/JetPackGuy.png" alt="JetPackGuy screenshot">
+          <div class="card-body">
+            <h3 class="card-title">JetPackGuy</h3>
+            <p class="card-desc">Jogo/simulação 2D com controle por teclado — práticas de física simples e animação por frame.</p>
+            <div class="card-meta">
+              <span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JS</span>
+              <a class="card-link" href="https://github.com/Lucas-Balduino/JetPackGuy" target="_blank" rel="noopener noreferrer">Código</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <img class="card-media" src="img/ImagemAgencia.png" alt="Gerenciamento de Estoque screenshot">
+          <div class="card-body">
+            <h3 class="card-title">Gerenciamento de Estoque</h3>
+            <p class="card-desc">Projeto desktop para controlar produtos, com foco em UX de formulários e relatórios.</p>
+            <div class="card-meta">
+              <span class="badge">Java</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card project-card placeholder">
+          <div class="media-placeholder" aria-hidden="true"></div>
+          <div class="card-body">
+            <h3 class="card-title">Em desenvolvimento</h3>
+            <p class="card-desc">Novos projetos em breve — design de produto, PWA e APIs.</p>
+            <div class="card-meta">
+              <span class="badge">Em breve</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="momentos">
+      <h2>Momentos</h2>
+      <p class="muted">Fotos em seus tamanhos originais — organizadas em um grid responsivo. Clique para ampliar (lightbox preparado).</p>
+
+      <div class="momentos-grid">
+        <figure class="momento-card">
+          <img src="img/FotoAmigos.jpg" alt="Viagem com amigos" class="momento-media">
+          <figcaption>Viagem com amigos — 2023</figcaption>
+        </figure>
+        <figure class="momento-card">
+          <img src="img/FotoMinha.jpg" alt="Retrato" class="momento-media">
+          <figcaption>Retrato profissional</figcaption>
+        </figure>
+        <figure class="momento-card">
+          <img src="img/FotoFloquinho.jpg" alt="Floquinho" class="momento-media">
+          <figcaption>Floquinho — companheiro</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <p class="brand-small">Lucas<span class="brand-dot">.</span></p>
+        <p class="muted">Design minimal • Código limpo • UX</p>
+      </div>
+      <div class="footer-right">
+        <nav aria-label="Redes sociais" class="socials">
+          <a href="#" class="social">Email</a>
+          <a href="#" class="social">Discord</a>
+          <a href="https://x.com/LucasGonalvesB7" target="_blank" rel="noopener noreferrer" class="social">Twitter</a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noopener noreferrer" class="social">Instagram</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Visualizador de imagem">
+    <button class="lightbox-close" aria-label="Fechar">✕</button>
+    <img class="lightbox-img" src="" alt="">
+    <p class="lightbox-caption"></p>
+  </div>
+</body>
+</html>

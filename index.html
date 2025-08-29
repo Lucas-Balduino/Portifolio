@@ -1,84 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfólio de Lucas Gonçalves Balduino — projetos, habilidades e contato." />
     <link rel="stylesheet" href="style.css" />
-    <title>Meu Portifolio</title>
-    <style></style>
+    <title>Lucas Balduino · Portfólio</title>
+    <script src="main.js" defer></script>
   </head>
-
   <body>
     <header>
-      <nav id="topo">
-        <a class="menu" id="Lucas" href="index.html" target="ProprioSite"
-          >Lucas</a
-        >
-        <a
-          class="menu"
-          id="SobreMim"
-          href="index.html"
-          style="font-weight: bolder"
-          >Sobre mim
-        </a>
-        <a class="menu" id="Projetos" href="Projetos.html">Projetos </a>
-        <a class="menu" id="contato" href="Contato.html">Contato </a>
-      </nav>
+      <div class="container">
+        <nav id="topo">
+          <a class="brand" href="index.html">Lucas</a>
+          <div class="nav-links" role="navigation" aria-label="primária">
+            <a class="menu" href="#sobre" style="font-weight: 600;">Sobre</a>
+            <a class="menu" href="Projetos.html">Projetos</a>
+            <a class="menu" href="Contato.html">Contato</a>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <main>
-      <section class="imagens">
-        <img
-          class="Fotos"
-          id="FotoAmigos"
-          src="img/FotoAmigos.jpg"
-          alt="Foto Amigos"
-        />
-        <img
-          class="Fotos"
-          id="Minhafoto"
-          src="img/FotoMinha.jpg"
-          alt="Minha foto"
-        />
-        <img
-          class="Fotos"
-          id="Floquinho"
-          src="img/FotoFloquinho.jpg"
-          alt="Floquinho"
-        />
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <h1 class="headline">Construindo experiências digitais simples e elegantes</h1>
+            <p class="subhead">Sou Lucas Gonçalves Balduino, estudante de Ciência da Computação em Brasília, curioso por front‑end, UX e também interessado em explorar o back‑end.</p>
+            <div class="actions">
+              <a class="btn primary" href="Projetos.html">Ver projetos</a>
+              <a class="btn" href="Contato.html">Falar comigo</a>
+            </div>
+          </div>
+          <div class="avatar-stack" aria-hidden="true">
+            <div class="avatar">
+              <img src="img/FotoMinha.jpg" alt="" />
+            </div>
+            <div class="avatar">
+              <img src="img/FotoAmigos.jpg" alt="" />
+            </div>
+            <div class="avatar">
+              <img src="img/FotoFloquinho.jpg" alt="" />
+            </div>
+          </div>
+        </div>
       </section>
-      <section class="conteudo" id="textoDeApresentacao">
-        <p class="sobreMim">
-          Meu nome é <a id="lucas" href="">Lucas Gonçalves Balduino</a>, tenho
-          19 anos, e sou brasiliense. Estudo Ciencias da Computação na
-          faculdadade
-          <a id="uniceub" href="https://www.uniceub.br" target="uniceub"
-            >uniceub</a
-          >, estou em meu primeiro semestre e tendo minhas primeiras
-          experiencias na area de programação. Meus hobbies são jogar volei,
-          jogos online e passar tempo com amigos.
-        </p>
-        <p class="sobreMim">
-          Como estou tendo minhas primeiras experiencias na area minhas
-          habilidades em programação estao em nivel iniciante, porem ja
-          experienciei linguagens como C, Golang, Java, e HTML/CSS. Tenho
-          bastante interesse na area de front-end e UX-Desing, porém tambem
-          quero experienciar projetos em back-end.
-        </p>
+
+      <section id="sobre" class="section">
+        <div class="container">
+          <h2 class="section-title">Sobre mim</h2>
+          <p class="muted">Meu nome é <strong>Lucas Gonçalves Balduino</strong>, tenho 19 anos e sou brasiliense. Estudo Ciência da Computação no <a href="https://www.uniceub.br" target="_blank" rel="noreferrer">UniCEUB</a> e estou em meu primeiro semestre, tendo minhas primeiras experiências na área de programação.</p>
+          <p class="muted">Já tive contato com C, Go, Java e HTML/CSS. Tenho bastante interesse em front‑end e UX design, e também quero experimentar projetos em back‑end.</p>
+        </div>
       </section>
     </main>
 
     <footer>
-      <div class="IconesFooter">
-        <div><img class="IconeFooter" src="img/IconeEmail.png" alt="" /><p>lucasgbalduino@gmail.com</p></div>
-        <div><img class="IconeFooter" src="img/IconeDiscord.png" alt="" /><p>lucas6388</p></div>
-        <div><img class="IconeFooter" src="img/IconeTwitter.png" alt="" /><p>@LucasGonalvesB7</p></div>
-        <div><img class="IconeFooter" src="img/IconeInstagram.png" alt="" /><p>@lucasgbalduino</p></div>
-      </div>
-      <hr>
-      <div class="LucasFooter">
-        <p id="CopyrightFooter">Copyright©2024LucasGonçalvesBalduino</p>
+      <div class="container footer-grid">
+        <div class="footer-icons" aria-label="contatos">
+          <img class="footer-icon" src="img/IconeEmail.png" alt="Email" />
+          <span class="muted">lucasgbalduino@gmail.com</span>
+          <img class="footer-icon" src="img/IconeDiscord.png" alt="Discord" />
+          <span class="muted">lucas6388</span>
+          <a href="https://x.com/LucasGonalvesB7" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeTwitter.png" alt="Twitter/X" />
+          </a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeInstagram.png" alt="Instagram" />
+          </a>
+        </div>
+        <div style="text-align:right;">
+          <p class="copyright">© 2024 Lucas Gonçalves Balduino</p>
+        </div>
       </div>
     </footer>
   </body>
-</html>
+  </html>

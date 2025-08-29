@@ -1,53 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Entre em contato com Lucas Gonçalves Balduino." />
     <link rel="stylesheet" href="style.css" />
-    <title>Contato</title>
+    <title>Contato · Lucas Balduino</title>
+    <script src="main.js" defer></script>
   </head>
   <body>
     <header>
-      <nav id="topo">
-        <a class="menu" id="Lucas" href="index.html" target="ProprioSite"
-          >Lucas</a
-        >
-        <a class="menu" id="SobreMim" href="index.html">Sobre mim </a>
-        <a class="menu" id="Projetos" href="Projetos.html">Projetos </a>
-        <a class="menu" id="contato" href="Contato.html" style="font-weight: bolder">Contato </a>
-      </nav>
+      <div class="container">
+        <nav id="topo">
+          <a class="brand" href="index.html">Lucas</a>
+          <div class="nav-links" role="navigation" aria-label="primária">
+            <a class="menu" href="index.html#sobre">Sobre</a>
+            <a class="menu" href="Projetos.html">Projetos</a>
+            <a class="menu" href="Contato.html" style="font-weight: 600;">Contato</a>
+          </div>
+        </nav>
+      </div>
     </header>
     <main>
-      <div class="TextoContato">
-        <p>Se interessou no meu trabalho?</p>
-        <p>Mande uma Mensagem!</p>
-      </div>
-      <div class="IconesContato">
-        <a href=""
-          ><img class="IconeContato" src="img/IconeEmail.png" alt=""
-        /></a>
-        <a href=""
-          ><img class="IconeContato" src="img/IconeDiscord.png" alt=""
-        /></a>
-        <a href="https://x.com/LucasGonalvesB7"
-          ><img class="IconeContato" src="img/IconeTwitter.png" alt=""
-        /></a>
-        <a href="https://www.instagram.com/lucasgbalduino/"
-          ><img class="IconeContato" src="img/IconeInstagram.png" alt=""
-        /></a>
-      </div>
+      <section class="section">
+        <div class="container">
+          <h1 class="section-title">Vamos conversar</h1>
+          <p class="muted">Se interessou no meu trabalho? Envie uma mensagem. Responderei assim que possível.</p>
+
+          <div class="contact-icons" aria-label="redes sociais">
+            <a href="mailto:lucasgbalduino@gmail.com" aria-label="Email">
+              <img class="contact-icon" src="img/IconeEmail.png" alt="Email" />
+            </a>
+            <a href="#" aria-label="Discord">
+              <img class="contact-icon" src="img/IconeDiscord.png" alt="Discord" />
+            </a>
+            <a href="https://x.com/LucasGonalvesB7" target="_blank" rel="noreferrer" aria-label="Twitter/X">
+              <img class="contact-icon" src="img/IconeTwitter.png" alt="Twitter/X" />
+            </a>
+            <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <img class="contact-icon" src="img/IconeInstagram.png" alt="Instagram" />
+            </a>
+          </div>
+
+          <form class="contact-form" action="#" method="post" aria-label="formulário de contato">
+            <div class="field">
+              <label for="nome">Nome</label>
+              <input class="input" id="nome" name="nome" type="text" placeholder="Seu nome" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input class="input" id="email" name="email" type="email" placeholder="voce@email.com" required />
+            </div>
+            <div class="field">
+              <label for="mensagem">Mensagem</label>
+              <textarea class="textarea" id="mensagem" name="mensagem" placeholder="Escreva sua mensagem" required></textarea>
+            </div>
+            <button class="btn primary" type="submit">Enviar mensagem</button>
+          </form>
+        </div>
+      </section>
     </main>
     <footer>
-      <div class="IconesFooter">
-        <div><img class="IconeFooter" src="img/IconeEmail.png" alt="" /><p>lucasgbalduino@gmail.com</p></div>
-        <div><img class="IconeFooter" src="img/IconeDiscord.png" alt="" /><p>lucas6388</p></div>
-        <div><img class="IconeFooter" src="img/IconeTwitter.png" alt="" /><p>@LucasGonalvesB7</p></div>
-        <div><img class="IconeFooter" src="img/IconeInstagram.png" alt="" /><p>@lucasgbalduino</p></div>
-      </div>
-      <hr>
-      <div class="LucasFooter">
-        <p id="CopyrightFooter">Copyright©2024LucasGonçalvesBalduino</p>
+      <div class="container footer-grid">
+        <div class="footer-icons" aria-label="contatos">
+          <img class="footer-icon" src="img/IconeEmail.png" alt="Email" />
+          <span class="muted">lucasgbalduino@gmail.com</span>
+          <img class="footer-icon" src="img/IconeDiscord.png" alt="Discord" />
+          <span class="muted">lucas6388</span>
+          <a href="https://x.com/LucasGonalvesB7" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeTwitter.png" alt="Twitter/X" />
+          </a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noreferrer">
+            <img class="footer-icon" src="img/IconeInstagram.png" alt="Instagram" />
+          </a>
+        </div>
+        <div style="text-align:right;">
+          <p class="copyright">© 2024 Lucas Gonçalves Balduino</p>
+        </div>
       </div>
     </footer>
   </body>
-</html>
+  </html>
