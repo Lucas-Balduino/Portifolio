@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Smoothly transition theme on first paint as well
+  document.documentElement.classList.add('js-enabled');
+
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
       const isDark = document.body.classList.contains('theme-dark');
@@ -25,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', 'dark');
         themeToggle.setAttribute('aria-pressed', 'true');
       }
+
+      // Replay reveal animations on theme change
+      replayRevealAnimations();
     });
   }
 
@@ -85,6 +91,43 @@ document.addEventListener('DOMContentLoaded', () => {
         lightboxImg.src = '';
         document.body.style.overflow = '';
       }
+    });
+  }
+
+  // Reveal-on-load and on-scroll animations
+  const revealSelector = '.reveal';
+  const revealElements = Array.from(document.querySelectorAll(revealSelector));
+
+  // If developer forgot to add .reveal, progressively enhance common sections
+  if (revealElements.length === 0) {
+    const autoReveal = document.querySelectorAll('.hero, .projects-preview, .projects-grid .card, .about-section, .about-header, .skills-grid, .contact-page, .contact-form, .contact-info, .projects-list, .projects-list-grid .project-item');
+    autoReveal.forEach(el => el.classList.add('reveal'));
+  }
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach((el, index) => {
+    // small stagger effect
+    el.style.transitionDelay = (index * 30) + 'ms';
+    observer.observe(el);
+  });
+
+  function replayRevealAnimations(){
+    const elements = document.querySelectorAll('.reveal');
+    elements.forEach((el, idx) => {
+      el.classList.remove('is-visible');
+      // reset delay for a subtle stagger on theme change
+      el.style.transitionDelay = (idx * 20) + 'ms';
+      // Force reflow to restart CSS transitions
+      void el.offsetWidth;
+      observer.observe(el);
     });
   }
 });
