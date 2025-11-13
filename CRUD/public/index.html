@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lucas — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Lucas<span class="brand-dot">.</span></a>
+      <nav aria-label="Principal" class="nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a class="nav-link active" href="index.html">Início</a></li>
+          <li><a class="nav-link" href="projetos.html">Projetos</a></li>
+          <li><a class="nav-link" href="sobre.html">Sobre mim</a></li>
+          <li><a class="nav-link" href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+      <button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema">🌓</button>
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="hero grid">
+      <div class="hero-card">
+        <h1 class="hero-title">Olá, eu sou <span class="accent">Lucas</span></h1>
+        <p class="hero-sub">Desenvolvedor front-end em formação. Este portfólio foi repaginado para destacar projetos e apresentar um CRUD funcional no painel de administração.</p>
+        <div class="hero-cta">
+          <a class="btn" href="projetos.html">Ver projetos</a>
+          <a class="btn ghost" href="contato.html">Contato</a>
+        </div>
+      </div>
+      <figure class="hero-figure"><img src="uploads/FotoMinha.jpg" alt="Foto do Lucas" class="hero-photo"></figure>
+    </section>
+
+    <section class="projects-preview">
+      <div class="section-head">
+        <h2>Projetos recentes</h2>
+        <a class="link-muted" href="projetos.html">Ver todos →</a>
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        <article class="card project-card">
+          <img class="card-media" src="uploads/JetPackGuy.png" alt="JetPackGuy screenshot">
+          <div class="card-body">
+            <h3 class="card-title">JetPackGuy</h3>
+            <p class="card-desc">Jogo 2D com física simples e controle por teclado. Click para ver a página do projeto.</p>
+            <div class="card-meta">
+              <span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JS</span>
+              <a class="card-link" href="projetos/jetpackguy.html">Detalhes</a>
+            </div>
+          </div>
+        </article>
+        <article class="card project-card">
+          <img class="card-media" src="uploads/ImagemAgencia.png" alt="Gerenciamento de Estoque screenshot">
+          <div class="card-body">
+            <h3 class="card-title">Gerenciamento de Estoque</h3>
+            <p class="card-desc">Aplicação desktop com foco em relatórios. Página disponível para leitura.</p>
+            <div class="card-meta">
+              <span class="badge">Java</span>
+              <a class="card-link" href="projetos/gerenciamento-estoque.html">Detalhes</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="momentos">
+      <h2>Momentos</h2>
+      <div class="momentos-grid">
+        <figure class="momento-card"><img src="img/FotoAmigos.jpg" alt="Viagem com amigos" class="momento-media"><figcaption>Viagem — 2023</figcaption></figure>
+        <figure class="momento-card"><img src="img/FotoMinha.jpg" alt="Retrato" class="momento-media"><figcaption>Retrato</figcaption></figure>
+        <figure class="momento-card"><img src="img/FotoFloquinho.jpg" alt="Floquinho" class="momento-media"><figcaption>Floquinho</figcaption></figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left"><p class="brand-small">Lucas<span class="brand-dot">.</span></p><p class="muted">Design minimal • Código limpo • UX</p></div>
+      <div class="footer-right"><nav class="socials"><a href="#" class="social">Email</a> <a href="#" class="social">GitHub</a></nav></div>
+    </div>
+  </footer>
+</body>
+</html>

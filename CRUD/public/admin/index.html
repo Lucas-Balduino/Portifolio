@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Gerenciar Projetos</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Admin — Projetos (CRUD)</h1>
+    <p class="muted">Interface administrativa para criar, editar e remover projetos. Para funcionar, suba o servidor (server.js) e abra esta página a partir do domínio onde o servidor está rodando.</p>
+
+    <form id="project-form">
+      <input type="hidden" id="project-id" value="">
+      <label>Título</label><input id="title" required>
+      <label>Slug (url amigável)</label><input id="slug" required>
+      <label>Resumo curto</label><input id="short_desc">
+      <label>Imagem principal (URL relativa ou completa)</label><input id="image_url">
+      <label>Repositório (URL)</label><input id="repo_url">
+      <label>Demo / Live (URL)</label><input id="live_url">
+      <label>Tecnologias (vírgula separadas)</label><input id="technologies">
+      <label>Descrição longa (HTML é permitido)</label><textarea id="description" rows="6"></textarea>
+      <div style="margin-top:0.5rem;">
+        <button class="btn" type="submit">Salvar</button>
+        <button class="btn ghost" type="button" id="reset-btn">Limpar</button>
+      </div>
+    </form>
+
+    <hr>
+
+    <h2>Projetos existentes</h2>
+    <div id="projects-list" aria-live="polite"></div>
+  </main>
+
+  <script>
+  // ADMIN JS: communicates with the REST API at /api/projects.
+  async function fetchProjects() {
+    const res = await fetch('/api/projects');
+    const data = await res.json();
+    return data;
+  }
+
+  function renderProjects(list) {
+    const container = document.getElementById('projects-list');
+    container.innerHTML = '';
+    list.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.style.margin = '0.5rem 0';
+      el.innerHTML = `
+        <div style="display:flex;gap:1rem;align-items:center;">
+          <img src="${p.image_url || '/img/ImagemAgencia.png'}" style="width:80px;height:auto;border-radius:6px;">
+          <div style="flex:1">
+            <strong>${p.title}</strong><div class="muted">${p.short_desc || ''}</div>
+          </div>
+          <div style="display:flex;gap:0.5rem;">
+            <button data-id="${p.id}" class="edit-btn">Editar</button>
+            <button data-id="${p.id}" class="delete-btn">Excluir</button>
+          </div>
+        </div>`;
+      container.appendChild(el);
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', async (e) => {
+      const id = e.target.dataset.id;
+      const res = await fetch('/api/projects/' + id);
+      const project = await res.json();
+      document.getElementById('project-id').value = project.id;
+      document.getElementById('title').value = project.title || '';
+      document.getElementById('slug').value = project.slug || '';
+      document.getElementById('short_desc').value = project.short_desc || '';
+      document.getElementById('image_url').value = project.image_url || '';
+      document.getElementById('repo_url').value = project.repo_url || '';
+      document.getElementById('live_url').value = project.live_url || '';
+      document.getElementById('technologies').value = project.technologies || '';
+      document.getElementById('description').value = project.description || '';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }));
+
+    document.querySelectorAll('.delete-btn').forEach(b => b.addEventListener('click', async (e) => {
+      if (!confirm('Excluir projeto?')) return;
+      const id = e.target.dataset.id;
+      await fetch('/api/projects/' + id, { method: 'DELETE' });
+      loadAndRender();
+    }));
+  }
+
+  async function loadAndRender() {
+    try {
+      const list = await fetchProjects();
+      renderProjects(list);
+    } catch (err) {
+      console.error('Erro ao buscar projetos', err);
+      document.getElementById('projects-list').textContent = 'Erro ao carregar projetos. Veja console.';
+    }
+  }
+
+  document.getElementById('project-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('project-id').value;
+    const body = {
+      title: document.getElementById('title').value,
+      slug: document.getElementById('slug').value,
+      short_desc: document.getElementById('short_desc').value,
+      image_url: document.getElementById('image_url').value,
+      repo_url: document.getElementById('repo_url').value,
+      live_url: document.getElementById('live_url').value,
+      technologies: document.getElementById('technologies').value,
+      description: document.getElementById('description').value
+    };
+    if (id) {
+      await fetch('/api/projects/' + id, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    } else {
+      await fetch('/api/projects', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    }
+    document.getElementById('project-form').reset();
+    loadAndRender();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => { document.getElementById('project-form').reset(); });
+  loadAndRender();
+  </script>
+</body>
+</html>
