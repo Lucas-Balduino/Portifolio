@@ -3,21 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Contato — Lucas</title>
+  <title>Projeto — Lucas</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script defer src="main.js"></script>
+  <script defer src="projects.js"></script>
 </head>
 <body class="theme-light">
-    <header class="site-header">
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">lucas<span class="brand-dot">.</span></a>
       <nav aria-label="Principal" class="nav">
         <ul class="nav-list" id="nav-list">
           <li><a class="nav-link" href="index.html" data-i18n="nav.home">Início</a></li>
-          <li><a class="nav-link" href="projetos.html" data-i18n="nav.projects">Projetos</a></li>
+          <li><a class="nav-link active" href="projetos.html" data-i18n="nav.projects">Projetos</a></li>
           <li><a class="nav-link" href="sobre.html" data-i18n="nav.about">Sobre mim</a></li>
-          <li><a class="nav-link active" href="contato.html" data-i18n="nav.contact">Contato</a></li>
+          <li><a class="nav-link" href="contato.html" data-i18n="nav.contact">Contato</a></li>
         </ul>
       </nav>
 
@@ -28,31 +29,13 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="contact-page">
-      <h1>Contato</h1>
-      <p class="muted">Prefere email? Escreva para: <strong>lucasgbalduino@gmail.com</strong></p>
-
-      <form class="contact-form" id="contact-form" action="#" method="post">
-        <!--
-          This form is a mockup. In the full solution below the admin backend,
-          the contact form can be wired to send messages to an endpoint like /api/messages.
-        -->
-        <label for="name">Nome</label>
-        <input id="name" name="name" required>
-
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required>
-
-        <label for="message">Mensagem</label>
-        <textarea id="message" name="message" rows="6" required></textarea>
-
-        <div class="form-actions">
-          <button class="btn" type="submit">Enviar</button>
-          <button class="btn ghost" type="reset">Limpar</button>
-        </div>
-      </form>
-    </section>
+  <main class="container main-content">
+    <div id="project-detail-container">
+      <!-- Projeto será carregado dinamicamente via API -->
+      <div style="text-align:center;padding:4rem;color:var(--muted);">
+        <p>Carregando projeto...</p>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -71,15 +54,41 @@
       </div>
     </div>
   </footer>
+
   <script>
-  // Simple client-side handler to show success message without sending to a server.
-  document.getElementById('contact-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    if (!name) { alert('Por favor preencha seu nome.'); return; }
-    alert('Mensagem recebida (mock). Em um deployment real, esse formulário enviaria os dados para o servidor.');
-    this.reset();
-  });
+    // Carrega o projeto individual baseado no slug da URL
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
+      
+      if (!slug) {
+        document.getElementById('project-detail-container').innerHTML = `
+          <article class="project-detail">
+            <h1>Projeto não especificado</h1>
+            <p>Por favor, selecione um projeto da <a href="projetos.html">página de projetos</a>.</p>
+            <a href="projetos.html" class="btn">Voltar para projetos</a>
+          </article>
+        `;
+        return;
+      }
+
+      const project = await window.ProjectsAPI?.fetchProjectBySlug(slug);
+      
+      if (project) {
+        // Atualiza o título da página
+        document.title = `${project.title} — Lucas`;
+        window.ProjectsAPI.renderProjectDetail(project, 'project-detail-container');
+      } else {
+        document.getElementById('project-detail-container').innerHTML = `
+          <article class="project-detail">
+            <h1>Projeto não encontrado</h1>
+            <p>O projeto solicitado não foi encontrado.</p>
+            <a href="projetos.html" class="btn">Voltar para projetos</a>
+          </article>
+        `;
+      }
+    });
   </script>
 </body>
 </html>
+

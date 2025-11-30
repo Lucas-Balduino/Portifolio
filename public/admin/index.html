@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Gerenciar Projetos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .admin-form { background: var(--surface); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; }
+    .admin-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--accent); }
+    .admin-form input, .admin-form textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--glass); border-radius: 8px; background: var(--bg); color: var(--text); font-family: inherit; margin-bottom: 1rem; }
+    .admin-form input:focus, .admin-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(17,17,17,0.1); }
+    .form-actions { display: flex; gap: 1rem; margin-top: 1rem; }
+    .message { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: none; }
+    .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .message.show { display: block; }
+    .edit-btn, .delete-btn { padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: all var(--transition); }
+    .edit-btn { background: var(--accent); color: var(--bg); }
+    .edit-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--glass); }
+    .delete-btn { background: #dc3545; color: white; }
+    .delete-btn:hover { background: #c82333; transform: translateY(-2px); }
+    .loading { text-align: center; padding: 2rem; color: var(--muted); }
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Admin — Gerenciar Projetos</h1>
+    <p class="muted">Interface administrativa para criar, editar e remover projetos. Para funcionar, suba o servidor (server.js) e abra esta página a partir do domínio onde o servidor está rodando.</p>
+
+    <div id="message" class="message" role="alert"></div>
+
+    <form id="project-form" class="admin-form">
+      <input type="hidden" id="project-id" value="">
+      <label for="title">Título *</label>
+      <input type="text" id="title" required placeholder="Ex: Meu Projeto Incrível">
+      
+      <label for="slug">Slug (URL amigável) *</label>
+      <input type="text" id="slug" required placeholder="Ex: meu-projeto-incrivel">
+      <small class="muted" style="display:block;margin-top:-0.75rem;margin-bottom:1rem;">Usado na URL: /projeto.html?slug=meu-projeto-incrivel</small>
+      
+      <label for="short_desc">Resumo curto</label>
+      <input type="text" id="short_desc" placeholder="Breve descrição do projeto">
+      
+      <label for="image_url">Imagem principal (URL relativa ou completa)</label>
+      <input type="text" id="image_url" placeholder="Ex: img/projeto.png ou https://exemplo.com/imagem.jpg">
+      
+      <label for="repo_url">Repositório (URL GitHub, GitLab, etc.)</label>
+      <input type="url" id="repo_url" placeholder="https://github.com/usuario/projeto">
+      
+      <label for="live_url">Demo / Live (URL)</label>
+      <input type="url" id="live_url" placeholder="https://projeto.exemplo.com">
+      
+      <label for="technologies">Tecnologias (separadas por vírgula)</label>
+      <input type="text" id="technologies" placeholder="Ex: HTML, CSS, JavaScript, React">
+      
+      <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--glass);">
+      <h3 style="margin-bottom: 1rem; color: var(--accent);">Seções da Página do Projeto</h3>
+      <p class="muted" style="margin-bottom: 1.5rem; font-size: 0.9rem;">As seções abaixo são opcionais. Se não preenchidas, não aparecerão na página do projeto.</p>
+      
+      <label for="introduction">Introdução</label>
+      <textarea id="introduction" rows="4" placeholder="Texto introdutório sobre o projeto..."></textarea>
+      
+      <label for="main_idea">Ideia Principal</label>
+      <textarea id="main_idea" rows="4" placeholder="Explique a ideia principal ou objetivo do projeto..."></textarea>
+      
+      <label for="images_section">Seção de Imagens (URLs separadas por vírgula ou quebra de linha)</label>
+      <textarea id="images_section" rows="4" placeholder="img/projeto1.png, img/projeto2.png&#10;ou uma URL por linha"></textarea>
+      <small class="muted" style="display:block;margin-top:-0.75rem;margin-bottom:1rem;">Você pode usar vírgulas ou uma URL por linha</small>
+      
+      <label for="technical_details">Detalhes Técnicos</label>
+      <textarea id="technical_details" rows="6" placeholder="Detalhes técnicos, arquitetura, decisões de design, etc. (HTML permitido)..."></textarea>
+      
+      <label for="presentation">Apresentação</label>
+      <textarea id="presentation" rows="4" placeholder="Texto de apresentação do projeto..."></textarea>
+      
+      <label for="how_to_run">Como Executar</label>
+      <textarea id="how_to_run" rows="4" placeholder="Instruções de como executar o projeto..."></textarea>
+      
+      <label for="description">Descrição Geral (HTML é permitido)</label>
+      <textarea id="description" rows="6" placeholder="Descrição geral do projeto (opcional, pode ser usado como fallback)..."></textarea>
+      
+      <div class="form-actions">
+        <button class="btn" type="submit" id="submit-btn">Salvar</button>
+        <button class="btn ghost" type="button" id="reset-btn">Limpar</button>
+        <a href="../index.html" class="btn ghost">Voltar ao site</a>
+      </div>
+    </form>
+
+    <hr>
+
+    <h2>Projetos existentes</h2>
+    <div id="projects-list" aria-live="polite">
+      <div class="loading">Carregando projetos...</div>
+    </div>
+  </main>
+
+  <script>
+  // ADMIN JS: communicates with the REST API at /api/projects.
+  
+  function showMessage(text, type = 'success') {
+    const messageEl = document.getElementById('message');
+    messageEl.textContent = text;
+    messageEl.className = `message ${type} show`;
+    setTimeout(() => {
+      messageEl.classList.remove('show');
+    }, 5000);
+  }
+
+  async function fetchProjects() {
+    try {
+      const res = await fetch('/api/projects');
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+      showMessage('Erro ao carregar projetos. Verifique se o servidor está rodando.', 'error');
+      return [];
+    }
+  }
+
+  function renderProjects(list) {
+    const container = document.getElementById('projects-list');
+    container.innerHTML = '';
+    
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty-state">Nenhum projeto cadastrado ainda. Use o formulário acima para adicionar um projeto.</div>';
+      return;
+    }
+
+    list.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.style.margin = '0.5rem 0';
+      el.style.padding = '1rem';
+      el.innerHTML = `
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <img src="${p.image_url || '../img/ImagemEmDesenvolvimento.jpg'}" 
+               style="width:80px;height:80px;object-fit:cover;border-radius:6px;" 
+               onerror="this.src='../img/ImagemEmDesenvolvimento.jpg'">
+          <div style="flex:1;min-width:200px;">
+            <strong style="display:block;margin-bottom:0.25rem;">${p.title || 'Sem título'}</strong>
+            <div class="muted" style="font-size:0.9rem;">${p.short_desc || 'Sem descrição'}</div>
+            ${p.slug ? `<div class="muted" style="font-size:0.8rem;margin-top:0.25rem;">Slug: ${p.slug}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button data-id="${p.id}" class="edit-btn">Editar</button>
+            <button data-id="${p.id}" class="delete-btn">Excluir</button>
+          </div>
+        </div>`;
+      container.appendChild(el);
+    });
+
+    // Adiciona event listeners aos botões
+    document.querySelectorAll('.edit-btn').forEach(b => {
+      b.addEventListener('click', async (e) => {
+        const id = e.target.dataset.id;
+        try {
+          const res = await fetch('/api/projects/' + id);
+          if (!res.ok) throw new Error('Erro ao buscar projeto');
+          const project = await res.json();
+          
+          document.getElementById('project-id').value = project.id;
+          document.getElementById('title').value = project.title || '';
+          document.getElementById('slug').value = project.slug || '';
+          document.getElementById('short_desc').value = project.short_desc || '';
+          document.getElementById('image_url').value = project.image_url || '';
+          document.getElementById('repo_url').value = project.repo_url || '';
+          document.getElementById('live_url').value = project.live_url || '';
+          document.getElementById('technologies').value = project.technologies || '';
+          document.getElementById('description').value = project.description || '';
+          document.getElementById('introduction').value = project.introduction || '';
+          document.getElementById('main_idea').value = project.main_idea || '';
+          document.getElementById('images_section').value = project.images_section || '';
+          document.getElementById('technical_details').value = project.technical_details || '';
+          document.getElementById('presentation').value = project.presentation || '';
+          document.getElementById('how_to_run').value = project.how_to_run || '';
+          
+          document.getElementById('submit-btn').textContent = 'Atualizar';
+          window.scrollTo({top:0,behavior:'smooth'});
+          showMessage('Projeto carregado para edição', 'success');
+        } catch (error) {
+          console.error('Erro ao carregar projeto:', error);
+          showMessage('Erro ao carregar projeto para edição', 'error');
+        }
+      });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(b => {
+      b.addEventListener('click', async (e) => {
+        if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
+        const id = e.target.dataset.id;
+        try {
+          const res = await fetch('/api/projects/' + id, { method: 'DELETE' });
+          if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.error || 'Erro ao excluir');
+          }
+          showMessage('Projeto excluído com sucesso', 'success');
+          loadAndRender();
+        } catch (error) {
+          console.error('Erro ao excluir projeto:', error);
+          showMessage('Erro ao excluir projeto: ' + error.message, 'error');
+        }
+      });
+    });
+  }
+
+  async function loadAndRender() {
+    const container = document.getElementById('projects-list');
+    container.innerHTML = '<div class="loading">Carregando projetos...</div>';
+    
+    try {
+      const list = await fetchProjects();
+      renderProjects(list);
+    } catch (err) {
+      console.error('Erro ao buscar projetos', err);
+      container.innerHTML = '<div class="empty-state">Erro ao carregar projetos. Verifique o console para mais detalhes.</div>';
+    }
+  }
+
+  document.getElementById('project-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Salvando...';
+    
+    try {
+      const id = document.getElementById('project-id').value;
+      const body = {
+        title: document.getElementById('title').value.trim(),
+        slug: document.getElementById('slug').value.trim(),
+        short_desc: document.getElementById('short_desc').value.trim(),
+        image_url: document.getElementById('image_url').value.trim(),
+        repo_url: document.getElementById('repo_url').value.trim(),
+        live_url: document.getElementById('live_url').value.trim(),
+        technologies: document.getElementById('technologies').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        introduction: document.getElementById('introduction').value.trim(),
+        main_idea: document.getElementById('main_idea').value.trim(),
+        images_section: document.getElementById('images_section').value.trim(),
+        technical_details: document.getElementById('technical_details').value.trim(),
+        presentation: document.getElementById('presentation').value.trim(),
+        how_to_run: document.getElementById('how_to_run').value.trim()
+      };
+
+      let res;
+      if (id) {
+        res = await fetch('/api/projects/' + id, { 
+          method: 'PUT', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(body) 
+        });
+      } else {
+        res = await fetch('/api/projects', { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(body) 
+        });
+      }
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Erro ao salvar projeto');
+      }
+
+      showMessage(id ? 'Projeto atualizado com sucesso!' : 'Projeto criado com sucesso!', 'success');
+      document.getElementById('project-form').reset();
+      document.getElementById('project-id').value = '';
+      document.getElementById('submit-btn').textContent = 'Salvar';
+      loadAndRender();
+    } catch (error) {
+      console.error('Erro ao salvar projeto:', error);
+      showMessage('Erro ao salvar projeto: ' + error.message, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => { 
+    document.getElementById('project-form').reset();
+    document.getElementById('project-id').value = '';
+    document.getElementById('submit-btn').textContent = 'Salvar';
+    showMessage('Formulário limpo', 'success');
+  });
+
+  // Auto-gerar slug a partir do título
+  document.getElementById('title').addEventListener('input', (e) => {
+    const slugInput = document.getElementById('slug');
+    if (!document.getElementById('project-id').value && !slugInput.value) {
+      const slug = e.target.value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      slugInput.value = slug;
+    }
+  });
+
+  loadAndRender();
+  </script>
+</body>
+</html>

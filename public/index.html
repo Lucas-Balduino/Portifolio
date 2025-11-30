@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script defer src="main.js"></script>
+  <script defer src="projects.js"></script>
 </head>
 <body class="theme-light">
   <header class="site-header">
@@ -59,40 +60,10 @@
       </div>
 
       <div class="projects-grid" id="projects-grid">
-        <article class="card project-card reveal">
-          <img class="card-media" src="img/JetPackGuy.png" alt="JetPackGuy screenshot">
-          <div class="card-body">
-            <h3 class="card-title">JetPackGuy</h3>
-            <p class="card-desc" data-i18n="projects.jetpack.description">Jogo/simulação 2D com controle por teclado — práticas de física simples e animação por frame.</p>
-            <div class="card-meta">
-              <span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JS</span>
-              <a class="card-link" href="https://github.com/Lucas-Balduino/JetPackGuy" target="_blank" rel="noopener noreferrer" data-i18n="projects.viewProject">Ver projeto</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card project-card reveal">
-          <img class="card-media" src="img/ImagemAgencia.png" alt="Agência de Viagens screenshot">
-          <div class="card-body">
-            <h3 class="card-title" data-i18n="projects.travel.title">Agência de Viagens</h3>
-            <p class="card-desc" data-i18n="projects.travel.description">Sistema de gerenciamento para agência de viagens com cadastro de clientes, pacotes turísticos e serviços.</p>
-            <div class="card-meta">
-              <span class="badge">Java</span><span class="badge">MySQL</span>
-              <a class="card-link" href="https://github.com/Lucas-Balduino/AgenciaDeViagens" target="_blank" rel="noopener noreferrer" data-i18n="projects.viewProject">Ver projeto</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card project-card placeholder reveal">
-          <div class="media-placeholder" aria-hidden="true"></div>
-          <div class="card-body">
-            <h3 class="card-title" data-i18n="projects.comingSoon.title">Em desenvolvimento</h3>
-            <p class="card-desc" data-i18n="projects.comingSoon.description">Novos projetos em breve — design de produto, PWA e APIs.</p>
-            <div class="card-meta">
-              <span class="badge" data-i18n="projects.comingSoon.badge">Em breve</span>
-            </div>
-          </div>
-        </article>
+        <!-- Projetos serão carregados dinamicamente via API -->
+        <div style="text-align:center;padding:2rem;color:var(--muted);">
+          Carregando projetos...
+        </div>
       </div>
     </section>
   </main>
@@ -113,5 +84,29 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // Carrega projetos recentes na página inicial
+    document.addEventListener('DOMContentLoaded', async () => {
+      const projects = await window.ProjectsAPI?.fetchProjects() || [];
+      if (projects.length > 0) {
+        window.ProjectsAPI.renderRecentProjects(projects, 'projects-grid');
+      } else {
+        // Fallback se não houver projetos na API
+        document.getElementById('projects-grid').innerHTML = `
+          <article class="card project-card placeholder reveal">
+            <div class="media-placeholder" aria-hidden="true"></div>
+            <div class="card-body">
+              <h3 class="card-title" data-i18n="projects.comingSoon.title">Em desenvolvimento</h3>
+              <p class="card-desc" data-i18n="projects.comingSoon.description">Novos projetos em breve — design de produto, PWA e APIs.</p>
+              <div class="card-meta">
+                <span class="badge" data-i18n="projects.comingSoon.badge">Em breve</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+    });
+  </script>
 </body>
 </html>
