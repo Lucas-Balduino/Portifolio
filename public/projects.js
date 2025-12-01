@@ -1,14 +1,14 @@
 // projects.js - Carrega projetos dinamicamente da API
 // Este arquivo deve ser incluído nas páginas que precisam exibir projetos
 
-const API_BASE = '/api/projects';
+const PROJECTS_DATA_URL = 'data/projects.json';
 
 /**
- * Busca todos os projetos da API
+ * Busca todos os projetos a partir do arquivo JSON estático
  */
 async function fetchProjects() {
   try {
-    const response = await fetch(API_BASE);
+    const response = await fetch(PROJECTS_DATA_URL, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -21,15 +21,13 @@ async function fetchProjects() {
 }
 
 /**
- * Busca um projeto específico por ID
+ * Busca um projeto específico por ID (usando os dados estáticos)
+ * Mantido por compatibilidade, mas no fluxo atual o principal é o slug.
  */
 async function fetchProject(id) {
   try {
-    const response = await fetch(`${API_BASE}/${id}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
+    const projects = await fetchProjects();
+    return projects.find(p => String(p.id) === String(id)) || null;
   } catch (error) {
     console.error('Erro ao buscar projeto:', error);
     return null;
@@ -41,21 +39,11 @@ async function fetchProject(id) {
  */
 async function fetchProjectBySlug(slug) {
   try {
-    const response = await fetch(`${API_BASE}/slug/${slug}`);
-    if (!response.ok) {
-      if (response.status === 404) return null;
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
+    const projects = await fetchProjects();
+    return projects.find(p => p.slug === slug) || null;
   } catch (error) {
     console.error('Erro ao buscar projeto por slug:', error);
-    // Fallback: busca em todos os projetos
-    try {
-      const projects = await fetchProjects();
-      return projects.find(p => p.slug === slug) || null;
-    } catch (fallbackError) {
-      return null;
-    }
+    return null;
   }
 }
 
@@ -156,9 +144,30 @@ function processImageUrls(imagesSection) {
     .filter(url => url.length > 0);
 }
 
+// Trata conteúdo rico (especialmente detalhes técnicos e como executar)
+// - Mantém HTML já inserido pelo admin
+// - Dá suporte simples a blocos de código com ```lang ... ```
+function formatRichText(content) {
+  if (!content || !content.trim) return '';
+  let html = content;
+
+  // Suporte básico a blocos ```lang ... ```
+  const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+  html = html.replace(codeBlockRegex, (match, lang, code) => {
+    const languageClass = lang ? `language-${lang}` : '';
+    const escapedCode = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    return `<pre><code class="${languageClass}">${escapedCode}</code></pre>`;
+  });
+
+  return html;
+}
+
 /**
- * Renderiza a página completa de um projeto individual
- */
+* Renderiza a página completa de um projeto individual
+*/
 function renderProjectDetail(project, containerId) {
   const container = document.getElementById(containerId);
   if (!container) {
@@ -187,10 +196,17 @@ function renderProjectDetail(project, containerId) {
   // Função auxiliar para renderizar seção apenas se tiver conteúdo
   const renderSection = (title, content, className = '') => {
     if (!content || !content.trim()) return '';
+
+    const isCodeHeavy =
+      className === 'project-technical-details' ||
+      className === 'project-how-to-run';
+
+    const innerHtml = isCodeHeavy ? formatRichText(content) : content;
+
     return `
       <section class="project-section ${className} reveal">
         <h2>${title}</h2>
-        <div>${content}</div>
+        <div>${innerHtml}</div>
       </section>
     `;
   };
