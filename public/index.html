@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lucas — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+  <script defer src="projects.js"></script>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">lucas<span class="brand-dot">.</span></a>
+      <nav aria-label="Principal" class="nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a class="nav-link active" href="index.html" data-i18n="nav.home">Início</a></li>
+          <li><a class="nav-link" href="projetos.html" data-i18n="nav.projects">Projetos</a></li>
+          <li><a class="nav-link" href="sobre.html" data-i18n="nav.about">Sobre mim</a></li>
+          <li><a class="nav-link" href="contato.html" data-i18n="nav.contact">Contato</a></li>
+        </ul>
+      </nav>
+
+      <button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema">
+      </button>
+
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="hero grid reveal">
+      <div class="hero-card">
+        <h1 class="hero-title" data-i18n="hero.title">Olá, eu sou <span class="accent">Lucas</span></h1>
+        <p class="hero-sub" data-i18n="hero.subtitle">Desenvolvedor front‑end em formação — eu desenho interfaces intuitivas, pensadas para desempenho e acessibilidade.</p>
+        <div class="hero-cta">
+          <a class="btn-project" href="projetos.html" data-i18n="hero.viewProjects">Ver projetos</a>
+          <a class="btn ghost" href="contato.html" data-i18n="hero.hireMe">Contrate-me</a>
+        </div>
+
+        <ul class="skills-quick" aria-label="Habilidades rápidas">
+          <li>HTML • CSS • JS</li>
+          <li>Figma • Git</li>
+          <li data-i18n="hero.skills">Java • C</li>
+          <li data-i18n="hero.skills">UX • UI</li>
+        </ul>
+      </div>
+
+      <figure class="hero-figure" aria-hidden="false">
+        <img src="img/FotoMinha.jpg" alt="Foto do Lucas" class="hero-photo">
+        <figcaption class="sr-only">Foto de Lucas</figcaption>
+      </figure>
+    </section>
+
+    <section class="projects-preview reveal">
+      <div class="section-head">
+        <h2 data-i18n="projects.recent">Projetos recentes</h2>
+        <a class="link-muted" href="projetos.html" data-i18n="projects.viewAll">Ver todos →</a>
+      </div>
+
+      <div class="projects-grid" id="projects-grid">
+        <!-- Projetos serão carregados dinamicamente via API -->
+        <div style="text-align:center;padding:2rem;color:var(--muted);">
+          Carregando projetos...
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <p class="brand-small">lucas<span class="brand-dot">.</span></p>
+        <p class="muted" data-i18n="footer.tagline">Design minimal • Código limpo • UX</p>
+      </div>
+      <div class="footer-right">
+        <nav aria-label="Redes sociais" class="socials">
+          <a href="mailto:lucasgbalduino@gmail.com" class="social">Email</a>
+          <a href="https://github.com/Lucas-Balduino" target="_blank" rel="noopener noreferrer" class="social">GitHub</a>
+          <a href="https://www.linkedin.com/in/lucas-balduino-661073327" target="_blank" rel="noopener noreferrer" class="social">LinkedIn</a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noopener noreferrer" class="social">Instagram</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Carrega projetos recentes na página inicial
+    document.addEventListener('DOMContentLoaded', async () => {
+      const projects = await window.ProjectsAPI?.fetchProjects() || [];
+      if (projects.length > 0) {
+        window.ProjectsAPI.renderRecentProjects(projects, 'projects-grid');
+      } else {
+        // Fallback se não houver projetos na API
+        document.getElementById('projects-grid').innerHTML = `
+          <article class="card project-card placeholder reveal">
+            <div class="media-placeholder" aria-hidden="true"></div>
+            <div class="card-body">
+              <h3 class="card-title" data-i18n="projects.comingSoon.title">Em desenvolvimento</h3>
+              <p class="card-desc" data-i18n="projects.comingSoon.description">Novos projetos em breve — design de produto, PWA e APIs.</p>
+              <div class="card-meta">
+                <span class="badge" data-i18n="projects.comingSoon.badge">Em breve</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

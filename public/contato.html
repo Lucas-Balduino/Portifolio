@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contato — Lucas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Lucas<span class="brand-dot">.</span></a>
+      <nav aria-label="Principal" class="nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a class="nav-link" href="index.html" data-i18n="nav.home">Início</a></li>
+          <li><a class="nav-link" href="projetos.html" data-i18n="nav.projects">Projetos</a></li>
+          <li><a class="nav-link" href="sobre.html" data-i18n="nav.about">Sobre mim</a></li>
+          <li><a class="nav-link active" href="contato.html" data-i18n="nav.contact">Contato</a></li>
+        </ul>
+      </nav>
+
+      <button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema">
+      </button>
+
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="contact-page reveal">
+      <h1 data-i18n="contact.title">Contato</h1>
+      <p class="muted" data-i18n="contact.subtitle">Vamos trabalhar juntos! Entre em contato para projetos, colaborações ou apenas para bater um papo sobre tecnologia.</p>
+
+      <div class="contact-info">
+        <p><strong data-i18n="contact.directEmail">Email direto:</strong> <a href="mailto:lucasgbalduino@gmail.com">lucasgbalduino@gmail.com</a></p>
+        <p><strong data-i18n="contact.availability">Disponibilidade:</strong> <span data-i18n="contact.availabilityText">Aberto a projetos freelance e oportunidades</span></p>
+      </div>
+
+      <form class="contact-form" action="#" method="post" onsubmit="event.preventDefault(); alert('Este formulário é apenas um mockup — implemente envio com JS/back-end.');">
+        <label for="name" data-i18n="contact.form.name">Nome completo</label>
+        <input id="name" name="name" type="text" required data-i18n-placeholder="contact.form.namePlaceholder">
+
+        <label for="email" data-i18n="contact.form.email">Email</label>
+        <input id="email" name="email" type="email" required data-i18n-placeholder="contact.form.emailPlaceholder">
+
+        <label for="subject" data-i18n="contact.form.subject">Assunto</label>
+        <input id="subject" name="subject" type="text" required data-i18n-placeholder="contact.form.subjectPlaceholder">
+
+        <label for="message" data-i18n="contact.form.message">Mensagem</label>
+        <textarea id="message" name="message" rows="6" required data-i18n-placeholder="contact.form.messagePlaceholder"></textarea>
+
+        <div class="form-actions">
+          <button class="btn" type="submit" data-i18n="contact.form.send">Enviar mensagem</button>
+          <button class="btn ghost" type="reset" data-i18n="contact.form.clear">Limpar formulário</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <p class="brand-small">Lucas<span class="brand-dot">.</span></p>
+        <p class="muted" data-i18n="footer.tagline">Design minimal • Código limpo • UX</p>
+      </div>
+      <div class="footer-right">
+        <nav aria-label="Redes sociais" class="socials">
+          <a href="mailto:lucasgbalduino@gmail.com" class="social">Email</a>
+          <a href="https://github.com/Lucas-Balduino" target="_blank" rel="noopener noreferrer" class="social">GitHub</a>
+          <a href="https://www.linkedin.com/in/lucas-balduino-661073327" target="_blank" rel="noopener noreferrer" class="social">LinkedIn</a>
+          <a href="https://www.instagram.com/lucasgbalduino/" target="_blank" rel="noopener noreferrer" class="social">Instagram</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
