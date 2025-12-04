@@ -38,22 +38,5 @@
     "how_to_run_plain": "",
     "created_at": "2024-03-01T00:00:00.000Z",
     "updated_at": "2024-03-01T00:00:00.000Z"
-  },
-  {
-    "id": 4,
-    "title": "Teste",
-    "slug": "teste",
-    "short_desc": "Projeto do Acervo de Gemeos Digitais para o Memorial Darcy Ribeiro",
-    "image_url": "https://www.isinaliza.com/placa-atencao-area-de-teste/p?srsltid=AfmBOoq8KsbF5kXpC2x8_tkXyngDl0b15Nl7ylwAAGMGAo9IrhapIpk3",
-    "repo_url": "https://github.com/Lucas-Balduino/Acervo-Beijodromo",
-    "live_url": "https://lucas-balduino.github.io/Acervo-Beijodromo/",
-    "technologies": "HTML,CSS,JS",
-    "description": "",
-    "introduction": "",
-    "main_idea": "ae",
-    "images_section": "",
-    "technical_details": "",
-    "presentation": "asdasd",
-    "how_to_run": ""
   }
 ]
