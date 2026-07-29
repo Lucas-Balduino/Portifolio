@@ -1,163 +1,90 @@
-# Guia do Sistema CRUD de Projetos
+# Guia do Sistema CRUD de Projetos (modo estático)
 
-## 📋 Visão Geral
+## Visão geral
 
-Este sistema permite gerenciar projetos do portfólio através de uma interface administrativa, sem precisar editar HTML manualmente. Os projetos são armazenados em um banco de dados SQLite e exibidos dinamicamente nas páginas do site.
+Gerencie projetos do portfólio pela interface em `admin/index.html`, sem editar HTML manualmente. Os dados ficam em `data/projects.json` versionado no Git.
 
-## 🚀 Como Usar
+Não há servidor Node, Express ou banco SQLite — tudo roda como site estático.
 
-### 1. Iniciar o Servidor
+## Como usar
+
+### 1. Ambiente local
+
+O admin carrega `../data/projects.json` via `fetch`. Abrir o HTML direto (`file://`) pode falhar; use um servidor local:
 
 ```bash
-npm start
-# ou
-node server.js
+npx serve .
 ```
 
-O servidor iniciará na porta 3000 (ou na porta definida pela variável de ambiente PORT).
+Acesse: `http://localhost:3000/admin/index.html`
 
-### 2. Acessar a Interface Admin
+### 2. Adicionar projeto
 
-Abra seu navegador e acesse:
-```
-http://localhost:3000/admin
-```
+1. Preencha o formulário (título e slug são obrigatórios).
+2. Slug é gerado automaticamente a partir do título (editável).
+3. Clique em **Salvar**.
+4. Ao finalizar, **Baixar JSON atualizado** e substitua `data/projects.json`.
 
-### 3. Adicionar um Projeto
+### 3. Editar projeto
 
-1. Preencha o formulário na página admin:
-   - **Título**: Nome do projeto (obrigatório)
-   - **Slug**: URL amigável (gerado automaticamente a partir do título, mas pode ser editado)
-   - **Resumo curto**: Breve descrição
-   - **Imagem principal**: URL da imagem (relativa ou completa)
-   - **Repositório**: Link do GitHub/GitLab
-   - **Demo/Live**: Link para versão ao vivo
-   - **Tecnologias**: Separadas por vírgula (ex: HTML, CSS, JavaScript)
-   - **Descrição longa**: Descrição completa (HTML permitido)
+1. Clique em **Editar** na lista.
+2. Altere os campos e clique em **Atualizar**.
+3. Baixe o JSON e substitua no repositório.
 
-2. Clique em "Salvar"
+### 4. Excluir projeto
 
-### 4. Editar um Projeto
+1. Clique em **Excluir** e confirme.
+2. Baixe o JSON atualizado.
 
-1. Na lista de projetos, clique em "Editar"
-2. O formulário será preenchido com os dados do projeto
-3. Faça as alterações necessárias
-4. Clique em "Atualizar"
+### 5. Importar JSON existente
 
-### 5. Excluir um Projeto
+Use **Importar JSON** para carregar um arquivo `projects.json` exportado ou do repositório.
 
-1. Na lista de projetos, clique em "Excluir"
-2. Confirme a exclusão
+## Campos do projeto
 
-## 📁 Estrutura de Arquivos
+| Campo | Descrição |
+|-------|-----------|
+| `title`, `slug` | Obrigatórios; slug único na lista |
+| `short_desc` | Resumo nos cards |
+| `image_url` | Caminho relativo (`img/...`) ou URL |
+| `repo_url`, `live_url` | Links externos |
+| `technologies` | Separadas por vírgula |
+| `introduction`, `main_idea`, `technical_details`, `presentation`, `how_to_run` | Seções da página de detalhe |
+| `images_section` | URLs separadas por vírgula ou linha |
+| `description` | Fallback se seções vazias |
+
+### Conteúdo HTML e XSS
+
+- Campos **simples** (`title`, `short_desc`): tratados como texto escapado no site.
+- Campos **ricos** (`technical_details`, `how_to_run`, etc.): podem conter HTML ou blocos ` ```lang ... ``` ` inseridos pelo admin (uso confiável — você controla o JSON).
+
+## Estrutura de arquivos
 
 ```
 Portifolio/
-├── server.js              # Servidor Express com API REST
-├── data.db                # Banco de dados SQLite
-├── public/
-│   ├── index.html         # Página inicial (carrega projetos recentes)
-│   ├── projetos.html      # Lista todos os projetos
-│   ├── projeto.html       # Página individual de projeto (dinâmica)
-│   ├── projects.js        # Script para carregar projetos da API
-│   ├── admin/
-│   │   └── index.html     # Interface administrativa
-│   └── ...
-└── uploads/               # Diretório para uploads de imagens
+├── data/projects.json
+├── projects.js             # Lê JSON e renderiza cards/detalhe
+├── admin/index.html        # Interface CRUD
+└── img/                    # Imagens referenciadas nos projetos
 ```
 
-## 🔌 API Endpoints
+## Solução de problemas
 
-### GET `/api/projects`
-Retorna todos os projetos ordenados por data de criação (mais recentes primeiro).
+**Projetos não aparecem:** sirva via HTTP; verifique console (F12); confirme `data/projects.json` válido.
 
-**Resposta:**
-```json
-[
-  {
-    "id": 1,
-    "slug": "meu-projeto",
-    "title": "Meu Projeto",
-    "short_desc": "Descrição curta",
-    "description": "Descrição completa",
-    "technologies": "HTML, CSS, JS",
-    "image_url": "img/projeto.png",
-    "repo_url": "https://github.com/user/project",
-    "live_url": "https://projeto.com",
-    "created_at": "2024-01-01 12:00:00",
-    "updated_at": "2024-01-01 12:00:00"
-  }
-]
-```
+**Erro ao carregar no admin:** use `npx serve .`; confirme que `data/projects.json` existe.
 
-### GET `/api/projects/:id`
-Retorna um projeto específico por ID.
+**Slug duplicado:** o admin bloqueia slugs repetidos na lista local.
 
-### GET `/api/projects/slug/:slug`
-Retorna um projeto específico por slug.
+**Imagens:** use caminhos relativos (`img/projeto.png`) e confirme que o arquivo existe em `img/`.
 
-### POST `/api/projects`
-Cria um novo projeto.
+## Segurança
 
-**Body:**
-```json
-{
-  "title": "Título do Projeto",
-  "slug": "titulo-do-projeto",
-  "short_desc": "Descrição curta",
-  "description": "Descrição completa",
-  "technologies": "HTML, CSS, JS",
-  "image_url": "img/projeto.png",
-  "repo_url": "https://github.com/user/project",
-  "live_url": "https://projeto.com"
-}
-```
+- Admin **sem autenticação** — não publique link visível ou proteja via hosting.
+- Não commite credenciais (EmailJS em `js/config.js` está no `.gitignore`).
 
-### PUT `/api/projects/:id`
-Atualiza um projeto existente.
+## Próximos passos (ver ROADMAP.md)
 
-### DELETE `/api/projects/:id`
-Exclui um projeto.
-
-## 🎨 Como Funciona
-
-1. **Frontend Dinâmico**: As páginas `index.html` e `projetos.html` usam o script `projects.js` para buscar projetos da API e renderizá-los dinamicamente.
-
-2. **Páginas Individuais**: Cada projeto pode ter sua própria página acessível através de `/projeto.html?slug=nome-do-projeto`.
-
-3. **Banco de Dados**: SQLite armazena todos os dados dos projetos. O arquivo `data.db` é criado automaticamente na primeira execução.
-
-## ⚠️ Solução de Problemas
-
-### Projetos não aparecem no site
-- Verifique se o servidor está rodando
-- Abra o console do navegador (F12) para ver erros
-- Verifique se há projetos cadastrados em `/admin`
-
-### Erro ao salvar projeto
-- Verifique se o título e slug estão preenchidos
-- Verifique se o slug é único (não pode haver dois projetos com o mesmo slug)
-- Veja o console do servidor para mais detalhes
-
-### Imagens não aparecem
-- Verifique se o caminho da imagem está correto
-- Use caminhos relativos (ex: `img/projeto.png`) ou URLs completas
-- Certifique-se de que as imagens existem no diretório `public/img/` ou `uploads/`
-
-## 🔒 Segurança
-
-**Nota**: Esta implementação é para uso local/desenvolvimento. Para produção, considere:
-- Adicionar autenticação na interface admin
-- Validar e sanitizar inputs
-- Implementar rate limiting
-- Usar HTTPS
-- Adicionar validação de uploads de arquivos
-
-## 📝 Próximos Passos
-
-- [ ] Adicionar upload de imagens
-- [ ] Implementar autenticação
-- [ ] Adicionar preview de projetos antes de publicar
-- [ ] Melhorar validação de formulários
-- [ ] Adicionar busca/filtros na lista de projetos
-
+- [ ] Decap CMS ou MDX (Fase 2, após Checkpoint A)
+- [ ] Upload de imagens integrado
+- [ ] Preview da página de projeto no admin

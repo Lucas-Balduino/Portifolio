@@ -104,7 +104,7 @@
       <h2>Exportar dados</h2>
       <p class="muted" style="margin-bottom:1rem;font-size:0.9rem;">
         Quando terminar de editar, clique em <strong>Baixar JSON</strong> e substitua o arquivo
-        <code>public/data/projects.json</code> no seu repositório antes de fazer commit/push.
+        <code>data/projects.json</code> no seu repositório antes de fazer commit/push.
       </p>
       <button class="btn" type="button" id="download-json-btn">Baixar JSON atualizado</button>
     </section>
@@ -114,7 +114,7 @@
   // ADMIN JS (modo estático):
   // - Carrega os projetos do arquivo ../data/projects.json (versão no repositório)
   // - Mantém tudo em memória enquanto você edita
-  // - Permite baixar um JSON atualizado para substituir em public/data/projects.json e commitar no GitHub
+  // - Permite baixar um JSON atualizado para substituir em data/projects.json e commitar no GitHub
 
   let projects = [];
 
@@ -141,7 +141,7 @@
       return data;
     } catch (error) {
       console.error('Erro ao carregar projects.json:', error);
-      showMessage('Erro ao carregar projects.json. Verifique se o arquivo existe em public/data/projects.json.', 'error');
+      showMessage('Erro ao carregar projects.json. Verifique se o arquivo existe em data/projects.json.', 'error');
       return [];
     }
   }
@@ -247,7 +247,7 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showMessage('Download de projects.json iniciado. Substitua o arquivo em public/data/projects.json e faça commit/push.', 'success');
+    showMessage('Download de projects.json iniciado. Substitua o arquivo em data/projects.json e faça commit/push.', 'success');
   }
 
   document.getElementById('project-form').addEventListener('submit', async (e) => {
