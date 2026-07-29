@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const revealSelector = '.reveal';
   const revealElements = Array.from(document.querySelectorAll(revealSelector));
 
-  // If developer forgot to add .reveal, progressively enhance common sections
+  // Progressively enhance common sections
   if (revealElements.length === 0) {
     const autoReveal = document.querySelectorAll('.hero, .projects-preview, .projects-grid .card, .about-section, .about-header, .skills-grid, .contact-page, .contact-form, .contact-info, .projects-list, .projects-list-grid .project-item');
     autoReveal.forEach(el => el.classList.add('reveal'));
