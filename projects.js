@@ -66,7 +66,7 @@ function renderProjectCard(project) {
   
   return `
     <article class="card project-card reveal">
-      <img class="card-media" src="${imageUrl}" alt="${project.title || 'Projeto'} screenshot" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
+      <img class="card-media" src="${imageUrl}" alt="${project.title || 'Projeto'} screenshot" loading="lazy" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       <div class="card-body">
         <h3 class="card-title">${project.title || 'Sem título'}</h3>
         <p class="card-desc">${project.short_desc || project.description || 'Sem descrição'}</p>
@@ -225,7 +225,7 @@ function renderProjectDetail(project, containerId) {
       
       ${project.image_url ? `
       <section class="project-image reveal">
-        <img src="${imageUrl}" alt="${project.title}" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px var(--glass);" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
+        <img src="${imageUrl}" alt="${project.title}" loading="lazy" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px var(--glass);" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       </section>
       ` : ''}
       
@@ -238,7 +238,7 @@ function renderProjectDetail(project, containerId) {
         <h2>Imagens</h2>
         <div class="project-images-grid">
           ${imageUrls.map(url => `
-            <img src="${url.trim()}" alt="${project.title}" 
+            <img src="${url.trim()}" alt="${project.title}" loading="lazy" 
                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 4px 12px var(--glass);" 
                  onerror="this.style.display='none'">
           `).join('')}

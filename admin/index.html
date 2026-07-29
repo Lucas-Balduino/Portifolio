@@ -163,6 +163,7 @@
       el.innerHTML = `
         <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
           <img src="${p.image_url || '../img/ImagemEmDesenvolvimento.jpg'}" 
+               loading="lazy" 
                style="width:80px;height:80px;object-fit:cover;border-radius:6px;" 
                onerror="this.src='../img/ImagemEmDesenvolvimento.jpg'">
           <div style="flex:1;min-width:200px;">

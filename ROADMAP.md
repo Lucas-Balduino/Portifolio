@@ -31,7 +31,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase | Progresso |
 |------|-----------|
 | Fase 0 — Setup | 1/1 |
-| Fase 1 — Alta prioridade | 3/8 |
+| Fase 1 — Alta prioridade | 4/8 |
 | Checkpoint A | Pendente |
 | Fase 2 — Média prioridade | Bloqueada |
 | Fase 3 — Diferenciação | Bloqueada |
@@ -108,7 +108,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.4 — Lazy loading em imagens
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `perf(projects): adicionar lazy loading nas imagens`
 - **Artefatos necessários:** nenhum
 - **Arquivos:** `projects.js`, `index.html`, `sobre.html`, `admin/index.html`
@@ -219,7 +219,7 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 | 2026-07-29 | T1.1 | `066c493` `docs: alinhar README, CRUD_GUIDE e admin com arquitetura estática` |
 | 2026-07-29 | T1.2 | `2d3f0b1` `fix(i18n): corrigir chaves duplicadas de skills no hero` |
 | 2026-07-29 | T1.3 | `9e0cac0` `refactor(projects): unificar renderização via ProjectsAPI` |
-| | T1.4 | |
+| 2026-07-29 | T1.4 | `perf(projects): adicionar lazy loading nas imagens` |
 | | T1.5 | |
 | | T1.6 | |
 | | T1.7 | |
