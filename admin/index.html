@@ -101,12 +101,17 @@
     </div>
 
     <section style="margin-top:2rem;">
-      <h2>Exportar dados</h2>
+      <h2>Importar / Exportar dados</h2>
       <p class="muted" style="margin-bottom:1rem;font-size:0.9rem;">
+        Use <strong>Importar JSON</strong> para carregar um arquivo <code>projects.json</code> existente.
         Quando terminar de editar, clique em <strong>Baixar JSON</strong> e substitua o arquivo
         <code>data/projects.json</code> no seu repositório antes de fazer commit/push.
       </p>
-      <button class="btn" type="button" id="download-json-btn">Baixar JSON atualizado</button>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+        <button class="btn" type="button" id="download-json-btn">Baixar JSON atualizado</button>
+        <label class="btn ghost" style="cursor:pointer;" for="import-json-input">Importar JSON</label>
+        <input type="file" id="import-json-input" accept=".json,application/json" style="display:none;">
+      </div>
     </section>
   </main>
 
@@ -277,6 +282,16 @@
         how_to_run: document.getElementById('how_to_run').value.trim()
       };
 
+      // Validação de slug único
+      const slugDuplicate = projects.find(p =>
+        p.slug === body.slug && String(p.id) !== String(id)
+      );
+      if (slugDuplicate) {
+        showMessage(`Slug "${body.slug}" já existe no projeto "${slugDuplicate.title}". Escolha um slug diferente.`, 'error');
+        document.getElementById('slug').focus();
+        return;
+      }
+
       if (id) {
         // Atualiza projeto existente na lista local
         projects = projects.map(p => {
@@ -318,6 +333,32 @@
       if (!confirm('A lista de projetos está vazia. Deseja mesmo baixar um JSON vazio ([])?')) return;
     }
     downloadProjectsJson();
+  });
+
+  // Importar JSON via <input type="file">
+  document.getElementById('import-json-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result);
+        if (!Array.isArray(data)) {
+          showMessage('O arquivo não contém um array JSON válido.', 'error');
+          return;
+        }
+        projects = data;
+        renderProjects(projects);
+        showMessage(`Importados ${data.length} projeto(s) com sucesso. A lista local foi substituída.`, 'success');
+      } catch (err) {
+        console.error('Erro ao importar JSON:', err);
+        showMessage('Erro ao ler o arquivo JSON. Verifique se é um JSON válido.', 'error');
+      }
+    };
+    reader.readAsText(file);
+    // Limpa o input para permitir reimportar o mesmo arquivo
+    e.target.value = '';
   });
 
   // Auto-gerar slug a partir do título

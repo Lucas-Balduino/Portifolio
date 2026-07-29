@@ -31,7 +31,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase | Progresso |
 |------|-----------|
 | Fase 0 — Setup | 1/1 |
-| Fase 1 — Alta prioridade | 7/8 |
+| Fase 1 — Alta prioridade | 8/8 ✅ |
 | Checkpoint A | Pendente |
 | Fase 2 — Média prioridade | Bloqueada |
 | Fase 3 — Diferenciação | Bloqueada |
@@ -154,7 +154,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.8 — Melhorias admin (validação + import JSON)
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `feat(admin): validar slug único e permitir importar JSON`
 - **Artefatos necessários:** nenhum
 - **Arquivos:** `admin/index.html`
@@ -223,5 +223,5 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 | 2026-07-29 | T1.5 | `feat(seo): adicionar meta tags, favicon e open graph` |
 | 2026-07-29 | T1.6 | `feat(contact): integrar formulário com EmailJS` |
 | 2026-07-29 | T1.7 | `fix(projects): escapar conteúdo dinâmico contra XSS` |
-| | T1.8 | |
+| 2026-07-29 | T1.8 | `feat(admin): validar slug único e permitir importar JSON` |
 | | Checkpoint A | |
