@@ -55,8 +55,8 @@ Use **Importar JSON** para carregar um arquivo `projects.json` exportado ou do r
 
 ### Conteúdo HTML e XSS
 
-- Campos **simples** (`title`, `short_desc`): tratados como texto escapado no site.
-- Campos **ricos** (`technical_details`, `how_to_run`, etc.): podem conter HTML ou blocos ` ```lang ... ``` ` inseridos pelo admin (uso confiável — você controla o JSON).
+- **Campos simples (`title`, `short_desc`, `technologies`, URLs, tags `alt`):** sanitizados via `escapeHtml()` na renderização para evitar XSS (por exemplo, `<script>` no título é exibido como texto puro).
+- **Campos ricos (`technical_details`, `how_to_run`, `introduction`, `main_idea`, `presentation`, `description`):** permitem formatação com HTML ou blocos de código ` ```lang ... ``` `. São processados por `formatRichText()` (uso confiável, controlado no `projects.json`).
 
 ## Estrutura de arquivos
 

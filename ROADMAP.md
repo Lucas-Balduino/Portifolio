@@ -31,7 +31,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase | Progresso |
 |------|-----------|
 | Fase 0 — Setup | 1/1 |
-| Fase 1 — Alta prioridade | 6/8 |
+| Fase 1 — Alta prioridade | 7/8 |
 | Checkpoint A | Pendente |
 | Fase 2 — Média prioridade | Bloqueada |
 | Fase 3 — Diferenciação | Bloqueada |
@@ -142,7 +142,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.7 — Sanitização básica no render de projetos
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `fix(projects): escapar conteúdo dinâmico contra XSS`
 - **Artefatos necessários:** nenhum
 - **Arquivos:** `projects.js`, `CRUD_GUIDE.md`
@@ -222,6 +222,6 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 | 2026-07-29 | T1.4 | `perf(projects): adicionar lazy loading nas imagens` |
 | 2026-07-29 | T1.5 | `feat(seo): adicionar meta tags, favicon e open graph` |
 | 2026-07-29 | T1.6 | `feat(contact): integrar formulário com EmailJS` |
-| | T1.7 | |
+| 2026-07-29 | T1.7 | `fix(projects): escapar conteúdo dinâmico contra XSS` |
 | | T1.8 | |
 | | Checkpoint A | |

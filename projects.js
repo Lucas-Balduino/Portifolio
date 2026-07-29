@@ -48,32 +48,49 @@ async function fetchProjectBySlug(slug) {
 }
 
 /**
+ * Escapa caracteres especiais HTML para prevenir XSS
+ */
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
  * Renderiza badges de tecnologias
  */
 function renderTechnologies(technologies) {
   if (!technologies) return '';
   const techs = technologies.split(',').map(t => t.trim()).filter(t => t);
-  return techs.map(tech => `<span class="badge">${tech}</span>`).join('');
+  return techs.map(tech => `<span class="badge">${escapeHtml(tech)}</span>`).join('');
 }
 
 /**
  * Renderiza um card de projeto
  */
 function renderProjectCard(project) {
-  const imageUrl = project.image_url || 'img/ImagemEmDesenvolvimento.jpg';
+  const imageUrl = escapeHtml(project.image_url || 'img/ImagemEmDesenvolvimento.jpg');
+  const title = escapeHtml(project.title || 'Sem título');
+  const shortDesc = escapeHtml(project.short_desc || project.description || 'Sem descrição');
   const technologies = renderTechnologies(project.technologies);
-  const projectUrl = project.slug ? `projeto.html?slug=${project.slug}` : '#';
+  const projectUrl = project.slug ? `projeto.html?slug=${encodeURIComponent(project.slug)}` : '#';
+  const repoUrl = project.repo_url ? escapeHtml(project.repo_url) : '';
+  const liveUrl = project.live_url ? escapeHtml(project.live_url) : '';
   
   return `
     <article class="card project-card reveal">
-      <img class="card-media" src="${imageUrl}" alt="${project.title || 'Projeto'} screenshot" loading="lazy" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
+      <img class="card-media" src="${imageUrl}" alt="${title} screenshot" loading="lazy" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       <div class="card-body">
-        <h3 class="card-title">${project.title || 'Sem título'}</h3>
-        <p class="card-desc">${project.short_desc || project.description || 'Sem descrição'}</p>
+        <h3 class="card-title">${title}</h3>
+        <p class="card-desc">${shortDesc}</p>
         <div class="card-meta">
           ${technologies}
-          ${project.repo_url ? `<a class="card-link" href="${project.repo_url}" target="_blank" rel="noopener noreferrer">GitHub</a>` : ''}
-          ${project.live_url ? `<a class="card-link" href="${project.live_url}" target="_blank" rel="noopener noreferrer">Live Demo</a>` : ''}
+          ${repoUrl ? `<a class="card-link" href="${repoUrl}" target="_blank" rel="noopener noreferrer">GitHub</a>` : ''}
+          ${liveUrl ? `<a class="card-link" href="${liveUrl}" target="_blank" rel="noopener noreferrer">Live Demo</a>` : ''}
           ${project.slug ? `<a class="card-link" href="${projectUrl}">Ver detalhes</a>` : ''}
         </div>
       </div>
@@ -186,15 +203,19 @@ function renderProjectDetail(project, containerId) {
     return;
   }
 
-  const imageUrl = project.image_url || 'img/ImagemEmDesenvolvimento.jpg';
+  const title = escapeHtml(project.title || 'Sem título');
+  const shortDesc = escapeHtml(project.short_desc || '');
+  const imageUrl = escapeHtml(project.image_url || 'img/ImagemEmDesenvolvimento.jpg');
   const technologies = renderTechnologies(project.technologies);
   const description = project.description || project.short_desc || 'Sem descrição disponível.';
+  const repoUrl = project.repo_url ? escapeHtml(project.repo_url) : '';
+  const liveUrl = project.live_url ? escapeHtml(project.live_url) : '';
   
   // Processa imagens da seção de imagens
   const imageUrls = processImageUrls(project.images_section);
   
   // Função auxiliar para renderizar seção apenas se tiver conteúdo
-  const renderSection = (title, content, className = '') => {
+  const renderSection = (secTitle, content, className = '') => {
     if (!content || !content.trim()) return '';
 
     const isCodeHeavy =
@@ -205,7 +226,7 @@ function renderProjectDetail(project, containerId) {
 
     return `
       <section class="project-section ${className} reveal">
-        <h2>${title}</h2>
+        <h2>${escapeHtml(secTitle)}</h2>
         <div>${innerHtml}</div>
       </section>
     `;
@@ -216,8 +237,8 @@ function renderProjectDetail(project, containerId) {
       <header class="project-hero">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
           <div style="flex:1;">
-            <h1>${project.title || 'Sem título'}</h1>
-            <p class="muted">${project.short_desc || ''}</p>
+            <h1>${title}</h1>
+            <p class="muted">${shortDesc}</p>
           </div>
           <a href="projetos.html" class="btn ghost" style="align-self:flex-start;">← Voltar para projetos</a>
         </div>
@@ -225,7 +246,7 @@ function renderProjectDetail(project, containerId) {
       
       ${project.image_url ? `
       <section class="project-image reveal">
-        <img src="${imageUrl}" alt="${project.title}" loading="lazy" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px var(--glass);" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
+        <img src="${imageUrl}" alt="${title}" loading="lazy" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px var(--glass);" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       </section>
       ` : ''}
       
@@ -238,7 +259,7 @@ function renderProjectDetail(project, containerId) {
         <h2>Imagens</h2>
         <div class="project-images-grid">
           ${imageUrls.map(url => `
-            <img src="${url.trim()}" alt="${project.title}" loading="lazy" 
+            <img src="${escapeHtml(url.trim())}" alt="${title}" loading="lazy" 
                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 4px 12px var(--glass);" 
                  onerror="this.style.display='none'">
           `).join('')}
@@ -255,7 +276,7 @@ function renderProjectDetail(project, containerId) {
       ${!project.introduction && !project.main_idea && !project.technical_details && !project.presentation && !project.how_to_run ? `
       <section class="project-description reveal">
         <h2>Descrição</h2>
-        <div>${description}</div>
+        <div>${formatRichText(description)}</div>
       </section>
       ` : ''}
       
@@ -266,12 +287,12 @@ function renderProjectDetail(project, containerId) {
       </section>
       ` : ''}
       
-      ${(project.repo_url || project.live_url) ? `
+      ${(repoUrl || liveUrl) ? `
       <section class="project-links reveal">
         <h2>Links</h2>
         <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-          ${project.repo_url ? `<a href="${project.repo_url}" target="_blank" rel="noopener noreferrer" class="btn">Ver no GitHub</a>` : ''}
-          ${project.live_url ? `<a href="${project.live_url}" target="_blank" rel="noopener noreferrer" class="btn">Ver Demo</a>` : ''}
+          ${repoUrl ? `<a href="${repoUrl}" target="_blank" rel="noopener noreferrer" class="btn">Ver no GitHub</a>` : ''}
+          ${liveUrl ? `<a href="${liveUrl}" target="_blank" rel="noopener noreferrer" class="btn">Ver Demo</a>` : ''}
         </div>
       </section>
       ` : ''}
