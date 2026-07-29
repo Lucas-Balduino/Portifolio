@@ -31,7 +31,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase | Progresso |
 |------|-----------|
 | Fase 0 — Setup | 1/1 |
-| Fase 1 — Alta prioridade | 5/8 |
+| Fase 1 — Alta prioridade | 6/8 |
 | Checkpoint A | Pendente |
 | Fase 2 — Média prioridade | Bloqueada |
 | Fase 3 — Diferenciação | Bloqueada |
@@ -131,7 +131,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.6 — Integrar EmailJS no formulário de contato
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `feat(contact): integrar formulário com EmailJS`
 - **Artefatos necessários (usuário):**
   - Conta EmailJS + Service ID, Template ID, Public Key
@@ -221,7 +221,7 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 | 2026-07-29 | T1.3 | `9e0cac0` `refactor(projects): unificar renderização via ProjectsAPI` |
 | 2026-07-29 | T1.4 | `perf(projects): adicionar lazy loading nas imagens` |
 | 2026-07-29 | T1.5 | `feat(seo): adicionar meta tags, favicon e open graph` |
-| | T1.6 | |
+| 2026-07-29 | T1.6 | `feat(contact): integrar formulário com EmailJS` |
 | | T1.7 | |
 | | T1.8 | |
 | | Checkpoint A | |

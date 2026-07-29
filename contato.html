@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="style.css">
   <script defer src="js/site-config.js"></script>
   <script defer src="main.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script defer src="js/config.js"></script>
+  <script defer src="js/contact.js"></script>
 </head>
 <body class="theme-light">
   <header class="site-header">
@@ -57,7 +60,9 @@
         <p><strong data-i18n="contact.availability">Disponibilidade:</strong> <span data-i18n="contact.availabilityText">Aberto a projetos freelance e oportunidades</span></p>
       </div>
 
-      <form class="contact-form" action="#" method="post" onsubmit="event.preventDefault(); alert('Este formulário é apenas um mockup — implemente envio com JS/back-end.');">
+      <div id="contact-status" class="contact-status" hidden></div>
+
+      <form class="contact-form" action="#" method="post">
         <label for="name" data-i18n="contact.form.name">Nome completo</label>
         <input id="name" name="name" type="text" required data-i18n-placeholder="contact.form.namePlaceholder">
 
