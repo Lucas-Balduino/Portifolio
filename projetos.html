@@ -6,6 +6,7 @@
   <title>Projetos — Lucas</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script defer src="js/site-config.js"></script>
   <script defer src="main.js"></script>
   <script defer src="projects.js"></script>
 </head>
@@ -36,12 +37,11 @@
         <p class="muted" data-i18n="projects.subtitle">Código, deploys e notas sobre arquitetura.</p>
       </div>
 
-      <ul class="projects-list-grid reveal" id="projects-list">
-        <!-- Projetos serão carregados dinamicamente via API -->
-        <li style="text-align:center;padding:2rem;color:var(--muted);">
+      <div class="projects-list-grid reveal" id="projects-list">
+        <div style="text-align:center;padding:2rem;color:var(--muted);">
           Carregando projetos...
-        </li>
-      </ul>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -63,62 +63,9 @@
   </footer>
 
   <script>
-    // Carrega todos os projetos na página de projetos
     document.addEventListener('DOMContentLoaded', async () => {
       const projects = await window.ProjectsAPI?.fetchProjects() || [];
-      const container = document.getElementById('projects-list');
-      
-      if (projects.length > 0) {
-        container.innerHTML = projects.map(project => {
-          const imageUrl = project.image_url || 'img/ImagemEmDesenvolvimento.jpg';
-          const techs = project.technologies ? project.technologies.split(',').map(t => t.trim()).filter(t => t) : [];
-          const technologies = techs.map(tech => `<span class="badge">${tech}</span>`).join('');
-          const projectUrl = project.slug ? `projeto.html?slug=${project.slug}` : '#';
-          
-          return `
-            <li class="project-item card project-card reveal">
-              <img src="${imageUrl}" alt="${project.title || 'Projeto'}" class="card-media" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
-              <div class="card-body">
-                <h3>${project.title || 'Sem título'}</h3>
-                <p>${project.short_desc || project.description || 'Sem descrição'}</p>
-                ${project.technologies ? `<p class="muted"><strong data-i18n="projects.technologies">Tecnologias:</strong> ${project.technologies}</p>` : ''}
-                <div class="card-meta">
-                  ${technologies}
-                  ${project.repo_url ? `<a class="card-link" href="${project.repo_url}" target="_blank" rel="noopener noreferrer">GitHub</a>` : ''}
-                  ${project.live_url ? `<a class="card-link" href="${project.live_url}" target="_blank" rel="noopener noreferrer">Live Demo</a>` : ''}
-                  ${project.slug ? `<a class="card-link" href="${projectUrl}">Ver detalhes</a>` : ''}
-                </div>
-              </div>
-            </li>
-          `;
-        }).join('');
-        
-        // Reaplica animações reveal
-        const revealElements = container.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-        
-        revealElements.forEach((el, index) => {
-          el.style.transitionDelay = (index * 30) + 'ms';
-          observer.observe(el);
-        });
-      } else {
-        container.innerHTML = `
-          <li class="project-item card project-card placeholder reveal">
-            <div class="media-placeholder" aria-hidden="true"></div>
-            <div class="card-body">
-              <h3 class="card-title" data-i18n="projects.comingSoon.title">Nenhum projeto encontrado</h3>
-              <p class="card-desc">Adicione projetos através da interface administrativa em /admin</p>
-            </div>
-          </li>
-        `;
-      }
+      window.ProjectsAPI.renderProjectsList(projects, 'projects-list');
     });
   </script>
 </body>
