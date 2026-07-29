@@ -30,8 +30,8 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 | Fase | Progresso |
 |------|-----------|
-| Fase 0 — Setup | 0/1 |
-| Fase 1 — Alta prioridade | 0/8 |
+| Fase 0 — Setup | 1/1 |
+| Fase 1 — Alta prioridade | 3/8 |
 | Checkpoint A | Pendente |
 | Fase 2 — Média prioridade | Bloqueada |
 | Fase 3 — Diferenciação | Bloqueada |
@@ -50,7 +50,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T0.1 — Criar ROADMAP.md e registrar baseline
 
-- **Status:** [~] em progresso
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `docs(roadmap): adicionar checkpoint e plano de atualização`
 - **Decisões do usuário:** nenhuma
 - **Artefatos necessários:** nenhum
@@ -68,7 +68,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.1 — Corrigir documentação desalinhada
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `docs: alinhar README, CRUD_GUIDE e admin com arquitetura estática`
 - **Decisões do usuário:** arquivos permanecem na raiz (sem mover para `public/`)
 - **Artefatos necessários:** nenhum
@@ -82,7 +82,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.2 — Corrigir bug i18n no hero
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `fix(i18n): corrigir chaves duplicadas de skills no hero`
 - **Artefatos necessários:** nenhum
 - **Arquivos:** `index.html`, `main.js`
@@ -94,7 +94,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ### T1.3 — Unificar renderização de projetos
 
-- **Status:** [ ] pendente
+- **Status:** [x] concluído (2026-07-29)
 - **Commit sugerido:** `refactor(projects): unificar renderização via ProjectsAPI`
 - **Decisão técnica:** container `projetos.html` vira `<div id="projects-list">`; home usa `renderRecentProjects`
 - **Artefatos necessários:** nenhum
@@ -215,10 +215,10 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 
 | Data | Tarefa | Commit |
 |------|--------|--------|
-| | T0.1 | |
-| | T1.1 | |
-| | T1.2 | |
-| | T1.3 | |
+| 2026-07-29 | T0.1 | `87de5d8` `docs(roadmap): adicionar checkpoint e plano de atualização` |
+| 2026-07-29 | T1.1 | `066c493` `docs: alinhar README, CRUD_GUIDE e admin com arquitetura estática` |
+| 2026-07-29 | T1.2 | `2d3f0b1` `fix(i18n): corrigir chaves duplicadas de skills no hero` |
+| 2026-07-29 | T1.3 | `9e0cac0` `refactor(projects): unificar renderização via ProjectsAPI` |
 | | T1.4 | |
 | | T1.5 | |
 | | T1.6 | |
