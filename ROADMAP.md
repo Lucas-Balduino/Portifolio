@@ -256,23 +256,19 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   5. Design gráfico e editorial (opcional — E2)
   6. Agência de Viagens
 
-#### E5.1 — Reescrever introdução do Kinetic com foco em design
+#### E5.1 — Reescrever Kinetic (meio termo design + CC) + display
 
-- **Status:** [ ] pendente
-- **Commit sugerido:** `feat(projects): reenquadrar case study do Kinetic para design`
-- **Artefatos necessários:** nenhum (conteúdo já existe)
-- **Arquivos:** `data/projects.json` (campos `introduction` e `short_desc` do Kinetic)
-- **Passos:** primeiro parágrafo deve liderar com design system proprietário (Lexend, paleta temática por esporte, padrões de card/header), decisões de UX (loading states, animações, hierarquia) — stack vem depois
-- **Critério de aceite:** um recrutador de design entende o valor do projeto lendo só o primeiro parágrafo
+- **Status:** [x] concluído (2026-07-30)
+- **Commit sugerido:** `feat(projects): reescrever Kinetic e corrigir display de case studies`
+- **Arquivos:** `data/projects.json`, `projects.js`, `style.css`
+- **Notas:** textos em HTML estruturado; renderer preserva parágrafos; imagens do detalhe limitadas (grid mobile-friendly); seções ricas com overflow controlado
 
-#### E5.2 — Reposicionar hero e página Sobre
+#### E5.2 — Reposicionar hero e página Sobre (+ experiência CAL)
 
-- **Status:** [ ] pendente
-- **Commit sugerido:** `feat(content): reposicionar apresentação para design + desenvolvimento`
-- **Artefatos necessários:** nenhuma
-- **Arquivos:** `index.html` (hero subtitle), `sobre.html` (subtítulo), `main.js` (traduções EN/ES das strings alteradas), `js/site-config.js` (meta descriptions)
-- **Passos:** trocar "Desenvolvedor front-end em formação" por posicionamento duplo, ex.: "Estudante de Design (UnB) e Ciência da Computação — projeto e construo interfaces centradas no usuário"; citar WCAG/acessibilidade explicitamente na página Sobre
-- **Critério de aceite:** posicionamento consistente em hero, sobre, meta descriptions e traduções
+- **Status:** [x] concluído (2026-07-30)
+- **Commit sugerido:** `feat(content): ajustar apresentação UX/UI e adicionar extensão CAL`
+- **Arquivos:** `index.html`, `sobre.html`, `main.js`, `js/site-config.js`
+- **Notas:** hero/sobre como "Designer e desenvolvedor UX/UI em formação"; experiência CAL/UnB (voluntário → bolsista) adicionada — detalhes podem ser refinados pelo usuário
 
 #### E5.3 — Reordenar projetos no JSON
 

@@ -6,7 +6,7 @@ window.SITE_CONFIG = {
   META: {
     home: {
       title: 'Lucas — Portfólio',
-      description: 'Portfólio de Lucas Balduino — desenvolvedor front-end em formação. Projetos web, UX e case studies técnicos.'
+      description: 'Portfólio de Lucas Balduino — designer e desenvolvedor UX/UI em formação. Projetos de interface, front-end e case studies.'
     },
     projects: {
       title: 'Projetos — Lucas',
@@ -18,7 +18,7 @@ window.SITE_CONFIG = {
     },
     about: {
       title: 'Sobre mim — Lucas',
-      description: 'Lucas Gonçalves Balduino — estudante de Ciência da Computação e Design. Front-end, UX e acessibilidade.'
+      description: 'Lucas Gonçalves Balduino — estudante de Design (UnB) e Ciência da Computação. UX/UI, front-end e acessibilidade.'
     },
     contact: {
       title: 'Contato — Lucas',

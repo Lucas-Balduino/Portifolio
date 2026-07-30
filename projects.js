@@ -161,14 +161,16 @@ function processImageUrls(imagesSection) {
     .filter(url => url.length > 0);
 }
 
-// Trata conteúdo rico (especialmente detalhes técnicos e como executar)
-// - Mantém HTML já inserido pelo admin
-// - Dá suporte simples a blocos de código com ```lang ... ```
+/**
+ * Trata conteúdo rico das seções do projeto:
+ * - Mantém HTML já inserido (h3, p, ul, pre…)
+ * - Converte blocos ```lang ... ``` em <pre><code>
+ * - Se for texto puro, preserva parágrafos (\\n\\n → <p>)
+ */
 function formatRichText(content) {
   if (!content || !content.trim) return '';
   let html = content;
 
-  // Suporte básico a blocos ```lang ... ```
   const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
   html = html.replace(codeBlockRegex, (match, lang, code) => {
     const languageClass = lang ? `language-${lang}` : '';
@@ -178,6 +180,16 @@ function formatRichText(content) {
       .replace(/>/g, '&gt;');
     return `<pre><code class="${languageClass}">${escapedCode}</code></pre>`;
   });
+
+  const hasBlockHtml = /<(p|h[1-6]|ul|ol|li|pre|div|section|blockquote|table)\b/i.test(html);
+  if (!hasBlockHtml) {
+    const paragraphs = html
+      .split(/\n{2,}/)
+      .map(block => block.trim())
+      .filter(Boolean)
+      .map(block => `<p>${block.replace(/\n/g, '<br>')}</p>`);
+    html = paragraphs.join('');
+  }
 
   return html;
 }
@@ -218,16 +230,10 @@ function renderProjectDetail(project, containerId) {
   const renderSection = (secTitle, content, className = '') => {
     if (!content || !content.trim()) return '';
 
-    const isCodeHeavy =
-      className === 'project-technical-details' ||
-      className === 'project-how-to-run';
-
-    const innerHtml = isCodeHeavy ? formatRichText(content) : content;
-
     return `
       <section class="project-section ${className} reveal">
         <h2>${escapeHtml(secTitle)}</h2>
-        <div>${innerHtml}</div>
+        <div class="project-rich-text">${formatRichText(content)}</div>
       </section>
     `;
   };
@@ -246,7 +252,7 @@ function renderProjectDetail(project, containerId) {
       
       ${project.image_url ? `
       <section class="project-image reveal">
-        <img src="${imageUrl}" alt="${title}" loading="lazy" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px var(--glass);" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
+        <img class="project-hero-img" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       </section>
       ` : ''}
       
@@ -259,9 +265,9 @@ function renderProjectDetail(project, containerId) {
         <h2>Imagens</h2>
         <div class="project-images-grid">
           ${imageUrls.map(url => `
-            <img src="${escapeHtml(url.trim())}" alt="${title}" loading="lazy" 
-                 style="width:100%;height:auto;border-radius:8px;box-shadow:0 4px 12px var(--glass);" 
-                 onerror="this.style.display='none'">
+            <figure class="project-shot">
+              <img src="${escapeHtml(url.trim())}" alt="${title}" loading="lazy" onerror="this.closest('figure').style.display='none'">
+            </figure>
           `).join('')}
         </div>
       </section>
