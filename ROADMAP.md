@@ -197,27 +197,33 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 - **Critério de aceite:** robots.txt não referencia arquivo inexistente; sitemap cobre 4 páginas + 3 projetos
 - **Não fazer:** esquecer de adicionar novos slugs ao sitemap ao criar projetos (ver E2)
 
-### E2 — Adicionar novos projetos
+### E2 — Adicionar novos projetos (definidos pela E5: 2 case studies de design da UnB)
 
 - **Status:** [ ] pendente
-- **Commit sugerido:** `feat(projects): adicionar projeto <nome>` (um commit por projeto)
+- **Commit sugerido:** `feat(projects): adicionar case study <nome>` (um commit por projeto)
+- **Projetos a adicionar (decidido em E5, 2026-07-30):**
+  1. App de integração ao novo prédio do Design (UnB) — Figma
+  2. Projeto de preservação de espécies nativas do Cerrado (UnB) — Figma
+  3. (Opcional, se sobrar tempo) Entrada única "Design gráfico e editorial" agrupando zine, caixa Lollapalooza e cartão postal
 - **Artefatos necessários (usuário, por projeto):**
-  - Screenshots (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
-  - Textos: introdução, ideia principal, detalhes técnicos, como executar
-  - URLs de repositório e demo (se houver)
+  - Exports das telas do Figma em PNG (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
+  - Textos no formato case study de design: problema → descoberta → fluxos → wireframes → resultado → o que faria diferente
+  - Link de embed do protótipo Figma (Share → Embed), se quiser protótipo interativo na página
 - **Arquivos:** `data/projects.json`, `img/`, `sitemap.xml` (adicionar slug)
 - **Passos:**
-  1. Adicionar entrada no JSON via admin ou edição direta (validar slug único)
-  2. Usar paths de imagem com barras normais (`img/Projeto/foto.png`)
-  3. Adicionar URL do projeto ao `sitemap.xml`
+  1. Adicionar entrada no JSON (validar slug único); preencher `introduction`, `main_idea`, `images_section`, `presentation`; deixar `technical_details` e `how_to_run` vazios (seções somem sozinhas)
+  2. Embed Figma: `<iframe>` pode ir dentro de uma seção rica — testar localmente antes de commitar
+  3. Usar paths de imagem com barras normais (`img/Projeto/foto.png`)
+  4. Adicionar URL do projeto ao `sitemap.xml`
 - **Critério de aceite:** projeto aparece na home/listagem; página de detalhe abre sem erro; imagens carregam
-- **Não fazer:** copiar paths do Windows Explorer sem converter `\` para `/`
+- **Não fazer:** copiar paths do Windows Explorer sem converter `\` para `/`; não redesenhar os projetos inteiros — no máximo retocar 2–3 telas principais
 
-### E3 — Atualizar currículo
+### E3 — Atualizar currículo (orientado a design)
 
 - **Status:** [ ] pendente
 - **Commit sugerido:** `docs(cv): atualizar currículo PT e EN`
 - **Artefatos necessários (usuário):** PDFs atualizados (PT obrigatório, EN recomendado)
+- **Orientação (vaga UX/UI):** destacar Design UnB antes de CC; Figma, design system do Kinetic, acessibilidade (WCAG, `prefers-reduced-motion`, ARIA) e monitoria de HTML/CSS como experiência de ensino
 - **Arquivos:** `Resume/CurriculoPT.pdf`, `Resume/CurriculoEN.pdf`, `sobre.html` (opcional: link para versão EN)
 - **Critério de aceite:** botão "Baixar Currículo" entrega o PDF novo
 - **Não fazer:** renomear os arquivos (quebraria o link em `sobre.html`)
@@ -239,10 +245,51 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 
 ### E5 — Seleção de projetos para a vaga
 
-- **Status:** [ ] bloqueada — aguardando mensagem da vaga (usuário enviará)
-- **Artefatos necessários (usuário):** descrição/requisitos da vaga de estágio
-- **Passos:** analisar requisitos vs. projetos existentes; recomendar destaque/ordem na home; sugerir ajustes de descrição
-- **Critério de aceite:** projetos mais relevantes para a vaga em evidência
+- **Status:** [~] análise concluída (2026-07-30); execução via E5.1–E5.3
+- **Vaga:** UX/UI Designer Júnior — CEIA-UFG (parceria Positivo), remoto, 30h, bolsa R$ 2.000, inscrição até **05/08** via formulário
+- **Fit:** Lucas atende o pré-requisito central (graduando em Design na UnB, formatura 2028/1 ≥ dez/2027). Lacuna crítica: portfólio sem evidência de Figma e processo de descoberta → resolvida pela E2
+- **Ordem definida dos projetos no `projects.json` (controla a home, 3 primeiros):**
+  1. Kinetic (intro reescrita com foco em design)
+  2. App integração prédio Design UnB (novo — E2)
+  3. Preservação espécies Cerrado UnB (novo — E2)
+  4. JetPack Guy
+  5. Design gráfico e editorial (opcional — E2)
+  6. Agência de Viagens
+
+#### E5.1 — Reescrever introdução do Kinetic com foco em design
+
+- **Status:** [ ] pendente
+- **Commit sugerido:** `feat(projects): reenquadrar case study do Kinetic para design`
+- **Artefatos necessários:** nenhum (conteúdo já existe)
+- **Arquivos:** `data/projects.json` (campos `introduction` e `short_desc` do Kinetic)
+- **Passos:** primeiro parágrafo deve liderar com design system proprietário (Lexend, paleta temática por esporte, padrões de card/header), decisões de UX (loading states, animações, hierarquia) — stack vem depois
+- **Critério de aceite:** um recrutador de design entende o valor do projeto lendo só o primeiro parágrafo
+
+#### E5.2 — Reposicionar hero e página Sobre
+
+- **Status:** [ ] pendente
+- **Commit sugerido:** `feat(content): reposicionar apresentação para design + desenvolvimento`
+- **Artefatos necessários:** nenhuma
+- **Arquivos:** `index.html` (hero subtitle), `sobre.html` (subtítulo), `main.js` (traduções EN/ES das strings alteradas), `js/site-config.js` (meta descriptions)
+- **Passos:** trocar "Desenvolvedor front-end em formação" por posicionamento duplo, ex.: "Estudante de Design (UnB) e Ciência da Computação — projeto e construo interfaces centradas no usuário"; citar WCAG/acessibilidade explicitamente na página Sobre
+- **Critério de aceite:** posicionamento consistente em hero, sobre, meta descriptions e traduções
+
+#### E5.3 — Reordenar projetos no JSON
+
+- **Status:** [ ] pendente (depende de E2)
+- **Commit sugerido:** `feat(projects): reordenar projetos para destaque de design`
+- **Arquivos:** `data/projects.json`
+- **Critério de aceite:** home exibe Kinetic + 2 case studies UnB
+
+#### Cronograma até o prazo
+
+| Dia | Entrega |
+|-----|---------|
+| 30–31/07 | Usuário: textos + exports Figma dos 2 case studies UnB |
+| 01/08 | E2 (adicionar projetos) + E5.1 + E5.2 + E5.3 |
+| 02/08 | E3 (currículo orientado a design) |
+| 03/08 | E4 (estabilidade em produção + decisão config.js EmailJS) |
+| 04/08 | Revisão final + envio do formulário (1 dia de folga) |
 
 ---
 
