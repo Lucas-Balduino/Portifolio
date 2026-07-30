@@ -331,4 +331,5 @@ Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhame
 | 2026-07-29 | (extra) | `924a3c3` `add(Kinetic): new project` — fora da convenção; deveria ser `feat(projects): ...` |
 | 2026-07-30 | (fix) | `a1b595a` `fix(projects): corrigir barras inversar path imagens` |
 | 2026-07-30 | Checkpoint A | decisões registradas em `DECISOES.md` |
-| 2026-07-30 | E1 | `chore(seo): adicionar sitemap.xml referenciado pelo robots.txt` |
+| 2026-07-30 | E1 | `f03c6a4` `chore(seo): adicionar sitemap.xml referenciado pelo robots.txt` |
+| 2026-07-30 | E5.1 + E5.2 | `4e395a9` `feat(projects): reescrever Kinetic, corrigir display e ajustar apresentacao UX/UI` |
