@@ -1,6 +1,6 @@
 # Roadmap — Atualização Portfólio
 
-> Branch: `AtualizacaoPortifolio` | Última atualização: 2026-07-29
+> Branch: `main` | Última atualização: 2026-07-30
 
 ## Como usar este documento
 
@@ -32,8 +32,9 @@ Formato: `tipo(escopo): descrição imperativa curta`
 |------|-----------|
 | Fase 0 — Setup | 1/1 |
 | Fase 1 — Alta prioridade | 8/8 ✅ |
-| Checkpoint A | Pendente |
-| Fase 2 — Média prioridade | Bloqueada |
+| Checkpoint A | Concluído ✅ (ver [`DECISOES.md`](DECISOES.md)) |
+| Fase E — Estabilização e candidatura (prazo 05/08) | 1/5 — **prioridade atual** |
+| Fase 2 — Média prioridade | Adiada até fim da Fase E |
 | Fase 3 — Diferenciação | Bloqueada |
 
 ## Baseline do repositório
@@ -167,35 +168,95 @@ Formato: `tipo(escopo): descrição imperativa curta`
 
 ---
 
-## CHECKPOINT A — Decisões pendentes (Fase 2+)
+## CHECKPOINT A — Decisões (Fase 2+)
 
-- **Status:** [ ] pendente — ver [`DECISOES.md`](DECISOES.md)
-- **Commit sugerido:** `docs(roadmap): registrar decisões do checkpoint A`
-- **Bloqueio:** Fase 2 não inicia até A1–A5 preenchidos
+- **Status:** [x] concluído (2026-07-30) — detalhes e justificativas em [`DECISOES.md`](DECISOES.md)
 
-| # | Decisão | Opções |
-|---|---------|--------|
-| A1 | Stack | Astro / Next.js / Vite+React / Vanilla refatorado |
-| A2 | CMS | JSON admin / Decap CMS / MDX |
-| A3 | Hosting | GitHub Pages / Vercel / Netlify |
-| A4 | Identidade visual | accent, fonte, estilo |
-| A5 | Idioma | PT only / PT+EN / i18n completo |
+| # | Decisão | Escolha |
+|---|---------|---------|
+| A1 | Stack | **Astro + React islands** |
+| A2 | CMS | **MDX no repo (Content Collections)** |
+| A3 | Hosting | **Vercel** |
+| A4 | Identidade visual | **Dark-first premium** |
+| A5 | Idioma | **PT + EN (seletor manual)** |
 
-**Artefatos antes da Fase 2:** paleta, fonte, screenshots Agência, GIF JetPack Guy, CV EN, ícones SVG, URL produção
+**Artefatos pendentes para a Fase 2:** screenshots Agência, GIF JetPack Guy, paleta/fonte (definir na T2.2), ícones SVG, URL Vercel. CV EN já existe (`Resume/CurriculoEN.pdf`).
 
 ---
 
-## Fase 2 — Média prioridade (bloqueada até Checkpoint A)
+## Fase E — Estabilização e candidatura (PRIORIDADE — prazo 05/08/2026)
 
-Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
+Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é deixar o site atual estável e completo para candidatura a vaga de estágio.
 
-| ID | Tarefa | Pré-requisito |
-|----|--------|---------------|
-| T2.1 | Migração de stack | A1 + A3 |
-| T2.2 | Redesign hero + identidade | A4 + GIF JetPack |
-| T2.3 | Case study Agência (imagens) | Screenshots |
-| T2.4 | CV bilíngue + seletor idioma | CurriculoEN.pdf |
-| T2.5 | Decap CMS (se A2) | OAuth GitHub |
+### E1 — Criar sitemap.xml
+
+- **Status:** [x] concluído (2026-07-30)
+- **Commit sugerido:** `chore(seo): adicionar sitemap.xml referenciado pelo robots.txt`
+- **Artefatos necessários:** nenhum
+- **Arquivos:** `sitemap.xml`
+- **Critério de aceite:** robots.txt não referencia arquivo inexistente; sitemap cobre 4 páginas + 3 projetos
+- **Não fazer:** esquecer de adicionar novos slugs ao sitemap ao criar projetos (ver E2)
+
+### E2 — Adicionar novos projetos
+
+- **Status:** [ ] pendente
+- **Commit sugerido:** `feat(projects): adicionar projeto <nome>` (um commit por projeto)
+- **Artefatos necessários (usuário, por projeto):**
+  - Screenshots (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
+  - Textos: introdução, ideia principal, detalhes técnicos, como executar
+  - URLs de repositório e demo (se houver)
+- **Arquivos:** `data/projects.json`, `img/`, `sitemap.xml` (adicionar slug)
+- **Passos:**
+  1. Adicionar entrada no JSON via admin ou edição direta (validar slug único)
+  2. Usar paths de imagem com barras normais (`img/Projeto/foto.png`)
+  3. Adicionar URL do projeto ao `sitemap.xml`
+- **Critério de aceite:** projeto aparece na home/listagem; página de detalhe abre sem erro; imagens carregam
+- **Não fazer:** copiar paths do Windows Explorer sem converter `\` para `/`
+
+### E3 — Atualizar currículo
+
+- **Status:** [ ] pendente
+- **Commit sugerido:** `docs(cv): atualizar currículo PT e EN`
+- **Artefatos necessários (usuário):** PDFs atualizados (PT obrigatório, EN recomendado)
+- **Arquivos:** `Resume/CurriculoPT.pdf`, `Resume/CurriculoEN.pdf`, `sobre.html` (opcional: link para versão EN)
+- **Critério de aceite:** botão "Baixar Currículo" entrega o PDF novo
+- **Não fazer:** renomear os arquivos (quebraria o link em `sobre.html`)
+
+### E4 — Checklist de estabilidade
+
+- **Status:** [ ] pendente
+- **Commit sugerido:** `fix(<escopo>): <correção encontrada>` (um por problema)
+- **Artefatos necessários:** site publicado (GitHub Pages ativo)
+- **Passos (verificar em produção, desktop + mobile):**
+  1. Todas as páginas carregam sem erro no console
+  2. Todos os projetos abrem via "Ver detalhes"; imagens aparecem
+  3. Formulário de contato envia de verdade (EmailJS configurado em produção — atenção: `js/config.js` não vai ao repo; verificar como servir credenciais no Pages*)
+  4. Dark mode e i18n (EN) funcionam em todas as páginas
+  5. Links externos (GitHub, LinkedIn, demos) não quebrados
+  6. Download do CV funciona
+- **Critério de aceite:** zero erro de console; todos os fluxos acima OK
+- **Nota (*):** como o GitHub Pages serve arquivos do repo, `js/config.js` ignorado pelo git **não existirá em produção** — o formulário mostrará erro de configuração. Decidir: (a) commitar `config.js` só com a Public Key do EmailJS (é chave publicável, com rate limit no dashboard) ou (b) manter apenas email direto até a migração Vercel (env vars)
+
+### E5 — Seleção de projetos para a vaga
+
+- **Status:** [ ] bloqueada — aguardando mensagem da vaga (usuário enviará)
+- **Artefatos necessários (usuário):** descrição/requisitos da vaga de estágio
+- **Passos:** analisar requisitos vs. projetos existentes; recomendar destaque/ordem na home; sugerir ajustes de descrição
+- **Critério de aceite:** projetos mais relevantes para a vaga em evidência
+
+---
+
+## Fase 2 — Média prioridade (adiada até fim da Fase E)
+
+Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhamento das subtarefas será feito ao iniciar a fase.
+
+| ID | Tarefa | Definição pós-checkpoint |
+|----|--------|--------------------------|
+| T2.1 | Migração para Astro + deploy Vercel | Scaffold Astro estático; `projects.json` → `src/content/projects/*.mdx`; aposentar `admin/` |
+| T2.2 | Redesign dark-first premium | Tokens dark como padrão; definir acento + fonte display; GIF JetPack no hero |
+| T2.3 | Case study Agência (imagens) | Screenshots pendentes |
+| T2.4 | i18n PT + EN com seletor | Rotas `/en/` nativas do Astro; CV EN já existe |
+| T2.5 | ~~Decap CMS~~ | Cancelada — decisão A2 foi MDX no repo |
 
 ---
 
@@ -218,10 +279,13 @@ Detalhamento em [`DECISOES.md`](DECISOES.md) seção Fase 2.
 | 2026-07-29 | T0.1 | `87de5d8` `docs(roadmap): adicionar checkpoint e plano de atualização` |
 | 2026-07-29 | T1.1 | `066c493` `docs: alinhar README, CRUD_GUIDE e admin com arquitetura estática` |
 | 2026-07-29 | T1.2 | `2d3f0b1` `fix(i18n): corrigir chaves duplicadas de skills no hero` |
-| 2026-07-29 | T1.3 | `9e0cac0` `refactor(projects): unificar renderização via ProjectsAPI` |
-| 2026-07-29 | T1.4 | `perf(projects): adicionar lazy loading nas imagens` |
-| 2026-07-29 | T1.5 | `feat(seo): adicionar meta tags, favicon e open graph` |
-| 2026-07-29 | T1.6 | `feat(contact): integrar formulário com EmailJS` |
-| 2026-07-29 | T1.7 | `fix(projects): escapar conteúdo dinâmico contra XSS` |
-| 2026-07-29 | T1.8 | `feat(admin): validar slug único e permitir importar JSON` |
-| | Checkpoint A | |
+| 2026-07-29 | T1.3 | `9e0cac0` + `0871a13` `refactor(projects): unificar renderização via ProjectsAPI` (duplicado — retrabalho de agente) |
+| 2026-07-29 | T1.4 | `6846163` `perf(projects): adicionar lazy loading nas imagens` |
+| 2026-07-29 | T1.5 | `b3aa75a` `feat(seo): adicionar meta tags, favicon e open graph` |
+| 2026-07-29 | T1.6 | `0a23854` `feat(contact): integrar formulário com EmailJS` |
+| 2026-07-29 | T1.7 | `a5719bc` `fix(projects): escapar conteúdo dinâmico contra XSS` |
+| 2026-07-29 | T1.8 | `5cd428d` `feat(admin): validar slug único e permitir importar JSON` |
+| 2026-07-29 | (extra) | `924a3c3` `add(Kinetic): new project` — fora da convenção; deveria ser `feat(projects): ...` |
+| 2026-07-30 | (fix) | `a1b595a` `fix(projects): corrigir barras inversar path imagens` |
+| 2026-07-30 | Checkpoint A | decisões registradas em `DECISOES.md` |
+| 2026-07-30 | E1 | `chore(seo): adicionar sitemap.xml referenciado pelo robots.txt` |
