@@ -33,7 +33,7 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase 0 — Setup | 1/1 |
 | Fase 1 — Alta prioridade | 8/8 ✅ |
 | Checkpoint A | Concluído ✅ (ver [`DECISOES.md`](DECISOES.md)) |
-| Fase E — Estabilização e candidatura | ~4/5 — inscrição enviada; falta E4 (+ commit do CV) |
+| Fase E — Estabilização e candidatura | 5/5 ✅ |
 | Fase 2 — Média prioridade | Liberada após fechar E4 (e limpeza residual da E) |
 | Fase 3 — Diferenciação | Bloqueada |
 
@@ -216,7 +216,7 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   1. App de integração ao novo prédio do Design (UnB) — Figma
   2. Projeto de preservação de espécies nativas do Cerrado (UnB) — Figma
   3. (Opcional, se sobrar tempo) Entrada única "Design gráfico e editorial" agrupando zine, caixa Lollapalooza e cartão postal
-- **Conteúdo pronto:** IdA + Cerrado publicados; `CASE_STUDY_CERRADO.md` ainda no working tree (**apagar** — spec já cumprida)
+- **Conteúdo pronto:** IdA + Cerrado publicados
 - **Artefatos necessários (usuário, por projeto):**
   - Exports das telas do Figma em PNG (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
   - Textos no formato case study de design: problema → descoberta → fluxos → wireframes → resultado → o que faria diferente
@@ -233,7 +233,7 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 
 ### E3 — Atualizar currículo (orientado a design)
 
-- **Status:** [~] conteúdo/PDF atualizados (2026-07-31); **commit do `Resume/CurriculoPT.pdf` ainda pendente** (working tree modificado)
+- **Status:** [x] concluído (2026-07-31) — PDF commitado em `9df1522`
 - **Commit sugerido:** `docs(cv): atualizar currículo PT orientado a UX/UI`
 - **Artefatos:** rascunho em `Resume/CurriculoPT-rascunho.md`; PDF PT gerado pelo usuário
 - **Critério de aceite:** botão "Baixar Currículo" em `sobre.html` entrega o PDF novo **e** o arquivo está commitado no repo (GitHub Pages)
@@ -242,7 +242,7 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 
 ### E4 — Checklist de estabilidade
 
-- **Status:** [ ] pendente — **próximo passo da Fase E**
+- **Status:** [x] concluído (2026-07-31)
 - **Commit sugerido:** `fix(<escopo>): <correção encontrada>` (um por problema) ou `chore(contact): publicar config EmailJS` se opção (a)
 - **Artefatos necessários:** site publicado (GitHub Pages ativo)
 - **Passos (verificar em produção, desktop + mobile):**
@@ -253,7 +253,12 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   5. Links externos (GitHub, LinkedIn, demos Figma) não quebrados
   6. Download do CV entrega o PDF atualizado
 - **Critério de aceite:** zero erro de console; fluxos acima OK
-- **Nota (*):** `js/config.js` está no `.gitignore` — em produção o formulário falha sem decisão: (a) commitar `config.js` só com chaves EmailJS públicas + restrição de domínio no dashboard, ou (b) manter só email direto até Vercel
+- **Correções aplicadas:**
+  - Layout dos cards: tags e ações separadas em grid fixo no rodapé do card
+  - EmailJS: `config.js` carregado sob demanda (sem 404 no HTML); email direto como fallback
+  - i18n: botões dos cards traduzidos após render dinâmico
+  - Limpeza: `CASE_STUDY_CERRADO.md` removido
+- **Nota (*):** opção (b) adotada — formulário usa email direto em produção até configurar `js/config.js` localmente ou migrar para Vercel
 
 ### E5 — Seleção de projetos para a vaga
 
@@ -281,8 +286,8 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 | 30–31/07 | Cases UnB + E5.1/E5.2 | ✅ |
 | 01/08 | E2 + E5.3 | ✅ (antecipado) |
 | 02/08 | E3 currículo | ✅ conteúdo; commit PDF pendente |
-| 03–04/08 | E4 + envio formulário | inscrição ✅; E4 ainda pendente |
-| pós-inscrição | Fechar E4 + limpeza | **agora** |
+| 03–04/08 | E4 + envio formulário | ✅ |
+| pós-inscrição | Fechar E4 + limpeza | ✅ |
 
 ---
 
@@ -337,3 +342,4 @@ Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhame
 | 2026-07-31 | embeds Figma | `e7464fb` … `50374df` (sidebar off, escala, fullscreen) |
 | 2026-07-31 | E5.3 + inscrição | ordem dos projetos OK; formulário CEIA enviado |
 | 2026-07-31 | docs | ROADMAP sincronizado com estado real da Fase E |
+| 2026-07-31 | E4 | cards, contact, i18n, limpeza — ver commits abaixo |
