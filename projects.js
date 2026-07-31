@@ -226,6 +226,12 @@ function renderProjectDetail(project, containerId) {
   // Processa imagens da seção de imagens
   const imageUrls = processImageUrls(project.images_section);
   
+  // Projetos de design usam rótulos próprios (ex.: "Processo" no lugar de "Detalhes Técnicos")
+  const sectionTitle = (key, fallback) => {
+    const custom = project.section_titles?.[key];
+    return typeof custom === 'string' && custom.trim() ? custom : fallback;
+  };
+
   // Função auxiliar para renderizar seção apenas se tiver conteúdo
   const renderSection = (secTitle, content, className = '') => {
     if (!content || !content.trim()) return '';
@@ -256,13 +262,13 @@ function renderProjectDetail(project, containerId) {
       </section>
       ` : ''}
       
-      ${renderSection('Introdução', project.introduction, 'project-introduction')}
+      ${renderSection(sectionTitle('introduction', 'Introdução'), project.introduction, 'project-introduction')}
       
-      ${renderSection('Ideia Principal', project.main_idea, 'project-main-idea')}
+      ${renderSection(sectionTitle('main_idea', 'Ideia Principal'), project.main_idea, 'project-main-idea')}
       
       ${imageUrls.length > 0 ? `
       <section class="project-images reveal">
-        <h2>Imagens</h2>
+        <h2>${escapeHtml(sectionTitle('images', 'Imagens'))}</h2>
         <div class="project-images-grid">
           ${imageUrls.map(url => `
             <figure class="project-shot">
@@ -273,11 +279,11 @@ function renderProjectDetail(project, containerId) {
       </section>
       ` : ''}
       
-      ${renderSection('Detalhes Técnicos', project.technical_details, 'project-technical-details')}
+      ${renderSection(sectionTitle('technical_details', 'Detalhes Técnicos'), project.technical_details, 'project-technical-details')}
       
-      ${renderSection('Apresentação', project.presentation, 'project-presentation')}
+      ${renderSection(sectionTitle('presentation', 'Apresentação'), project.presentation, 'project-presentation')}
       
-      ${renderSection('Como Executar', project.how_to_run, 'project-how-to-run')}
+      ${renderSection(sectionTitle('how_to_run', 'Como Executar'), project.how_to_run, 'project-how-to-run')}
       
       ${!project.introduction && !project.main_idea && !project.technical_details && !project.presentation && !project.how_to_run ? `
       <section class="project-description reveal">

@@ -52,6 +52,26 @@ Use **Importar JSON** para carregar um arquivo `projects.json` exportado ou do r
 | `introduction`, `main_idea`, `technical_details`, `presentation`, `how_to_run` | Seções da página de detalhe |
 | `images_section` | URLs separadas por vírgula ou linha |
 | `description` | Fallback se seções vazias |
+| `section_titles` | Opcional; renomeia os títulos das seções (ver abaixo) |
+
+### Títulos de seção customizados
+
+Por padrão as seções aparecem como "Introdução", "Ideia Principal", "Imagens", "Detalhes Técnicos", "Apresentação" e "Como Executar" — rótulos pensados para projetos de código. Projetos de design podem sobrescrevê-los com o campo opcional `section_titles`:
+
+```json
+"section_titles": {
+  "introduction": "Contexto e Problema",
+  "main_idea": "Decisões de Design",
+  "images": "Telas",
+  "technical_details": "Processo e Pesquisa",
+  "presentation": "Resultado e Aprendizados",
+  "how_to_run": "Protótipo Interativo"
+}
+```
+
+Todas as chaves são opcionais; a ausente usa o título padrão.
+
+> O formulário do admin **não tem input para `section_titles`**. Ao criar um projeto novo o campo não é gerado — adicione-o à mão no JSON depois de baixar. Ao editar um projeto existente o admin preserva o campo.
 
 ### Conteúdo HTML e XSS
 

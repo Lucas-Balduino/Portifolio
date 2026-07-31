@@ -197,6 +197,17 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 - **Critério de aceite:** robots.txt não referencia arquivo inexistente; sitemap cobre 4 páginas + 3 projetos
 - **Não fazer:** esquecer de adicionar novos slugs ao sitemap ao criar projetos (ver E2)
 
+### E2.0 — Suportar títulos de seção customizados (pré-requisito da E2)
+
+- **Status:** [x] concluído (2026-07-31)
+- **Commit sugerido:** `feat(projects): permitir títulos de seção customizados por projeto`
+- **Artefatos necessários:** nenhum
+- **Arquivos:** `projects.js`, `CRUD_GUIDE.md`
+- **Motivo:** os títulos eram hardcoded para projetos de código ("Detalhes Técnicos", "Como Executar") — rótulos errados para case studies de design
+- **Como usar:** campo opcional `section_titles` no projeto (chaves `introduction`, `main_idea`, `images`, `technical_details`, `presentation`, `how_to_run`); ausente = título padrão
+- **Critério de aceite:** projetos sem o campo exibem exatamente os títulos anteriores
+- **Não fazer:** passar título por `formatRichText` — continua em `escapeHtml`
+
 ### E2 — Adicionar novos projetos (definidos pela E5: 2 case studies de design da UnB)
 
 - **Status:** [ ] pendente
@@ -205,10 +216,12 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   1. App de integração ao novo prédio do Design (UnB) — Figma
   2. Projeto de preservação de espécies nativas do Cerrado (UnB) — Figma
   3. (Opcional, se sobrar tempo) Entrada única "Design gráfico e editorial" agrupando zine, caixa Lollapalooza e cartão postal
+- **Conteúdo pronto:** os textos do case study do IdA já estão redigidos em `CASE_STUDY_IDA.md` (arquivo temporário, não versionado — apagar após E2)
 - **Artefatos necessários (usuário, por projeto):**
   - Exports das telas do Figma em PNG (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
   - Textos no formato case study de design: problema → descoberta → fluxos → wireframes → resultado → o que faria diferente
   - Link de embed do protótipo Figma (Share → Embed), se quiser protótipo interativo na página
+  - Para o IdA: nome da disciplina e nomes da equipe (marcados como `[CONFIRMAR]` no texto)
 - **Arquivos:** `data/projects.json`, `img/`, `sitemap.xml` (adicionar slug)
 - **Passos:**
   1. Adicionar entrada no JSON (validar slug único); preencher `introduction`, `main_idea`, `images_section`, `presentation`; deixar `technical_details` e `how_to_run` vazios (seções somem sozinhas)
@@ -333,3 +346,5 @@ Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhame
 | 2026-07-30 | Checkpoint A | decisões registradas em `DECISOES.md` |
 | 2026-07-30 | E1 | `f03c6a4` `chore(seo): adicionar sitemap.xml referenciado pelo robots.txt` |
 | 2026-07-30 | E5.1 + E5.2 | `4e395a9` `feat(projects): reescrever Kinetic, corrigir display e ajustar apresentacao UX/UI` |
+| 2026-07-30 | (consistência) | `fd84115` `feat(projects): reescrever JetPack Guy no mesmo formato do Kinetic` |
+| 2026-07-31 | E2.0 | `feat(projects): permitir títulos de seção customizados por projeto` |
