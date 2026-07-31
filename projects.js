@@ -311,6 +311,18 @@ function renderProjectDetail(project, containerId) {
     </article>
   `;
 
+  // Classifica retrato vs paisagem para a galeria (paisagem ocupa 2 colunas com a mesma altura)
+  container.querySelectorAll('.project-shot img').forEach(img => {
+    const tagOrientation = () => {
+      const figure = img.closest('.project-shot');
+      if (!figure || !img.naturalWidth) return;
+      figure.classList.toggle('is-landscape', img.naturalWidth > img.naturalHeight);
+      figure.classList.toggle('is-portrait', img.naturalWidth <= img.naturalHeight);
+    };
+    if (img.complete) tagOrientation();
+    else img.addEventListener('load', tagOrientation, { once: true });
+  });
+
   // Aplica animações reveal
   const revealElements = container.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {

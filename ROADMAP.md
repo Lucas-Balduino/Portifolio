@@ -210,7 +210,7 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 
 ### E2 — Adicionar novos projetos (definidos pela E5: 2 case studies de design da UnB)
 
-- **Status:** [~] IdA concluído (2026-07-31); Cerrado pendente
+- **Status:** [x] concluído (2026-07-31) — IdA + Descubra Cerrado publicados
 - **Commit sugerido:** `feat(projects): adicionar case study <nome>` (um commit por projeto)
 - **Projetos a adicionar (decidido em E5, 2026-07-30):**
   1. App de integração ao novo prédio do Design (UnB) — Figma
@@ -348,4 +348,5 @@ Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhame
 | 2026-07-30 | E5.1 + E5.2 | `4e395a9` `feat(projects): reescrever Kinetic, corrigir display e ajustar apresentacao UX/UI` |
 | 2026-07-30 | (consistência) | `fd84115` `feat(projects): reescrever JetPack Guy no mesmo formato do Kinetic` |
 | 2026-07-31 | E2.0 | `99f5048` `feat(projects): permitir títulos de seção customizados por projeto` |
-| 2026-07-31 | E2 (IdA) + E5.3 | `fix(projects): corrigir embed do Figma e finalizar case study do IdA` |
+| 2026-07-31 | E2 (IdA) + E5.3 | `f4c41af` `fix(projects): corrigir embed do Figma e finalizar case study do IdA` |
+| 2026-07-31 | E2 (Cerrado) | `feat(projects): adicionar Descubra Cerrado e ajustar galeria paisagem/retrato` |
