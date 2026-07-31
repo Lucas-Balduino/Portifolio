@@ -1,6 +1,6 @@
 # Roadmap — Atualização Portfólio
 
-> Branch: `main` | Última atualização: 2026-07-30
+> Branch: `main` | Última atualização: 2026-07-31
 
 ## Como usar este documento
 
@@ -33,8 +33,8 @@ Formato: `tipo(escopo): descrição imperativa curta`
 | Fase 0 — Setup | 1/1 |
 | Fase 1 — Alta prioridade | 8/8 ✅ |
 | Checkpoint A | Concluído ✅ (ver [`DECISOES.md`](DECISOES.md)) |
-| Fase E — Estabilização e candidatura (prazo 05/08) | 1/5 — **prioridade atual** |
-| Fase 2 — Média prioridade | Adiada até fim da Fase E |
+| Fase E — Estabilização e candidatura | ~4/5 — inscrição enviada; falta E4 (+ commit do CV) |
+| Fase 2 — Média prioridade | Liberada após fechar E4 (e limpeza residual da E) |
 | Fase 3 — Diferenciação | Bloqueada |
 
 ## Baseline do repositório
@@ -216,7 +216,7 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   1. App de integração ao novo prédio do Design (UnB) — Figma
   2. Projeto de preservação de espécies nativas do Cerrado (UnB) — Figma
   3. (Opcional, se sobrar tempo) Entrada única "Design gráfico e editorial" agrupando zine, caixa Lollapalooza e cartão postal
-- **Conteúdo pronto:** IdA publicado (2026-07-31); textos do Descubra Cerrado redigidos em `CASE_STUDY_CERRADO.md` (arquivo temporário, não versionado — apagar após E2)
+- **Conteúdo pronto:** IdA + Cerrado publicados; `CASE_STUDY_CERRADO.md` ainda no working tree (**apagar** — spec já cumprida)
 - **Artefatos necessários (usuário, por projeto):**
   - Exports das telas do Figma em PNG (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
   - Textos no formato case study de design: problema → descoberta → fluxos → wireframes → resultado → o que faria diferente
@@ -233,76 +233,60 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
 
 ### E3 — Atualizar currículo (orientado a design)
 
-- **Status:** [ ] pendente
-- **Commit sugerido:** `docs(cv): atualizar currículo PT e EN`
-- **Artefatos necessários (usuário):** PDFs atualizados (PT obrigatório, EN recomendado)
-- **Orientação (vaga UX/UI):** destacar Design UnB antes de CC; Figma, design system do Kinetic, acessibilidade (WCAG, `prefers-reduced-motion`, ARIA) e monitoria de HTML/CSS como experiência de ensino
-- **Arquivos:** `Resume/CurriculoPT.pdf`, `Resume/CurriculoEN.pdf`, `sobre.html` (opcional: link para versão EN)
-- **Critério de aceite:** botão "Baixar Currículo" entrega o PDF novo
+- **Status:** [~] conteúdo/PDF atualizados (2026-07-31); **commit do `Resume/CurriculoPT.pdf` ainda pendente** (working tree modificado)
+- **Commit sugerido:** `docs(cv): atualizar currículo PT orientado a UX/UI`
+- **Artefatos:** rascunho em `Resume/CurriculoPT-rascunho.md`; PDF PT gerado pelo usuário
+- **Critério de aceite:** botão "Baixar Currículo" em `sobre.html` entrega o PDF novo **e** o arquivo está commitado no repo (GitHub Pages)
+- **Nota:** inscrição CEIA já enviada com o currículo novo; falta só versionar o PDF no repositório
 - **Não fazer:** renomear os arquivos (quebraria o link em `sobre.html`)
 
 ### E4 — Checklist de estabilidade
 
-- **Status:** [ ] pendente
-- **Commit sugerido:** `fix(<escopo>): <correção encontrada>` (um por problema)
+- **Status:** [ ] pendente — **próximo passo da Fase E**
+- **Commit sugerido:** `fix(<escopo>): <correção encontrada>` (um por problema) ou `chore(contact): publicar config EmailJS` se opção (a)
 - **Artefatos necessários:** site publicado (GitHub Pages ativo)
 - **Passos (verificar em produção, desktop + mobile):**
   1. Todas as páginas carregam sem erro no console
-  2. Todos os projetos abrem via "Ver detalhes"; imagens aparecem
-  3. Formulário de contato envia de verdade (EmailJS configurado em produção — atenção: `js/config.js` não vai ao repo; verificar como servir credenciais no Pages*)
-  4. Dark mode e i18n (EN) funcionam em todas as páginas
-  5. Links externos (GitHub, LinkedIn, demos) não quebrados
-  6. Download do CV funciona
-- **Critério de aceite:** zero erro de console; todos os fluxos acima OK
-- **Nota (*):** como o GitHub Pages serve arquivos do repo, `js/config.js` ignorado pelo git **não existirá em produção** — o formulário mostrará erro de configuração. Decidir: (a) commitar `config.js` só com a Public Key do EmailJS (é chave publicável, com rate limit no dashboard) ou (b) manter apenas email direto até a migração Vercel (env vars)
+  2. Todos os projetos abrem via "Ver detalhes"; imagens e embeds Figma OK
+  3. Formulário de contato em produção (decidir EmailJS — ver nota*)
+  4. Dark mode e i18n (EN) funcionam
+  5. Links externos (GitHub, LinkedIn, demos Figma) não quebrados
+  6. Download do CV entrega o PDF atualizado
+- **Critério de aceite:** zero erro de console; fluxos acima OK
+- **Nota (*):** `js/config.js` está no `.gitignore` — em produção o formulário falha sem decisão: (a) commitar `config.js` só com chaves EmailJS públicas + restrição de domínio no dashboard, ou (b) manter só email direto até Vercel
 
 ### E5 — Seleção de projetos para a vaga
 
-- **Status:** [~] análise concluída (2026-07-30); execução via E5.1–E5.3
-- **Vaga:** UX/UI Designer Júnior — CEIA-UFG (parceria Positivo), remoto, 30h, bolsa R$ 2.000, inscrição até **05/08** via formulário
-- **Fit:** Lucas atende o pré-requisito central (graduando em Design na UnB, formatura 2028/1 ≥ dez/2027). Lacuna crítica: portfólio sem evidência de Figma e processo de descoberta → resolvida pela E2
-- **Ordem definida dos projetos no `projects.json` (controla a home, 3 primeiros):**
-  1. Kinetic (intro reescrita com foco em design)
-  2. App integração prédio Design UnB (novo — E2)
-  3. Preservação espécies Cerrado UnB (novo — E2)
-  4. JetPack Guy
-  5. Design gráfico e editorial (opcional — E2)
-  6. Agência de Viagens
+- **Status:** [x] concluído (2026-07-31) — análise + execução + **inscrição enviada**
+- **Vaga:** UX/UI Designer Júnior — CEIA-UFG (parceria Positivo), remoto, 30h, bolsa R$ 2.000
+- **Ordem final no `projects.json`:** Kinetic → IdA → Descubra Cerrado → JetPack Guy → Agência
+- **Nota:** item opcional “Design gráfico e editorial” **não feito** (consciente; fora do caminho crítico)
 
 #### E5.1 — Reescrever Kinetic (meio termo design + CC) + display
 
 - **Status:** [x] concluído (2026-07-30)
-- **Commit sugerido:** `feat(projects): reescrever Kinetic e corrigir display de case studies`
-- **Arquivos:** `data/projects.json`, `projects.js`, `style.css`
-- **Notas:** textos em HTML estruturado; renderer preserva parágrafos; imagens do detalhe limitadas (grid mobile-friendly); seções ricas com overflow controlado
 
 #### E5.2 — Reposicionar hero e página Sobre (+ experiência CAL)
 
 - **Status:** [x] concluído (2026-07-30)
-- **Commit sugerido:** `feat(content): ajustar apresentação UX/UI e adicionar extensão CAL`
-- **Arquivos:** `index.html`, `sobre.html`, `main.js`, `js/site-config.js`
-- **Notas:** hero/sobre como "Designer e desenvolvedor UX/UI em formação"; experiência CAL/UnB (voluntário → bolsista) adicionada — detalhes podem ser refinados pelo usuário
 
 #### E5.3 — Reordenar projetos no JSON
 
-- **Status:** [ ] pendente (depende de E2)
-- **Commit sugerido:** `feat(projects): reordenar projetos para destaque de design`
-- **Arquivos:** `data/projects.json`
-- **Critério de aceite:** home exibe Kinetic + 2 case studies UnB
+- **Status:** [x] concluído (2026-07-31) — ordem Kinetic → IdA → Cerrado → JetPack → Agência (home mostra os 3 primeiros de design)
 
-#### Cronograma até o prazo
+#### Cronograma (histórico)
 
-| Dia | Entrega |
-|-----|---------|
-| 30–31/07 | Usuário: textos + exports Figma dos 2 case studies UnB |
-| 01/08 | E2 (adicionar projetos) + E5.1 + E5.2 + E5.3 |
-| 02/08 | E3 (currículo orientado a design) |
-| 03/08 | E4 (estabilidade em produção + decisão config.js EmailJS) |
-| 04/08 | Revisão final + envio do formulário (1 dia de folga) |
+| Dia | Entrega | Resultado |
+|-----|---------|-----------|
+| 30–31/07 | Cases UnB + E5.1/E5.2 | ✅ |
+| 01/08 | E2 + E5.3 | ✅ (antecipado) |
+| 02/08 | E3 currículo | ✅ conteúdo; commit PDF pendente |
+| 03–04/08 | E4 + envio formulário | inscrição ✅; E4 ainda pendente |
+| pós-inscrição | Fechar E4 + limpeza | **agora** |
 
 ---
 
-## Fase 2 — Média prioridade (adiada até fim da Fase E)
+## Fase 2 — Média prioridade (após fechar E4)
 
 Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhamento das subtarefas será feito ao iniciar a fase.
 
@@ -349,4 +333,7 @@ Decisões fechadas no Checkpoint A (ver [`DECISOES.md`](DECISOES.md)). Detalhame
 | 2026-07-30 | (consistência) | `fd84115` `feat(projects): reescrever JetPack Guy no mesmo formato do Kinetic` |
 | 2026-07-31 | E2.0 | `99f5048` `feat(projects): permitir títulos de seção customizados por projeto` |
 | 2026-07-31 | E2 (IdA) + E5.3 | `f4c41af` `fix(projects): corrigir embed do Figma e finalizar case study do IdA` |
-| 2026-07-31 | E2 (Cerrado) | `feat(projects): adicionar Descubra Cerrado e ajustar galeria paisagem/retrato` |
+| 2026-07-31 | E2 (Cerrado) | `9d0d196` `feat(projects): adicionar Descubra Cerrado e ajustar galeria paisagem/retrato` |
+| 2026-07-31 | embeds Figma | `e7464fb` … `50374df` (sidebar off, escala, fullscreen) |
+| 2026-07-31 | E5.3 + inscrição | ordem dos projetos OK; formulário CEIA enviado |
+| 2026-07-31 | docs | ROADMAP sincronizado com estado real da Fase E |
