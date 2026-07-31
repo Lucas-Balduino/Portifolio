@@ -81,18 +81,20 @@ function renderProjectCard(project) {
   const repoUrl = project.repo_url ? escapeHtml(project.repo_url) : '';
   const liveUrl = project.live_url ? escapeHtml(project.live_url) : '';
   
+  const actionLinks = [
+    repoUrl ? `<a class="card-link" href="${repoUrl}" target="_blank" rel="noopener noreferrer" data-i18n="projects.card.github">GitHub</a>` : '',
+    liveUrl ? `<a class="card-link" href="${liveUrl}" target="_blank" rel="noopener noreferrer" data-i18n="projects.card.liveDemo">Live Demo</a>` : '',
+    project.slug ? `<a class="card-link card-link--primary" href="${projectUrl}" data-i18n="projects.card.viewDetails">Ver detalhes</a>` : ''
+  ].filter(Boolean).join('');
+
   return `
     <article class="card project-card reveal">
       <img class="card-media" src="${imageUrl}" alt="${title} screenshot" loading="lazy" onerror="this.src='img/ImagemEmDesenvolvimento.jpg'">
       <div class="card-body">
         <h3 class="card-title">${title}</h3>
         <p class="card-desc">${shortDesc}</p>
-        <div class="card-meta">
-          ${technologies}
-          ${repoUrl ? `<a class="card-link" href="${repoUrl}" target="_blank" rel="noopener noreferrer">GitHub</a>` : ''}
-          ${liveUrl ? `<a class="card-link" href="${liveUrl}" target="_blank" rel="noopener noreferrer">Live Demo</a>` : ''}
-          ${project.slug ? `<a class="card-link" href="${projectUrl}">Ver detalhes</a>` : ''}
-        </div>
+        ${technologies ? `<div class="card-tags">${technologies}</div>` : ''}
+        ${actionLinks ? `<div class="card-actions">${actionLinks}</div>` : ''}
       </div>
     </article>
   `;
@@ -122,6 +124,11 @@ function renderProjectsList(projects, containerId) {
   }
 
   container.innerHTML = projects.map(project => renderProjectCard(project)).join('');
+
+  const lang = document.documentElement.lang;
+  if (lang && !lang.startsWith('pt') && typeof translatePage === 'function') {
+    translatePage(lang.split('-')[0]);
+  }
   
   // Reaplica animações reveal aos novos elementos
   const revealElements = container.querySelectorAll('.reveal');
