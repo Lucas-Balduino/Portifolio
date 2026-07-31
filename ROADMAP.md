@@ -216,12 +216,12 @@ Fase intermediária inserida em 2026-07-30: antes da migração Astro, o foco é
   1. App de integração ao novo prédio do Design (UnB) — Figma
   2. Projeto de preservação de espécies nativas do Cerrado (UnB) — Figma
   3. (Opcional, se sobrar tempo) Entrada única "Design gráfico e editorial" agrupando zine, caixa Lollapalooza e cartão postal
-- **Conteúdo pronto:** os textos do case study do IdA já estão redigidos em `CASE_STUDY_IDA.md` (arquivo temporário, não versionado — apagar após E2)
+- **Conteúdo pronto:** IdA publicado (2026-07-31); textos do Descubra Cerrado redigidos em `CASE_STUDY_CERRADO.md` (arquivo temporário, não versionado — apagar após E2)
 - **Artefatos necessários (usuário, por projeto):**
   - Exports das telas do Figma em PNG (salvar em `img/<NomeProjeto>/`, paths com `/` — nunca `\`)
   - Textos no formato case study de design: problema → descoberta → fluxos → wireframes → resultado → o que faria diferente
   - Link de embed do protótipo Figma (Share → Embed), se quiser protótipo interativo na página
-  - Para o IdA: nome da disciplina e nomes da equipe (marcados como `[CONFIRMAR]` no texto)
+  - Para o Cerrado: exports em `img/Cerrado/`, link/embed do protótipo e o `[CONFIRMAR]` da atuação individual no grupo
 - **Arquivos:** `data/projects.json`, `img/`, `sitemap.xml` (adicionar slug)
 - **Passos:**
   1. Adicionar entrada no JSON (validar slug único); preencher `introduction`, `main_idea`, `images_section`, `presentation`; deixar `technical_details` e `how_to_run` vazios (seções somem sozinhas)
