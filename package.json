@@ -1,0 +1,22 @@
+{
+  "name": "portifolio",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "18.20.8 || ^20.3.0 || >=22.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "serve:legacy": "npx serve ."
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "astro": "5.18.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

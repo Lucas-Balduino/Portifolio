@@ -30,9 +30,19 @@ Portifolio/
 
 ### Desenvolvimento local
 
+**Site publicado (HTML na raiz)** — ainda é este o que o GitHub Pages serve:
+
 ```bash
 npx serve .
 # Acesse http://localhost:3000
+```
+
+**Scaffold Astro (Fase 2)** — `astro@5.18.2` + `@astrojs/react@4.4.2` (npm). O `create-astro` mais novo instala Astro 7 e exige Node ≥22.12; aqui ficou 5.18.2 para rodar no Node 20.
+
+```bash
+npm install
+npm run dev      # http://localhost:4321 (placeholder)
+npm run build    # dist/
 ```
 
 ### EmailJS (formulário de contato)

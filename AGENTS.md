@@ -34,7 +34,7 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 
 ## Onde está o conteúdo / o código
 
-- Código e páginas: raiz (`*.html`, `style.css`, `main.js`, `projects.js`, `js/`, `admin/`)
+- Código e páginas: raiz (`*.html`, `style.css`, `main.js`, `projects.js`, `js/`, `admin/`) **e** scaffold Astro em `src/`, `astro.config.mjs`, `package.json`
 - Cases: `data/projects.json` + `img/`
 - CV: `Resume/`
 - Spec: `docs/context/`
@@ -53,10 +53,21 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 
 ## Comandos esperados
 
+Site legado (HTML na raiz, ainda publicado):
+
 ```bash
 npx serve .
 # http://localhost:3000
 # Admin: http://localhost:3000/admin/index.html
 ```
 
-Comandos `astro` / `dev` / `build` só depois do scaffold da tarefa correspondente no ROADMAP — não inventar script aqui antes disso.
+Astro (scaffold 2.2 — `astro@5.18.2`, `@astrojs/react@4.4.2`, npm). `create-astro` atual puxa Astro 7 (Node ≥22.12); este repo usa 5.18.2 porque o ambiente local é Node 20.15.1.
+
+```bash
+npm install
+npm run dev      # http://localhost:4321 — placeholder src/pages/index.astro
+npm run build    # saída em dist/
+npm run preview
+```
+
+Não apagar `index.html`, `data/`, `admin/` nem `img/` antes da tarefa 2.14.

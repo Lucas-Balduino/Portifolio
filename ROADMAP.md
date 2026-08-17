@@ -62,7 +62,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Fase E — Sitemap, cases UnB, currículo, estabilidade, inscrição
 - [ ] Fase 2 — Migração paridade Astro + MDX + Vercel
 - [x] Tarefa 2.1 — Decidir gerenciador de pacotes
-- [ ] Tarefa 2.2 — Scaffold Astro com ilhas React
+- [x] Tarefa 2.2 — Scaffold Astro com ilhas React
 - [ ] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
 - [ ] Tarefa 2.4 — Migrar os quatro projetos restantes para MDX
 - [ ] Tarefa 2.5 — Layout: header, footer, nav e tema
@@ -153,7 +153,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `docs(2.1): registra gerenciador de pacotes da migracao`
 
-### Tarefa 2.2 — Scaffold Astro com ilhas React
+### Tarefa 2.2 — Scaffold Astro com ilhas React [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.1
