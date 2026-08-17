@@ -1,0 +1,65 @@
+---
+interface Props {
+	title: string;
+	slug: string;
+	shortDesc: string;
+	image: string;
+	technologies: string[];
+	repoUrl: string;
+	liveUrl: string;
+}
+
+const { title, slug, shortDesc, image, technologies, repoUrl, liveUrl } = Astro.props;
+
+const imageUrls = import.meta.glob<{ default: string }>('../../img/**/*.{png,jpg,jpeg}', {
+	eager: true,
+	query: '?url',
+	import: 'default'
+});
+
+const resolveImage = (posixPath: string) => {
+	const match = Object.entries(imageUrls).find(([key]) =>
+		key.replace(/\\/g, '/').endsWith(`/${posixPath}`)
+	);
+	return match?.[1] ?? '';
+};
+
+const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolvimento.jpg');
+const detailHref = `/projetos/${slug}`;
+---
+
+<article class="card project-card">
+	<img class="card-media" src={imageSrc} alt={`${title} screenshot`} loading="lazy" />
+	<div class="card-body">
+		<h3 class="card-title">{title}</h3>
+		<p class="card-desc">{shortDesc}</p>
+		{
+			technologies.length > 0 && (
+				<div class="card-tags">
+					{technologies.map((tech) => (
+						<span class="badge">{tech}</span>
+					))}
+				</div>
+			)
+		}
+		<div class="card-actions">
+			{
+				repoUrl ? (
+					<a class="card-link" href={repoUrl} target="_blank" rel="noopener noreferrer">
+						GitHub
+					</a>
+				) : null
+			}
+			{
+				liveUrl ? (
+					<a class="card-link" href={liveUrl} target="_blank" rel="noopener noreferrer">
+						Live Demo
+					</a>
+				) : null
+			}
+			<a class="card-link card-link--primary" href={detailHref}>
+				Ver detalhes
+			</a>
+		</div>
+	</div>
+</article>
