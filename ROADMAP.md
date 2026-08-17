@@ -65,7 +65,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.2 — Scaffold Astro com ilhas React
 - [x] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
 - [x] Tarefa 2.4 — Migrar os quatro projetos restantes para MDX
-- [ ] Tarefa 2.5 — Layout: header, footer, nav e tema
+- [x] Tarefa 2.5 — Layout: header, footer, nav e tema
 - [ ] Tarefa 2.6 — Página home em paridade
 - [ ] Tarefa 2.7 — Listagem de projetos e cards
 - [ ] Tarefa 2.8 — Página de detalhe (seções, galeria, Figma)
@@ -244,7 +244,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(2.4): migra ida cerrado jetpack e agencia para mdx`
 
-### Tarefa 2.5 — Layout: header, footer, nav e tema
+### Tarefa 2.5 — Layout: header, footer, nav e tema [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.2
