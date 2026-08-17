@@ -61,7 +61,7 @@ npx serve .
 # Admin: http://localhost:3000/admin/index.html
 ```
 
-Astro (scaffold 2.2 — `astro@5.18.2`, `@astrojs/react@4.4.2`, npm). `create-astro` atual puxa Astro 7 (Node ≥22.12); este repo usa 5.18.2 porque o ambiente local é Node 20.15.1.
+Astro (Fase 2 — `astro@7.2.2`, `@astrojs/react@6.0.2`, npm). Node **≥22.12** (local: 22.23.2).
 
 ```bash
 npm install

@@ -37,7 +37,7 @@ npx serve .
 # Acesse http://localhost:3000
 ```
 
-**Scaffold Astro (Fase 2)** — `astro@5.18.2` + `@astrojs/react@4.4.2` (npm). O `create-astro` mais novo instala Astro 7 e exige Node ≥22.12; aqui ficou 5.18.2 para rodar no Node 20.
+**Scaffold Astro (Fase 2)** — `astro@7.2.2` + `@astrojs/react@6.0.2` (npm). Requer **Node ≥ 22.12** (`.nvmrc`).
 
 ```bash
 npm install
