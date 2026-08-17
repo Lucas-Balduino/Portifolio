@@ -49,6 +49,8 @@ npx serve .
 
 ### Documentação
 
-- [`CRUD_GUIDE.md`](CRUD_GUIDE.md) — uso do admin
-- [`ROADMAP.md`](ROADMAP.md) — plano de atualização e status das tarefas
-- [`DECISOES.md`](DECISOES.md) — decisões pendentes para Fase 2
+- [`AGENTS.md`](AGENTS.md) — regras para agentes; aponta a spec
+- [`docs/context/`](docs/context/00-project-brief.md) — spec do projeto (`00`–`04`, `06`)
+- [`ROADMAP.md`](ROADMAP.md) — execução SDD (uma tarefa, um commit)
+- [`DECISOES.md`](DECISOES.md) — Checkpoint A (Astro, MDX, Vercel, dark-first, PT+EN)
+- [`CRUD_GUIDE.md`](CRUD_GUIDE.md) — admin JSON (até a tarefa 2.14)
