@@ -1,0 +1,108 @@
+---
+title: "JetPack Guy"
+slug: jetPackGuy
+short_desc: "Recriação web em pixel art do runner JetPack Joyride: WebGL puro, HUD e moldura em CSS, física simples e loop jogável."
+image: img/JetPackGuyJogo.png
+repo_url: https://github.com/Lucas-Balduino/JetPackGuy
+live_url: https://lucas-balduino.github.io/JetPackGuy/
+technologies:
+  - HTML
+  - CSS
+  - JavaScript
+  - WebGL
+  - Pixel Art
+order: 4
+gallery:
+  - img/JetPackGuyJogo.png
+  - img/JetPackGuyMorte.png
+  - img/JetPackGuyPause.png
+---
+
+## Introdução
+
+O **JetPack Guy** é uma recriação para web do clássico mobile JetPack Joyride, feita em pixel art com WebGL puro, HTML e CSS. O objetivo foi unir uma experiência jogável — física, obstáculos, pontuação e feedback visual — ao estudo do pipeline gráfico de baixo nível (shaders, buffers e atributos).
+
+Em vez de apenas um demo técnico, o projeto entrega um protótipo com moldura e HUD pensados em CSS, sprites construídos pixel a pixel e um loop de jogo legível. Fica na interseção entre visual (estética pixel, hierarquia do HUD) e computação gráfica (CPU prepara dados, GPU desenha).
+
+## Ideia Principal
+
+Três decisões definem o projeto:
+
+### 1. Pixel art como dado, não como textura
+
+Sprites são listas de pixels em JSON (`{ x, y, color }`) desenhados com `gl.POINTS`. Isso preserva a estética e força o tratamento explícito de coordenadas, cores e buffers — útil para entender o que uma engine costuma esconder.
+
+### 2. Separar jogo e rendering
+
+Gravidade, salto, obstáculos e pontuação vivem na lógica JS; shaders só posicionam e colorizam vértices. O fluxo fica claro: a CPU atualiza o estado, a GPU desenha o frame.
+
+### 3. Interface de jogo com CSS
+
+Moldura, visor de pontuação e layout responsivo foram feitos em HTML/CSS puro, complementando o canvas WebGL. O HUD precisa ser legível durante o jogo — hierarquia tipográfica e contraste fazem parte da experiência, não só do código.
+
+## Detalhes Técnicos
+
+### Visual e interface
+
+- **Pixel art:** sprites como listas de pontos coloridos, desenhados com `gl.POINTS` e `gl_PointSize` ajustável.
+- **HUD:** pontuação (metros) e moldura em CSS, separados do canvas para manter legibilidade.
+- **Feedback:** estados de jogo (correndo, pausa, morte) com telas/imagens dedicadas no portfólio.
+
+### Pipeline WebGL
+
+- Normalização pixel → clip space (−1..+1), com eixo Y invertido
+- Buffers tipados (`Float32Array`) para posições e cores
+- Vertex shader: posição + translação + cor por vértice
+- Fragment shader: cor interpolada simples
+- Cenário/obstáculos com `gl.LINES` / `gl.LINE_STRIP`
+
+```
+// pixel -> coordenadas WebGL (-1..+1)
+const xNorm = (p.x / canvas.width) * 2 - 1;
+const yNorm = -(p.y / canvas.height) * 2 + 1;
+positions.push(xNorm, yNorm);
+```
+
+### Lógica de jogo
+
+- `requestAnimationFrame` para ~60fps
+- Física Euler: `y += velocity; velocity += gravity`
+- Impulso no Espaço / ArrowUp
+- Obstáculos com reset e Y aleatório; pontuação acelera `baseVel`
+
+### Performance
+
+- `gl.STATIC_DRAW` para dados carregados uma vez
+- Evitar alocações por frame (criar arrays na carga)
+- Shaders mínimos; para escalar: texture atlases ou instancing
+
+## Apresentação
+
+O JetPack Guy é um exercício de protótipo jogável: a estética pixel e o HUD em CSS sustentam a experiência, enquanto o WebGL expõe o pipeline gráfico sem frameworks.
+
+Serve tanto para quem avalia decisões visuais e de interface de jogo quanto para quem quer ver domínio de shaders, buffers e loop de simulação — um case study curto, mas completo o suficiente para jogar e inspecionar o código.
+
+## Como Executar
+
+### Pré-requisitos
+
+- Node.js (para `npx serve`) ou Python 3
+- Navegador moderno com suporte a WebGL
+
+É necessário um servidor local — `fetch` do `pixels.json` não funciona via `file://`.
+
+### Passos
+
+```
+git clone https://github.com/Lucas-Balduino/JetPackGuy.git
+cd JetPackGuy
+npx serve .
+```
+
+Ou com Python:
+
+```
+python -m http.server 8000
+```
+
+Abra a URL indicada pelo servidor (ex.: `http://localhost:3000` ou `:8000`). Ajuste `gl_PointSize`, `baseVel` ou o intervalo de pontuação para testar dificuldade e performance.
