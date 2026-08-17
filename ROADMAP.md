@@ -61,7 +61,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Fase 1 — Docs, i18n hero, render unificado, lazy, SEO, EmailJS, XSS, admin
 - [x] Fase E — Sitemap, cases UnB, currículo, estabilidade, inscrição
 - [ ] Fase 2 — Migração paridade Astro + MDX + Vercel
-- [ ] Tarefa 2.1 — Decidir gerenciador de pacotes
+- [x] Tarefa 2.1 — Decidir gerenciador de pacotes
 - [ ] Tarefa 2.2 — Scaffold Astro com ilhas React
 - [ ] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
 - [ ] Tarefa 2.4 — Migrar os quatro projetos restantes para MDX
@@ -88,7 +88,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 
 | Tarefa | O que decidir | Registrada |
 |---|---|---|
-| 2.1 | Gerenciador de pacotes (npm / pnpm / yarn) | `(pendente)` |
+| 2.1 | Gerenciador de pacotes (npm / pnpm / yarn) | **npm** |
 | 2.12 | Projeto Vercel e URL de produção | `(pendente)` |
 | 3.1 | Hex de acento + família display | `(pendente)` |
 | 4.3 | Quais cases ganham EN depois do fallback | `(pendente)` — não bloqueia 4.3 |
@@ -123,7 +123,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 **Pronto quando:** critérios da 2.14 + URL Vercel servindo o build; site estático legado removido.
 **Depende de:** Fase E (já `[x]`); gate 2.1
 
-### Tarefa 2.1 — Decidir gerenciador de pacotes
+### Tarefa 2.1 — Decidir gerenciador de pacotes [x]
 
 - **Tipo:** autor
 - **Bloqueada por:** nada
@@ -131,11 +131,9 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 - **Arquivos permitidos (novos):** nenhum
 - **Arquivos permitidos (editar):** `ROADMAP.md`
 
-> **PARAR — decisão do autor.** Não implementar scaffold enquanto **Decisão registrada** for `(pendente)`.
-
 **Pergunta:** Qual gerenciador de pacotes este repositório passa a usar no Astro?
 **Opções:** npm / pnpm / yarn
-**Decisão registrada:** `(pendente)`
+**Decisão registrada:** `npm`
 
 **Fazer:**
 

@@ -43,7 +43,7 @@ DoD da Fase 2: `astro build` gera o site; as rotas equivalentes às páginas atu
 
 | Tarefa futura (id sugerido) | O que decidir | Registrada |
 |---|---|---|
-| 2.1 | Gerenciador de pacotes para o Astro | `(pendente)` — npm / pnpm / yarn |
+| 2.1 | Gerenciador de pacotes para o Astro | **npm** |
 | 2.12 | Criar projeto na Vercel e URL de produção | `(pendente)` |
 | 2.10 / depois | EmailJS via env na Vercel vs só mailto | `(pendente)` — default operacional: mailto até o autor configurar |
 | 3.1 | Hex de acento + fonte display | `(pendente)` — sugestões Kinetic `#005CEE` + Lexend **não** são escolha |

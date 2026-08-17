@@ -15,11 +15,11 @@ Separar **agora** e **quando**. Não scaffoldar o “quando” para desbloquear 
 | Contato | Formulário + EmailJS **se** `js/config.js` local existir; senão mailto `lucasgbalduino@gmail.com` | `config.js` no `.gitignore`; em produção o HTML não referencia o arquivo (E4) |
 | i18n | Detecção `navigator.language`; dicionário EN/ES em `main.js`; sem seletor | PT é o default do HTML |
 | Tema | Light default; `.theme-dark` no `body`; persistência `localStorage` | Tokens em `style.css` |
-| Gerenciador de pacotes | `(pendente)` — hoje só `npx` pontual, sem `package.json` | Fork para o scaffold Astro |
+| Gerenciador de pacotes | **npm** (2.1) — hoje só `npx` pontual, ainda sem `package.json` até o scaffold | Decisão do autor; Kinetic também usa npm |
 
 ## Quando passar à migração (Fase 2 do ROADMAP)
 
-Critério (não data): spec + ROADMAP SDD prontos **e** o autor destravar os forks da tabela em `06` (gerenciador de pacotes, projeto Vercel). A candidatura CEIA já foi enviada; a migração não espera vaga.
+Critério (não data): spec + ROADMAP SDD prontos **e** o autor destravar o projeto Vercel (`06`). Gerenciador: **npm**. A candidatura CEIA já foi enviada; a migração não espera vaga.
 
 | Decisão | Escolha | Por quê |
 |---|---|---|
@@ -29,6 +29,7 @@ Critério (não data): spec + ROADMAP SDD prontos **e** o autor destravar os for
 | Deploy | **Vercel** (A3), output estático | Preview por PR; URL final `(pendente)` |
 | i18n | **PT + EN**, rotas `/` e `/en/`, seletor manual (A5) | **Depois** da paridade; ES atual do `main.js` não faz parte de A5 — não promover a terceiro locale sem o autor |
 | Adapter | Estático (`output: 'static'` / adapter estático) | Decisão A3 + “scaffold Astro estático” em `DECISOES.md` |
+| Pacotes | **npm** (2.1) | Autor escolheu npm |
 | EmailJS no Vercel | `(pendente)` | E4 adotou mailto até haver env ou `config` no host novo |
 
 Forks ainda abertos: listar no `06`, não escolher aqui. Não inventar versão do Astro nem nome do projeto Vercel.
