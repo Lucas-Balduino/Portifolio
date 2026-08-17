@@ -63,7 +63,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [ ] Fase 2 — Migração paridade Astro + MDX + Vercel
 - [x] Tarefa 2.1 — Decidir gerenciador de pacotes
 - [x] Tarefa 2.2 — Scaffold Astro com ilhas React
-- [ ] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
+- [x] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
 - [ ] Tarefa 2.4 — Migrar os quatro projetos restantes para MDX
 - [ ] Tarefa 2.5 — Layout: header, footer, nav e tema
 - [ ] Tarefa 2.6 — Página home em paridade
@@ -184,7 +184,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `build(2.2): adiciona scaffold astro com ilhas react`
 
-### Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
+### Tarefa 2.3 — Schema Content Collections e Kinetic em MDX [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.2

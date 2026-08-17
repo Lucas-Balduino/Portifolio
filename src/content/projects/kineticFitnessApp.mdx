@@ -1,0 +1,112 @@
+---
+title: "Kinetic — Fitness App"
+slug: kineticFitnessApp
+short_desc: "App mobile de treinos personalizados com design system próprio, identidade visual por modalidade e arquitetura React Native + Firebase."
+image: img/Kinetic/Kinetic.png
+repo_url: https://github.com/Lucas-Balduino/FitnessApp
+live_url: ""
+technologies:
+  - React Native
+  - Expo
+  - Firebase
+  - Figma
+  - UX/UI
+  - JavaScript
+order: 1
+gallery:
+  - img/Kinetic/KinectMainPage.png
+  - img/Kinetic/KinecticFormulario.png
+  - img/Kinetic/KineticTreino.png
+  - img/Kinetic/KineticCriarConta.png
+  - img/Kinetic/KineticLogin.png
+  - img/Kinetic/KineticPerfil.png
+  - img/Kinetic/KineticBiblioteca.png
+  - img/Kinetic/KineticBibliotecaLoading.png
+  - img/Kinetic/KineticDetalheExercicio.png
+---
+
+## Introdução
+
+O **Kinetic** é um aplicativo mobile de gestão e execução de treinos esportivos. Nasceu como trabalho da disciplina de Programação para Dispositivos Móveis, mas foi conduzido como produto: interface consistente, fluxos claros e base técnica sólida o suficiente para crescer.
+
+O usuário cria conta, personaliza o perfil, explora uma biblioteca de exercícios (API Wger), escolhe rotinas para seis modalidades — musculação, ciclismo, corrida, futebol, voleibol e natação — ou monta treinos próprios salvos na nuvem. A experiência combina decisões de UX/UI com implementação em React Native e Expo.
+
+O projeto mostra, lado a lado, sensibilidade de design (sistema visual, estados de interface, microinterações) e engenharia de software (auth, persistência, APIs, navegação e arquitetura em camadas).
+
+## Ideia Principal
+
+Três pilares guiaram o produto:
+
+### 1. Identidade visual por modalidade
+
+Em vez de um app genérico de musculação, cada esporte tem paleta, ícones e rotinas próprias. A interface muda de contexto — ciclismo em laranja, natação em verde — para reforçar reconhecimento e engajamento sem perder consistência estrutural.
+
+### 2. Autonomia do usuário
+
+Além das rotinas prontas, um formulário com sliders de intensidade/duração, seletores e anotações permite criar treinos customizados, sincronizados via Firestore entre dispositivos.
+
+### 3. Design e código como o mesmo produto
+
+O design system (tipografia, cores, cards, header) não ficou só no Figma: virou componentes e padrões no código. Hooks, services e stacks de navegação sustentam a experiência sem acoplar UI à lógica de dados.
+
+## Detalhes Técnicos
+
+### Design system
+
+- **Tipografia:** Lexend (Black, ExtraBold, Bold, Regular) para hierarquia clara em títulos, tags e corpo.
+- **Cores:** fundo #F8F9FE, primária #005CEE; acentos por esporte (laranja, verde, amarelo).
+- **Componentes:** cards 16–24px, header unificado em 3 colunas, 19 ícones SVG próprios.
+- **UX:** loading, erro com retry, listas vazias e animações de transição/switch/slider construídas sob medida.
+
+### Stack
+
+- React Native + Expo SDK 55 (componentes funcionais e hooks)
+- Firebase Auth (email/senha) com sessão via AsyncStorage
+- Cloud Firestore para perfil e treinos customizados
+- API Wger (REST) na biblioteca de exercícios
+
+### Arquitetura
+
+- `screens/` — 7 telas (UI + lógica de tela)
+- `components/` — switch, picker, drawer, loading
+- `navigation/` — AuthStack, HomeStack, BibliotecaStack, AppDrawer
+- `services/` — auth e Firestore
+- `hooks/` — animações de tela e fetch da Wger
+- `data/` + `Icons/` — datasets e SVGs como componentes
+
+### Navegação e dados
+
+O root (`App.js`) escuta `onAuthStateChanged`: sem login → AuthStack; autenticado → drawer com Início, Biblioteca e Perfil. Estado local com hooks; services encapsulam Firebase; operações assíncronas seguem try/catch/finally com feedback visual.
+
+### API e segurança
+
+Três endpoints Wger com prioridade de tradução PT-BR e limpeza de HTML. Credenciais Firebase em `.env`; regras Firestore por UID; sessão persistente entre reaberturas do app.
+
+## Apresentação
+
+O Kinetic fica na interseção entre design de produto e engenharia: identidade visual documentada, fluxos pensados para uso real e uma codebase organizada o suficiente para evoluir.
+
+Para quem olha pelo lado do design, destaca decisões de sistema (cores por contexto, hierarquia tipográfica, estados e microinterações). Para quem olha pelo lado da computação, mostra React Native, Firebase, consumo de API e arquitetura em camadas — do planejamento em fases até a entrega.
+
+## Como Executar
+
+### Pré-requisitos
+
+- Node.js
+- Expo Go (dispositivo ou emulador)
+- Projeto Firebase com Auth (email/senha) e Firestore
+
+### Passos
+
+```
+git clone https://github.com/Lucas-Balduino/FitnessApp.git
+cd FitnessApp
+npm install
+cp .env.example .env
+```
+
+Preencha o `.env` com as chaves Firebase (`EXPO_PUBLIC_FIREBASE_*`), configure as regras do Firestore no console e rode:
+
+```
+npx expo start
+```
