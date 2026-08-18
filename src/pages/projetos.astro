@@ -2,11 +2,12 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { META } from '../site-config';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Projetos — Lucas">
+<Layout title={META.projects.title} description={META.projects.description}>
 	<section class="projects-list">
 		<div class="section-head">
 			<h1>Projetos</h1>

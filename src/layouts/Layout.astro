@@ -2,13 +2,19 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../../style.css';
+import defaultOgImage from '../../img/og-image.png?url';
+import { SITE_NAME, absoluteUrl, canonicalUrl } from '../site-config';
 
 interface Props {
 	title?: string;
+	description: string;
+	ogImage?: string;
 }
 
-const { title = 'Lucas — Portfólio' } = Astro.props;
+const { title = 'Lucas — Portfólio', description, ogImage } = Astro.props;
 const currentPath = Astro.url.pathname;
+const canonical = canonicalUrl(currentPath);
+const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 ---
 
 <!doctype html>
@@ -17,8 +23,24 @@ const currentPath = Astro.url.pathname;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonical} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<meta name="description" content={description} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageAbs} />
+		<meta property="og:site_name" content={SITE_NAME} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonical} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageAbs} />
+
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
 			rel="stylesheet"

@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { META } from '../site-config';
 ---
 
-<Layout title="Projeto não encontrado — Lucas">
+<Layout title={META.notFound.title} description={META.notFound.description}>
 	<article class="project-detail">
 		<h1>Projeto não encontrado</h1>
 		<p>O projeto solicitado não foi encontrado.</p>

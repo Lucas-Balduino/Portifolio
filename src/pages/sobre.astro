@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
+import { META } from '../site-config';
 ---
 
-<Layout title="Sobre mim — Lucas">
+<Layout title={META.about.title} description={META.about.description}>
 	<section class="about-page">
 		<div class="about-header">
 			<div class="about-info">

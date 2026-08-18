@@ -3,13 +3,14 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
+import { META } from '../site-config';
 
 const recentProjects = (await getCollection('projects'))
 	.filter((entry) => entry.data.order >= 1 && entry.data.order <= 3)
 	.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Lucas — Portfólio">
+<Layout title={META.home.title} description={META.home.description}>
 	<section class="hero grid">
 		<div class="hero-card">
 			<h1 class="hero-title">Olá, eu sou <span class="accent">Lucas</span></h1>

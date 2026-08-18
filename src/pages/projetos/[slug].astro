@@ -63,7 +63,11 @@ const liveHref = data.live_url.trim();
 const coverSrc = publicSrc(data.image);
 ---
 
-<Layout title={`${data.title} — Lucas`}>
+<Layout
+	title={`${data.title} — Lucas`}
+	description={data.short_desc}
+	ogImage={publicSrc(data.image)}
+>
 	<article class="project-detail">
 		<header class="project-hero">
 			<div class="project-hero-row">

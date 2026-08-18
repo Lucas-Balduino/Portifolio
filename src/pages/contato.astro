@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { META } from '../site-config';
 
 const contactEmail = 'lucasgbalduino@gmail.com';
 ---
 
-<Layout title="Contato — Lucas">
+<Layout title={META.contact.title} description={META.contact.description}>
 	<section class="contact-page">
 		<h1>Contato</h1>
 		<p class="muted">

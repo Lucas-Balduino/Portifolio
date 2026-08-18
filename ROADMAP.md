@@ -71,7 +71,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.8 — Página de detalhe (seções, galeria, Figma)
 - [x] Tarefa 2.9 — Página Sobre e download do CV
 - [x] Tarefa 2.10 — Página Contato (mailto)
-- [ ] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
+- [x] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
 - [ ] Tarefa 2.12 — Criar projeto na Vercel
 - [ ] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
 - [ ] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
@@ -410,7 +410,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(2.10): implementa contato com mailto como fallback`
 
-### Tarefa 2.11 — SEO: sitemap, robots, Open Graph
+### Tarefa 2.11 — SEO: sitemap, robots, Open Graph [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.6, 2.7, 2.8, 2.9, 2.10
