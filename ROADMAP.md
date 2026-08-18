@@ -70,7 +70,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.7 — Listagem de projetos e cards
 - [x] Tarefa 2.8 — Página de detalhe (seções, galeria, Figma)
 - [x] Tarefa 2.9 — Página Sobre e download do CV
-- [ ] Tarefa 2.10 — Página Contato (mailto)
+- [x] Tarefa 2.10 — Página Contato (mailto)
 - [ ] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
 - [ ] Tarefa 2.12 — Criar projeto na Vercel
 - [ ] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
@@ -381,7 +381,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(2.9): implementa pagina sobre e download do cv`
 
-### Tarefa 2.10 — Página Contato (mailto)
+### Tarefa 2.10 — Página Contato (mailto) [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.5

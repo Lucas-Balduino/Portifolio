@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const contactEmail = 'lucasgbalduino@gmail.com';
+---
+
+<Layout title="Contato — Lucas">
+	<section class="contact-page">
+		<h1>Contato</h1>
+		<p class="muted">
+			Vamos trabalhar juntos! Entre em contato para projetos, colaborações ou apenas para bater um papo
+			sobre tecnologia.
+		</p>
+
+		<div class="contact-info">
+			<p>
+				<strong>Email direto:</strong>
+				<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+			</p>
+			<p>
+				<strong>Disponibilidade:</strong>
+				<span>Aberto a projetos freelance e oportunidades</span>
+			</p>
+		</div>
+
+		<div id="contact-status" class="contact-status" hidden></div>
+
+		<form class="contact-form" action={`mailto:${contactEmail}`} method="get" enctype="text/plain">
+			<label for="name">Nome completo</label>
+			<input id="name" name="name" type="text" required placeholder="Seu nome completo" />
+
+			<label for="email">Email</label>
+			<input id="email" name="email" type="email" required placeholder="seu@email.com" />
+
+			<label for="subject">Assunto</label>
+			<input
+				id="subject"
+				name="subject"
+				type="text"
+				required
+				placeholder="Projeto, colaboração, pergunta..."
+			/>
+
+			<label for="message">Mensagem</label>
+			<textarea
+				id="message"
+				name="message"
+				rows="6"
+				required
+				placeholder="Conte-me sobre seu projeto ou ideia..."></textarea>
+
+			<div class="form-actions">
+				<button class="btn" type="submit">Enviar mensagem</button>
+				<button class="btn ghost" type="reset">Limpar formulário</button>
+			</div>
+		</form>
+	</section>
+</Layout>
+
+<script>
+	const CONTACT_EMAIL = 'lucasgbalduino@gmail.com';
+	const form = document.querySelector<HTMLFormElement>('.contact-form');
+	const statusEl = document.getElementById('contact-status');
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const data = new FormData(form);
+		const name = String(data.get('name') ?? '').trim();
+		const email = String(data.get('email') ?? '').trim();
+		const subject = String(data.get('subject') ?? '').trim();
+		const message = String(data.get('message') ?? '').trim();
+		const body = `Nome: ${name}\nEmail: ${email}\n\n${message}`;
+		const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+		if (statusEl) {
+			statusEl.textContent =
+				'Se o aplicativo de email não abrir, use o email direto acima.';
+			statusEl.className = 'contact-status contact-status--error';
+			statusEl.hidden = false;
+		}
+
+		window.location.href = href;
+	});
+</script>
