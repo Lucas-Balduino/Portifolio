@@ -1,0 +1,154 @@
+---
+import { getCollection } from 'astro:content';
+import { micromark } from 'micromark';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map((project) => ({
+		params: { slug: project.data.slug },
+		props: { project }
+	}));
+}
+
+const { project } = Astro.props;
+const data = project.data;
+const body = (project.body ?? '').replace(/\r\n/g, '\n');
+
+const splitH2Sections = (markdown: string) => {
+	const sections: { title: string; markdown: string }[] = [];
+	let current: { title: string; lines: string[] } | null = null;
+	for (const line of markdown.split('\n')) {
+		const heading = /^##\s+(.+)$/.exec(line);
+		if (heading) {
+			if (current) {
+				sections.push({ title: current.title, markdown: current.lines.join('\n').trim() });
+			}
+			current = { title: heading[1].trim(), lines: [] };
+		} else if (current) {
+			current.lines.push(line);
+		}
+	}
+	if (current) {
+		sections.push({ title: current.title, markdown: current.lines.join('\n').trim() });
+	}
+	return sections.filter((section) => section.markdown.length > 0);
+};
+
+const toHtml = (markdown: string) => micromark(markdown, { allowDangerousHtml: true });
+const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
+
+const mainIdeaTitle = data.section_titles?.main_idea ?? 'Ideia Principal';
+const galleryTitle = data.section_titles?.images ?? 'Imagens';
+const sections = splitH2Sections(body);
+
+type Block =
+	| { type: 'section'; title: string; html: string }
+	| { type: 'gallery' };
+
+const blocks: Block[] = [];
+for (const section of sections) {
+	blocks.push({ type: 'section', title: section.title, html: toHtml(section.markdown) });
+	if (section.title === mainIdeaTitle && data.gallery.length > 0) {
+		blocks.push({ type: 'gallery' });
+	}
+}
+if (data.gallery.length > 0 && !blocks.some((block) => block.type === 'gallery')) {
+	const firstSection = blocks.findIndex((block) => block.type === 'section');
+	blocks.splice(firstSection === -1 ? 0 : firstSection + 1, 0, { type: 'gallery' });
+}
+
+const githubHref = data.repo_url.trim();
+const liveHref = data.live_url.trim();
+const coverSrc = publicSrc(data.image);
+---
+
+<Layout title={`${data.title} — Lucas`}>
+	<article class="project-detail">
+		<header class="project-hero">
+			<div class="project-hero-row">
+				<div>
+					<h1>{data.title}</h1>
+					<p class="muted">{data.short_desc}</p>
+				</div>
+				<a href="/projetos" class="btn ghost">← Voltar para projetos</a>
+			</div>
+		</header>
+
+		{
+			data.image && (
+				<section class="project-image">
+					<img class="project-hero-img" src={coverSrc} alt={data.title} loading="lazy" />
+				</section>
+			)
+		}
+
+		{
+			blocks.map((block) =>
+				block.type === 'gallery' ? (
+					<section class="project-images">
+						<h2>{galleryTitle}</h2>
+						<div class="project-images-grid">
+							{data.gallery.map((src) => (
+								<figure class="project-shot">
+									<img src={publicSrc(src)} alt={data.title} loading="lazy" />
+								</figure>
+							))}
+						</div>
+					</section>
+				) : (
+					<section class="project-section">
+						<h2>{block.title}</h2>
+						<div class="project-rich-text" set:html={block.html} />
+					</section>
+				)
+			)
+		}
+
+		{
+			data.technologies.length > 0 && (
+				<section class="project-technologies">
+					<h2>Tecnologias</h2>
+					<div class="card-tags">
+						{data.technologies.map((tech) => (
+							<span class="badge">{tech}</span>
+						))}
+					</div>
+				</section>
+			)
+		}
+
+		{
+			(githubHref || liveHref) && (
+				<section class="project-links">
+					<h2>Links</h2>
+					<div class="project-links-row">
+						{githubHref ? (
+							<a href={githubHref} target="_blank" rel="noopener noreferrer" class="btn">
+								Ver no GitHub
+							</a>
+						) : null}
+						{liveHref ? (
+							<a href={liveHref} target="_blank" rel="noopener noreferrer" class="btn">
+								Ver Demo
+							</a>
+						) : null}
+					</div>
+				</section>
+			)
+		}
+	</article>
+
+	<script>
+		document.querySelectorAll('.project-shot img').forEach((img) => {
+			const tagOrientation = () => {
+				const figure = img.closest('.project-shot');
+				if (!(figure instanceof HTMLElement) || !img.naturalWidth) return;
+				figure.classList.toggle('is-landscape', img.naturalWidth > img.naturalHeight);
+				figure.classList.toggle('is-portrait', img.naturalWidth <= img.naturalHeight);
+			};
+			if (img.complete) tagOrientation();
+			else img.addEventListener('load', tagOrientation, { once: true });
+		});
+	</script>
+</Layout>
