@@ -67,7 +67,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.4 — Migrar os quatro projetos restantes para MDX
 - [x] Tarefa 2.5 — Layout: header, footer, nav e tema
 - [x] Tarefa 2.6 — Página home em paridade
-- [ ] Tarefa 2.7 — Listagem de projetos e cards
+- [x] Tarefa 2.7 — Listagem de projetos e cards
 - [ ] Tarefa 2.8 — Página de detalhe (seções, galeria, Figma)
 - [ ] Tarefa 2.9 — Página Sobre e download do CV
 - [ ] Tarefa 2.10 — Página Contato (mailto)
@@ -299,7 +299,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(2.6): implementa home astro em paridade`
 
-### Tarefa 2.7 — Listagem de projetos e cards
+### Tarefa 2.7 — Listagem de projetos e cards [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.4, 2.5

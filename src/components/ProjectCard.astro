@@ -25,7 +25,9 @@ const resolveImage = (posixPath: string) => {
 };
 
 const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolvimento.jpg');
-const detailHref = `/projetos/${slug}`;
+const githubHref = repoUrl.trim();
+const liveHref = liveUrl.trim();
+const detailHref = slug.trim() ? `/projetos/${slug}` : '';
 ---
 
 <article class="card project-card">
@@ -42,24 +44,26 @@ const detailHref = `/projetos/${slug}`;
 				</div>
 			)
 		}
-		<div class="card-actions">
-			{
-				repoUrl ? (
-					<a class="card-link" href={repoUrl} target="_blank" rel="noopener noreferrer">
-						GitHub
-					</a>
-				) : null
-			}
-			{
-				liveUrl ? (
-					<a class="card-link" href={liveUrl} target="_blank" rel="noopener noreferrer">
-						Live Demo
-					</a>
-				) : null
-			}
-			<a class="card-link card-link--primary" href={detailHref}>
-				Ver detalhes
-			</a>
-		</div>
+		{
+			(githubHref || liveHref || detailHref) && (
+				<div class="card-actions">
+					{githubHref ? (
+						<a class="card-link" href={githubHref} target="_blank" rel="noopener noreferrer">
+							GitHub
+						</a>
+					) : null}
+					{liveHref ? (
+						<a class="card-link" href={liveHref} target="_blank" rel="noopener noreferrer">
+							Live Demo
+						</a>
+					) : null}
+					{detailHref ? (
+						<a class="card-link card-link--primary" href={detailHref}>
+							Ver detalhes
+						</a>
+					) : null}
+				</div>
+			)
+		}
 	</div>
 </article>
