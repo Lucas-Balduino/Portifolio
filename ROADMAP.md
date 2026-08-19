@@ -72,7 +72,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.9 — Página Sobre e download do CV
 - [x] Tarefa 2.10 — Página Contato (mailto)
 - [x] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
-- [ ] Tarefa 2.12 — Criar projeto na Vercel
+- [x] Tarefa 2.12 — Criar projeto na Vercel
 - [ ] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
 - [ ] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
 - [ ] Fase 3 — Identidade dark-first
@@ -89,7 +89,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 | Tarefa | O que decidir | Registrada |
 |---|---|---|
 | 2.1 | Gerenciador de pacotes (npm / pnpm / yarn) | **npm** |
-| 2.12 | Projeto Vercel e URL de produção | `(pendente)` |
+| 2.12 | Projeto Vercel e URL de produção | **https://lucasbalduino.vercel.app** |
 | 3.1 | Hex de acento + família display | `(pendente)` |
 | 4.3 | Quais cases ganham EN depois do fallback | `(pendente)` — não bloqueia 4.3 |
 
@@ -438,7 +438,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(2.11): adiciona seo sitemap e open graph no astro`
 
-### Tarefa 2.12 — Criar projeto na Vercel
+### Tarefa 2.12 — Criar projeto na Vercel [x]
 
 - **Tipo:** autor
 - **Bloqueada por:** 2.11
@@ -450,7 +450,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Pergunta:** Qual é a URL de produção na Vercel (projeto criado, deploy de preview ou production ok)?
 **Opções:** colar a URL `https://….vercel.app` (ou domínio que o autor ligou)
-**Decisão registrada:** `(pendente)`
+**Decisão registrada:** `https://lucasbalduino.vercel.app`
 
 **Fazer:**
 
