@@ -1,0 +1,116 @@
+---
+title: "Mapa Virtual do IdA"
+slug: mapaVirtualIdA
+short_desc: "Mapa virtual interativo para orientação espacial no novo prédio do Instituto de Artes da UnB: busca de salas, status em tempo real e informação institucional viva."
+image: img/IdA/IdACapa.jpg
+repo_url: ""
+live_url: "https://www.figma.com/proto/DqVEE5LjFYWZokVglrf9mV/Projeto-Novo-Ida?node-id=17-164&t=x6QUaNiLbwlmRQKj-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=17%3A3"
+technologies:
+  - Figma
+  - UX Research
+  - Arquitetura de Informação
+  - Design System
+  - Wayfinding
+  - Acessibilidade
+order: 2
+section_titles:
+  introduction: Contexto e Problema
+  main_idea: Decisões de Design
+  images: Telas
+  technical_details: Processo e Pesquisa
+  presentation: Resultado e Aprendizados
+  how_to_run: Protótipo Interativo
+gallery:
+  - img/IdA/IdAMapaTerreo.png
+  - img/IdA/IdABuscaSala.png
+  - img/IdA/IdADetalheSala.png
+  - img/IdA/IdAEventos.png
+  - img/IdA/IdAOndeFica.png
+  - img/IdA/IdASobre.png
+  - img/IdA/IdAContato.png
+  - img/IdA/IdAPerfil.png
+  - img/IdA/IdAGaleria.png
+---
+
+## Contexto e Problema
+
+O **Mapa Virtual do IdA** é um mapa interativo pensado para resolver um problema concreto: o novo prédio do curso de Design da Universidade de Brasília foi inaugurado sem um sistema de sinalização padronizado, e alunos, professores e visitantes se perdem nele.
+
+A restrição que definiu o projeto apareceu na primeira conversa com o chefe do Departamento de Design: intervenções físicas — placas, pinturas, totens — dependem de burocracia e de garantia estrutural de um edifício recém-entregue. Ou seja, a solução óbvia estava indisponível.
+
+Daí a pergunta que orientou o trabalho: *como melhorar a orientação espacial de um prédio sem poder tocar no prédio?* A resposta foi um produto digital acessível por QR code nas entradas e pelo site do curso — de baixo impacto, atualizável e capaz de carregar informação que placa nenhuma carregaria.
+
+<p class="muted">Projeto desenvolvido em grupo na disciplina de <strong>Metodologia do Design</strong> do curso de Design da UnB, com <strong>Vinnicius Deleon</strong>. Conduzi a maior parte do design: pesquisa de referências, arquitetura de informação, sistema visual e prototipagem no Figma.</p>
+
+## Decisões de Design
+
+Três decisões estruturam o produto:
+
+### 1. A busca é a porta de entrada, não o menu
+
+Quem chega ao prédio não quer explorar um app: quer achar a sala AO-05 agora. Por isso a tela inicial é a planta do andar com um campo de busca fixo no topo — digitar o código da sala a destaca no mapa e abre o card com as informações. Navegar pelo menu é o caminho secundário, para quem está com tempo.
+
+### 2. Informação viva no lugar de informação gravada
+
+Aqui está a justificativa central para o formato digital. Uma placa diz onde a sala está; o card diz **o que está acontecendo nela**: função (sala de aula, laboratório, biblioteca), professor responsável, horário de funcionamento, grade horária e um indicador de status aberto/fechado em cor. É a informação que muda a cada semestre — exatamente a que uma placa física não consegue acompanhar.
+
+### 3. Orientação espacial e pertencimento como o mesmo problema
+
+A pesquisa mostrou que a ausência de sinalização não confunde apenas: ela enfraquece a identidade do curso no espaço. Por isso o escopo cresceu do mapa para um app institucional, com eventos, galeria, história do Instituto e contatos dos departamentos. A paleta amarela, a tipografia e a linguagem visual seguem a identidade do Design da UnB — o sistema orienta e, ao mesmo tempo, marca território.
+
+## Processo e Pesquisa
+
+### Descoberta
+
+- **Conversa com o chefe do Departamento de Design:** mapeou os limites administrativos e técnicos de qualquer intervenção no prédio — foi o que descartou a solução física e redirecionou o projeto.
+- **Observação de campo:** percurso pelo prédio identificando onde as pessoas hesitam, e conversas com quem circula ali.
+- **Benchmark:** o padrão de sinalização do ICC (Minhocão) como referência interna da UnB, mais mapas interativos, totens digitais e apps de orientação de outras universidades brasileiras e estrangeiras.
+- **Mapeamento espacial:** levantamento das áreas do prédio — salas, ateliês, laboratórios, secretaria, auditório, biblioteca, áreas de convivência e acessos.
+
+### Arquitetura de informação
+
+A estrutura resolve dois tipos de pergunta: as de urgência ("onde é a sala X?") e as de contexto ("o que é o IdA?", "tem evento hoje?").
+
+- **Mapa do andar + busca de salas** — fluxo principal, com card de detalhe por sala
+- **Onde fica o IdA?** — chegada ao prédio, com mapa externo e endereço
+- **Eventos** — agenda com data, local e horário
+- **Galeria** e **Sobre o Instituto** — identidade e pertencimento
+- **Contato** — telefones, e-mails e links dos departamentos
+- **Perfil** — curso, grade e "Minhas Salas", atalho para as salas recorrentes do usuário
+
+### Sistema visual
+
+- **Cor:** amarelo institucional do Design da UnB como acento único, aplicado no header e nos títulos; cinzas neutros no restante para o mapa colorido não competir com a interface.
+- **Legenda cromática do mapa:** cada tipo de espaço (auditório, biblioteca, departamentos, salas de aula) tem cor própria, com legenda fixa abaixo da planta.
+- **Status por cor + texto:** o indicador aberto/fechado nunca depende só da cor — vem acompanhado do rótulo, para não excluir usuários com daltonismo.
+- **Padrões recorrentes:** header com menu e avatar, cards brancos sobre fundo claro, tags coloridas de evento e barra de navegação inferior fixa, repetidos em todas as telas.
+
+### Pontos de acesso
+
+O produto foi desenhado para ser alcançado sem instalação: QR codes nas entradas e nos corredores, integração ao site do curso e possibilidade futura de totens — coerente com a restrição de não intervir fisicamente no prédio.
+
+## Resultado e Aprendizados
+
+A entrega desta etapa é um protótipo navegável no Figma que demonstra o fluxo completo: chegar ao prédio, buscar uma sala, entender o que acontece nela e acessar a informação institucional do Instituto.
+
+O que o formato digital resolve que a placa não resolveria: **atualização contínua** (mudança de sala ou de professor é edição de conteúdo, não obra), **informação temporal** (grade horária, status, eventos do dia), **acesso sem instalação** via QR code e **potencial de acessibilidade** — descrição em áudio e contraste adequado, previstos no projeto.
+
+### Limitações
+
+O projeto é conceitual e precisa ser dito como tal: **não houve teste de usabilidade com usuários**, então as decisões de fluxo são fundamentadas em observação e benchmark, não em validação. O protótipo cobre o térreo — os andares superiores exigiriam um seletor de pavimento que ainda não foi desenhado. Os recursos de acessibilidade estão previstos, não implementados. E o status "aberto/fechado" pressupõe uma fonte de dados institucional que ainda não existe.
+
+### O que eu faria diferente
+
+Começaria pelo teste de corredor: cinco pessoas, uma tarefa ("ache a sala AO-05"), antes de desenhar as telas secundárias. Provavelmente descobriria que o código da sala não é como as pessoas se referem aos espaços — elas dizem "o laboratório de prototipagem", não "AO-30" — e a busca teria sido desenhada por nome e função desde o início, não por código.
+
+### Relação com o projeto maior
+
+Esta etapa alimenta a geração de alternativas para a experiência do usuário no prédio de Design, e o mapa virtual pode futuramente coexistir com um sistema físico padronizado, quando ele for viável. Como exercício, foi principalmente uma lição sobre projetar dentro de restrições institucionais: a melhor solução disponível não era a solução ideal.
+
+## Protótipo Interativo
+
+O protótipo abaixo é navegável: use a busca para localizar uma sala no mapa do térreo, ou percorra as seções de eventos, galeria e contatos pela barra inferior. Use o ícone de **tela cheia** no canto do player para ampliar sem sair do site; o botão **Ver Demo** abre o protótipo no Figma se preferir.
+
+<div class="figma-embed figma-embed--mobile">
+  <iframe src="https://embed.figma.com/proto/DqVEE5LjFYWZokVglrf9mV/Projeto-Novo-Ida?node-id=17-164&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=17%3A3&embed-host=share" loading="lazy" title="Protótipo interativo do Mapa Virtual do IdA" allowfullscreen></iframe>
+</div>

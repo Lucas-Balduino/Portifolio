@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+import fotoMinha from '../../img/FotoMinha.jpg?url';
+import { META } from '../site-config';
+---
+
+<Layout title={META.about.title} description={META.about.description}>
+	<section class="about-page">
+		<div class="about-header">
+			<div class="about-info">
+				<h1>Sobre mim</h1>
+				<p class="muted">
+					Designer e desenvolvedor UX/UI em formação, apaixonado por criar interfaces intuitivas e
+					acessíveis.
+				</p>
+			</div>
+			<div class="about-photo">
+				<img src={fotoMinha} alt="Foto do Lucas" class="profile-photo" loading="lazy" />
+			</div>
+		</div>
+
+		<div class="about-content">
+			<div class="about-section">
+				<h2>Quem sou eu</h2>
+				<p>
+					Olá! Sou <strong>Lucas Gonçalves Balduino</strong>, estudante de Design (UnB) e Ciência da
+					Computação (UniCEUB). Atuo na interseção entre UX/UI e front‑end: prototipo interfaces,
+					cuido da usabilidade e transformo ideias visuais em código funcional.
+				</p>
+			</div>
+
+			<div class="about-section">
+				<h2>Formação</h2>
+				<ul class="education-list">
+					<li>
+						<strong>Bacharelado em Ciência da Computação</strong>
+						<span class="institution">UniCEUB, Brasília</span>
+						<span class="period">Previsão de conclusão: 2027 (2º semestre)</span>
+					</li>
+					<li>
+						<strong>Design</strong>
+						<span class="institution">Universidade de Brasília (UnB), Brasília</span>
+						<span class="period">Previsão de conclusão: 2028 (1º semestre)</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="about-section">
+				<h2>Experiência</h2>
+				<ul class="experience-list">
+					<li>
+						<strong>Projeto de extensão — Gêmeos digitais CAL/UnB</strong>
+						<span class="institution">Voluntário (último semestre) → Bolsista (atual)</span>
+						<span class="description"
+							>Participação no projeto de geração de gêmeos digitais de obras da Casa de Cultura da
+							América Latina (CAL/UnB) para formação de um acervo online. Atuação no escaneamento das
+							obras e na preparação do site que será apêndice do portal atual da CAL.</span
+						>
+					</li>
+					<li>
+						<strong>Monitor de HTML & CSS</strong>
+						<span class="description"
+							>Auxílio aos alunos na aprendizagem de layouts web e estilização prática.</span
+						>
+					</li>
+					<li>
+						<strong>Desenvolvimento de projetos pessoais</strong>
+						<span class="description"
+							>Criação de aplicações front‑end e interfaces com foco em UX, UI e acessibilidade.</span
+						>
+					</li>
+				</ul>
+			</div>
+
+			<div class="about-section">
+				<h2>Tecnologias & Ferramentas</h2>
+				<div class="skills-grid">
+					<div class="skill-category">
+						<h3>Linguagens</h3>
+						<div class="skill-tags">
+							<span class="skill-tag">C</span>
+							<span class="skill-tag">Assembly</span>
+							<span class="skill-tag">Java</span>
+							<span class="skill-tag">Python</span>
+							<span class="skill-tag">JavaScript</span>
+							<span class="skill-tag">Go</span>
+						</div>
+					</div>
+					<div class="skill-category">
+						<h3>Frontend</h3>
+						<div class="skill-tags">
+							<span class="skill-tag">HTML</span>
+							<span class="skill-tag">CSS</span>
+							<span class="skill-tag">React</span>
+						</div>
+					</div>
+					<div class="skill-category">
+						<h3>Bancos de Dados</h3>
+						<div class="skill-tags">
+							<span class="skill-tag">MySQL</span>
+						</div>
+					</div>
+					<div class="skill-category">
+						<h3>Outros</h3>
+						<div class="skill-tags">
+							<span class="skill-tag">Git</span>
+							<span class="skill-tag">Figma</span>
+							<span class="skill-tag">UX/UI</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="about-section">
+				<h2>Idiomas</h2>
+				<div class="languages-list">
+					<div class="language-item">
+						<span class="language-name">Português</span>
+						<span class="language-level">Nativo</span>
+					</div>
+					<div class="language-item">
+						<span class="language-name">Inglês</span>
+						<span class="language-level">Avançado</span>
+					</div>
+					<div class="language-item">
+						<span class="language-name">Espanhol</span>
+						<span class="language-level">Intermediário</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="about-section">
+				<h2>Disponibilidade</h2>
+				<p>
+					Disponível para <strong>projetos freelance</strong>. Aberto a oportunidades em front‑end,
+					UI/UX e full‑stack de pequeno porte.
+				</p>
+			</div>
+
+			<div class="about-actions">
+				<a href="/Resume/CurriculoPT.pdf" class="btn-project" download>Baixar Currículo</a>
+				<a href="/contato" class="btn ghost">Entrar em Contato</a>
+			</div>
+		</div>
+	</section>
+</Layout>

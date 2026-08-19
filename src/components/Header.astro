@@ -1,0 +1,45 @@
+---
+interface Props {
+	currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const links = [
+	{ href: '/', label: 'Início' },
+	{ href: '/projetos', label: 'Projetos' },
+	{ href: '/sobre', label: 'Sobre mim' },
+	{ href: '/contato', label: 'Contato' }
+];
+
+const isActive = (href: string) => {
+	if (href === '/') return currentPath === '/';
+	return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="brand" href="/">lucas<span class="brand-dot">.</span></a>
+		<nav aria-label="Principal" class="nav">
+			<ul class="nav-list" id="nav-list">
+				{
+					links.map((link) => (
+						<li>
+							<a
+								class:list={['nav-link', { active: isActive(link.href) }]}
+								href={link.href}
+							>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema"></button>
+
+		<button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+	</div>
+</header>

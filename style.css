@@ -305,6 +305,9 @@ body.theme-dark .contact-form textarea:focus{
 /* Project Detail Page */
 .project-detail{ max-width:900px; margin:0 auto; }
 .project-hero{ margin-bottom:2.5rem; }
+.project-hero-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; }
+.project-hero-row .btn{ align-self:flex-start; }
+.project-links-row{ display:flex; gap:1rem; flex-wrap:wrap; }
 .project-hero h1{ margin:0 0 0.5rem 0; font-size:2.5rem; color:var(--accent); }
 .project-image{ margin:2rem 0; display:flex; justify-content:center; }
 .project-hero-img{

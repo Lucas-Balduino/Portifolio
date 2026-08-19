@@ -1,0 +1,127 @@
+---
+title: "Agência de Viagem"
+slug: agenciaDeViagens
+short_desc: "Sistema de gerenciamento para agência de viagens com cadastro de clientes (nacionais/estrangeiros), pacotes turísticos e serviços."
+image: img/ImagemAgencia.png
+repo_url: https://github.com/Lucas-Balduino/AgenciaDeViagens
+live_url: ""
+technologies:
+  - Java
+  - MySQL
+  - JavaSwing
+order: 5
+gallery: []
+---
+
+## Introdução
+
+Sistema de gerenciamento para agência de viagens desenvolvido em Java com interface gráfica Swing e MySQL no backend. Cobre cadastro e gerenciamento de clientes (nacionais e estrangeiros), pacotes turísticos, serviços adicionais e o fluxo de contratação de pacotes. O foco foi criar uma aplicação desktop prática para demonstrar arquitetura em camadas (models/dao/view), boas práticas de UI e integração com banco de dados.
+
+## Ideia Principal
+
+Oferecer uma ferramenta simples e robusta para uma agência controlar:
+
+Cadastro de clientes (CPF para nacionais, passaporte para estrangeiros);
+
+Criação/edição/exclusão de pacotes turísticos com associação de serviços;
+
+Gerenciamento de serviços (ex.: seguro, translado, passeios);
+
+Contratação de pacotes por cliente e relatórios de vínculo cliente ↔ pacote.
+A intenção é um MVP que cubra todo o ciclo CRUD + relatórios e validações essenciais.
+
+## Detalhes Técnicos
+
+** Linguagem ** : Java 11+
+
+** UI **: Swing (JFrame, JPanel, JTabbedPane, JTable, JFormattedTextField, MaskFormatter)
+
+** Persistência **: MySQL (via JDBC) + classes DAO (ClienteDao, PacoteDao, ServicoDao)
+
+** Arquitetura **: Camadas simples — models (entidades), dao (acesso ao BD), view (Swing panels).
+
+Principais classes/painéis implementados:
+
+MenuPrincipalView — tela inicial.
+
+ClienteManagementFrame, ClienteNacionalPanel, ClienteEstrangeiroPanel, ClienteListagemPanel.
+
+PacoteManagementFrame, PacoteCadastroPanel, PacoteListagemPanel.
+
+ServicoManagementFrame, ServicoCadastroPanel, ServicoListagemPanel.
+
+RelatorioPacotesPorClientePanel, RelatorioClientesPorPacotePanel.
+
+DataBaseConnection (configuração de conexão JDBC).
+
+** Validações & UX ** : validação de campos obrigatórios, regex/email, validação de CPF (dígitos), máscara para telefone/CPF, confirmação via JOptionPane, tratamento de exceções de banco com mensagens amigáveis.
+
+** Transações **: recomendação aplicada no DAO (realizar operações de inserção de pacote + associação de serviços em transação JDBC para evitar inconsistência).
+
+** Observações de implementação: ** DAO retorna boolean em operações de remoção/atualização para feedback ao UI; listagens unificadas (buscar nacionais + estrangeiros) para a pesquisa global.
+
+## Apresentação
+
+** Estética: ** layout limpo e funcional — fontes neutras (Verdana), espaçamento consistente (Insets), uso de JTabbedPane para separar criar/editar e listar, JTable para visualização tabular dos registros.
+
+** Navegação: ** menu principal com botões que abrem Management Frames (cada área com abas). Dentro de cada ManagementFrame:
+
+** Aba Cadastro: ** formulário com campos e botões Salvar / Cancelar.
+
+** Aba Listagem: ** campo de busca, tabela com resultados e botões Novo / Editar / Excluir / Atualizar.
+
+Ao clicar em Editar na tabela, o painel de cadastro é preenchido com os dados e a aba de cadastro é selecionada automaticamente.
+
+** Feedback: ** mensagens claras via JOptionPane (erros de validação, sucesso, confirmação de exclusão). Carregamento de dados e mensagens de erro dentro das abas se o BD não estiver disponível.
+
+** Usabilidade: ** máscaras e validações reduzem erros do usuário; ação “Novo” limpa e foca o formulário; troca de abas atualiza listagens automaticamente.
+
+## Como Executar
+
+** Pré-requisitos **
+
+Java JDK 11+ instalado.
+
+MySQL 8+ em execução.
+
+Biblioteca mysql-connector-java no classpath (ou via dependência do projeto).
+
+IDE recomendada: IntelliJ IDEA (funciona com projeto Java padrão ou Maven/Gradle).
+
+** Configurar banco de dados **
+
+Criar banco (ex.: agencia) e as tabelas necessárias:
+
+nacional(id, nome, telefone, email, cpf), estrangeiro(id, nome, telefone, email, passaporte),
+
+pacotes(id, nome?, destino, duracao, preco), servicos(id, nome, duracao, descricao),
+
+tabelas de relação: pacote_servico(pacote_id, servico_id), nacional_pacotes, estrangeiro_pacotes.
+
+Ajuste o arquivo DataBaseConnection com URL, usuário e senha do MySQL:
+
+```
+// exemplo
+String url = "jdbc:mysql://localhost:3306/agencia?useSSL=false&serverTimezone=UTC";
+String user = "root";
+String pass = "sua_senha";
+```
+
+** Compilar / executar **
+
+Se estiver usando IntelliJ: abra o projeto, marque a pasta src como fonte, adicione o driver JDBC como biblioteca, rode a classe MenuPrincipalView.main.
+
+Pela linha de comando (diretório src):
+
+```
+javac -cp .:lib/mysql-connector-java.jar -d out $(find . -name "*.java")
+java -cp out:lib/mysql-connector-java.jar com.agencia.view.MenuPrincipalView
+```
+
+(no Windows substitua : por ;)
+
+** Primeiro acesso **
+
+Abra o menu → Gerenciar Pacotes → se a conexão estiver correta a aba de cadastro irá carregar serviços; caso contrário a aba exibirá a mensagem de erro com instruções.
+
+Use Cadastro para inserir pacotes/serviços e Listagem para editar/excluir/filtrar.

@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import fotoMinha from '../../img/FotoMinha.jpg?url';
+import { META } from '../site-config';
+
+const recentProjects = (await getCollection('projects'))
+	.filter((entry) => entry.data.order >= 1 && entry.data.order <= 3)
+	.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title={META.home.title} description={META.home.description}>
+	<section class="hero grid">
+		<div class="hero-card">
+			<h1 class="hero-title">Olá, eu sou <span class="accent">Lucas</span></h1>
+			<p class="hero-sub">
+				Designer e desenvolvedor UX/UI em formação — eu desenho e construo interfaces intuitivas,
+				pensadas para desempenho e acessibilidade.
+			</p>
+			<div class="hero-cta">
+				<a class="btn-project" href="/projetos">Ver projetos</a>
+				<a class="btn ghost" href="/contato">Contrate-me</a>
+			</div>
+
+			<ul class="skills-quick" aria-label="Habilidades rápidas">
+				<li>HTML • CSS • JS</li>
+				<li>Figma • Git</li>
+				<li>Acessibilidade • Responsivo</li>
+			</ul>
+		</div>
+
+		<figure class="hero-figure" aria-hidden="false">
+			<img src={fotoMinha} alt="Foto do Lucas" class="hero-photo" />
+			<figcaption class="sr-only">Foto de Lucas</figcaption>
+		</figure>
+	</section>
+
+	<section class="projects-preview">
+		<div class="section-head">
+			<h2>Projetos recentes</h2>
+			<a class="link-muted" href="/projetos">Ver todos →</a>
+		</div>
+
+		<div class="projects-grid">
+			{
+				recentProjects.map((entry) => (
+					<ProjectCard
+						title={entry.data.title}
+						slug={entry.data.slug}
+						shortDesc={entry.data.short_desc}
+						image={entry.data.image}
+						technologies={entry.data.technologies}
+						repoUrl={entry.data.repo_url}
+						liveUrl={entry.data.live_url}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>
