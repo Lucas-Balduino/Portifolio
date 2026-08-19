@@ -1,5 +1,5 @@
-/** URL canônica enquanto a tarefa 2.12 (Vercel) estiver pendente. Não inventar `*.vercel.app`. */
-export const SITE_URL = 'https://lucas-balduino.github.io/Portifolio';
+/** URL canônica de produção (tarefa 2.12). */
+export const SITE_URL = 'https://lucasbalduino.vercel.app';
 export const SITE_NAME = 'Lucas Balduino';
 
 export const META = {

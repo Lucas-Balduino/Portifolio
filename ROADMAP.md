@@ -73,7 +73,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.10 — Página Contato (mailto)
 - [x] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
 - [x] Tarefa 2.12 — Criar projeto na Vercel
-- [ ] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
+- [x] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
 - [ ] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
 - [ ] Fase 3 — Identidade dark-first
 - [ ] Tarefa 3.1 — Decidir acento e fonte display
@@ -470,7 +470,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `docs(2.12): registra url de producao na vercel`
 
-### Tarefa 2.13 — Ligar SITE_URL à URL Vercel
+### Tarefa 2.13 — Ligar SITE_URL à URL Vercel [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.12

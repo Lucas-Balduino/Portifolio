@@ -30,7 +30,7 @@ Portifolio/
 
 ### Desenvolvimento local
 
-**Site publicado (HTML na raiz)** — ainda é este o que o GitHub Pages serve:
+**Site publicado (HTML na raiz)** — o GitHub Pages ainda serve o legado até a 2.14:
 
 ```bash
 npx serve .
@@ -51,11 +51,11 @@ npm run build    # dist/
 2. Preencha Service ID, Template ID e Public Key do [EmailJS](https://www.emailjs.com).
 3. `js/config.js` está no `.gitignore` — não commite credenciais.
 
-### Publicação (GitHub Pages)
+### Publicação (Vercel)
 
-1. **Settings → Pages**
-2. Source: branch `main` (ou `AtualizacaoPortifolio` após merge), folder `/ (root)`
-3. Atualize `SITE_URL` em `js/site-config.js` com a URL final (ex.: `https://usuario.github.io/Portifolio`)
+Produção: `https://lucasbalduino.vercel.app` (`SITE_URL` em `src/site-config.ts`).
+
+O GitHub Pages (`https://lucas-balduino.github.io/Portifolio`) ainda publica o HTML legado até a tarefa 2.14.
 
 ### Documentação
 
