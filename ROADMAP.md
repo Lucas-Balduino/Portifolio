@@ -60,7 +60,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Fase 0 — Setup do site estático e ROADMAP legado
 - [x] Fase 1 — Docs, i18n hero, render unificado, lazy, SEO, EmailJS, XSS, admin
 - [x] Fase E — Sitemap, cases UnB, currículo, estabilidade, inscrição
-- [ ] Fase 2 — Migração paridade Astro + MDX + Vercel
+- [x] Fase 2 — Migração paridade Astro + MDX + Vercel
 - [x] Tarefa 2.1 — Decidir gerenciador de pacotes
 - [x] Tarefa 2.2 — Scaffold Astro com ilhas React
 - [x] Tarefa 2.3 — Schema Content Collections e Kinetic em MDX
@@ -74,7 +74,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.11 — SEO: sitemap, robots, Open Graph
 - [x] Tarefa 2.12 — Criar projeto na Vercel
 - [x] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
-- [ ] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
+- [x] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
 - [ ] Fase 3 — Identidade dark-first
 - [ ] Tarefa 3.1 — Decidir acento e fonte display
 - [ ] Tarefa 3.2 — Tokens dark-first e light como alternativa
@@ -495,7 +495,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `chore(2.13): aponta canonical e sitemap para a vercel`
 
-### Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
+### Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 2.13

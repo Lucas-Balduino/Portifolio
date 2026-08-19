@@ -4,7 +4,7 @@ Contexto operacional para qualquer agente trabalhando **neste** repositório. Le
 
 ## O que é este projeto
 
-Portfólio pessoal publicado de Lucas Balduino (site estático hoje; migração Astro no ROADMAP). Visão completa: `docs/context/00-project-brief.md` — leia-o. Não resuma o brief aqui.
+Portfólio pessoal publicado de Lucas Balduino (Astro na Vercel; HTML legado aposentado na 2.14). Visão completa: `docs/context/00-project-brief.md` — leia-o. Não resuma o brief aqui.
 
 ## Spec vs execução
 
@@ -30,13 +30,13 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 
 `ROADMAP.md` — SDD: prompts mestre, progresso, tarefas, aceite, commit.
 
-`CRUD_GUIDE.md` — só vale enquanto `admin/` existir. `README.md` — como servir o estático.
+`CRUD_GUIDE.md` — obsoleto (admin JSON aposentado na 2.14). `README.md` — `astro dev` / `astro build`.
 
 ## Onde está o conteúdo / o código
 
-- Código e páginas: raiz (`*.html`, `style.css`, `main.js`, `projects.js`, `js/`, `admin/`) **e** scaffold Astro em `src/`, `astro.config.mjs`, `package.json`
-- Cases: `data/projects.json` + `img/`
-- CV: `Resume/`
+- Código e páginas: `src/`, `astro.config.mjs`, `package.json`, `style.css`
+- Cases: `src/content/projects/*.mdx` + imagens em `public/img/` (e `img/` de origem)
+- CV: `public/Resume/CurriculoPT.pdf` (cópia de `Resume/`)
 - Spec: `docs/context/`
 - Não misturar copy de case na spec nem copiar o AgentHub para este repo
 
@@ -53,21 +53,11 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 
 ## Comandos esperados
 
-Site legado (HTML na raiz, ainda publicado):
-
-```bash
-npx serve .
-# http://localhost:3000
-# Admin: http://localhost:3000/admin/index.html
-```
-
-Astro (Fase 2 — `astro@7.2.2`, `@astrojs/react@6.0.2`, npm). Node **≥22.12** (local: 22.23.2).
+Astro (`astro@7.2.2`, `@astrojs/react@6.0.2`, npm). Node **≥22.12** (local: 22.23.2). Produção: `https://lucasbalduino.vercel.app`.
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321 — placeholder src/pages/index.astro
+npm run dev      # http://localhost:4321
 npm run build    # saída em dist/
 npm run preview
 ```
-
-Não apagar `index.html`, `data/`, `admin/` nem `img/` antes da tarefa 2.14.

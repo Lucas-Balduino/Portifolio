@@ -1,61 +1,34 @@
-## Portfólio estático com CRUD via JSON
+## Portfólio — Lucas Balduino
 
-Site estático (HTML/CSS/JS) com painel admin que edita projetos em memória e exporta `data/projects.json`.
+Site em Astro (`astro@7.2.2` + `@astrojs/react@6.0.2`, npm). Produção: [https://lucasbalduino.vercel.app](https://lucasbalduino.vercel.app).
 
-### Estrutura principal
+Cases em `src/content/projects/*.mdx`. Requer **Node ≥ 22.12** (`.nvmrc`).
 
-```
-Portifolio/
-├── index.html              # Home (projetos recentes)
-├── projetos.html           # Lista de projetos
-├── projeto.html            # Detalhe (?slug=meu-projeto)
-├── sobre.html / contato.html
-├── style.css / main.js / projects.js
-├── data/projects.json      # Fonte de dados dos projetos
-├── admin/index.html        # CRUD em memória + download JSON
-├── js/                     # Scripts auxiliares (contato, config)
-├── img/                    # Imagens e assets
-├── ROADMAP.md              # Checkpoint de atualização
-└── CRUD_GUIDE.md           # Guia do admin
-```
-
-### Fluxo de edição de projetos
-
-1. Sirva o site localmente (`npx serve .`) — necessário para o admin carregar o JSON.
-2. Abra `admin/index.html` no navegador.
-3. Crie, edite ou exclua projetos.
-4. Clique em **Baixar JSON atualizado**.
-5. Substitua `data/projects.json` pelo arquivo baixado.
-6. Commit + push para publicar.
-
-### Desenvolvimento local
-
-**Site publicado (HTML na raiz)** — o GitHub Pages ainda serve o legado até a 2.14:
-
-```bash
-npx serve .
-# Acesse http://localhost:3000
-```
-
-**Scaffold Astro (Fase 2)** — `astro@7.2.2` + `@astrojs/react@6.0.2` (npm). Requer **Node ≥ 22.12** (`.nvmrc`).
+### Desenvolvimento
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321 (placeholder)
-npm run build    # dist/
+npm run dev      # http://localhost:4321
+npm run build    # saída em dist/
+npm run preview  # conferir o build
 ```
 
-### EmailJS (formulário de contato)
+### Estrutura
 
-1. Copie `js/config.example.js` para `js/config.js`.
-2. Preencha Service ID, Template ID e Public Key do [EmailJS](https://www.emailjs.com).
-3. `js/config.js` está no `.gitignore` — não commite credenciais.
+```
+Portifolio/
+├── src/pages/              # Home, projetos, detalhe, sobre, contato
+├── src/content/projects/   # Cases em MDX
+├── src/layouts/            # Layout, header, footer
+├── public/img/             # Imagens servidas no build
+├── public/Resume/          # CurriculoPT.pdf
+├── style.css               # Tokens e estilos (importados pelo Layout)
+└── astro.config.mjs
+```
 
-### Publicação (Vercel)
+### Publicação
 
-Produção: `https://lucasbalduino.vercel.app` (`SITE_URL` em `src/site-config.ts`).
-
-O GitHub Pages (`https://lucas-balduino.github.io/Portifolio`) ainda publica o HTML legado até a tarefa 2.14.
+Vercel (output estático `dist/`). `SITE_URL` em `src/site-config.ts`.
 
 ### Documentação
 
@@ -63,4 +36,4 @@ O GitHub Pages (`https://lucas-balduino.github.io/Portifolio`) ainda publica o H
 - [`docs/context/`](docs/context/00-project-brief.md) — spec do projeto (`00`–`04`, `06`)
 - [`ROADMAP.md`](ROADMAP.md) — execução SDD (uma tarefa, um commit)
 - [`DECISOES.md`](DECISOES.md) — Checkpoint A (Astro, MDX, Vercel, dark-first, PT+EN)
-- [`CRUD_GUIDE.md`](CRUD_GUIDE.md) — admin JSON (até a tarefa 2.14)
+- [`CRUD_GUIDE.md`](CRUD_GUIDE.md) — obsoleto (admin JSON aposentado)
