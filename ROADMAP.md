@@ -76,7 +76,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
 - [x] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
 - [ ] Fase 3 — Identidade dark-first
-- [ ] Tarefa 3.1 — Decidir acento e fonte display
+- [x] Tarefa 3.1 — Decidir acento e fonte display
 - [ ] Tarefa 3.2 — Tokens dark-first e light como alternativa
 - [ ] Tarefa 3.3 — Aplicar identidade nas páginas
 - [ ] Fase 4 — i18n PT + EN
@@ -90,7 +90,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 |---|---|---|
 | 2.1 | Gerenciador de pacotes (npm / pnpm / yarn) | **npm** |
 | 2.12 | Projeto Vercel e URL de produção | **https://lucasbalduino.vercel.app** |
-| 3.1 | Hex de acento + família display | `(pendente)` |
+| 3.1 | Hex de acento + família display | **`#F5F5F6` + Syne** |
 | 4.3 | Quais cases ganham EN depois do fallback | `(pendente)` — não bloqueia 4.3 |
 
 ---
@@ -531,7 +531,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 **Pronto quando:** 3.3 aceita; tema default é dark.
 **Depende de:** Fase 2 (2.14)
 
-### Tarefa 3.1 — Decidir acento e fonte display
+### Tarefa 3.1 — Decidir acento e fonte display [x]
 
 - **Tipo:** autor
 - **Bloqueada por:** 2.14
@@ -542,7 +542,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Pergunta:** Qual hex de acento e qual família display?
 **Opções:** (a) Kinetic `#005CEE` + Lexend; (b) outros valores que o autor gravar aqui
-**Decisão registrada:** `(pendente)`
+**Decisão registrada:** `#F5F5F6` + Syne (monocromático; não Kinetic nem Cursor)
 
 **Fazer:**
 
