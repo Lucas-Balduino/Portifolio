@@ -75,10 +75,10 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.12 — Criar projeto na Vercel
 - [x] Tarefa 2.13 — Ligar SITE_URL à URL Vercel
 - [x] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
-- [ ] Fase 3 — Identidade dark-first
+- [x] Fase 3 — Identidade dark-first
 - [x] Tarefa 3.1 — Decidir acento e fonte display
 - [x] Tarefa 3.2 — Tokens dark-first e light como alternativa
-- [ ] Tarefa 3.3 — Aplicar identidade nas páginas
+- [x] Tarefa 3.3 — Aplicar identidade nas páginas
 - [ ] Fase 4 — i18n PT + EN
 - [ ] Tarefa 4.1 — Rotas `/` e `/en/` com seletor
 - [ ] Tarefa 4.2 — Traduzir chrome (nav, hero, sobre, contato)
@@ -587,7 +587,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `feat(3.2): define tokens dark-first e acento do autor`
 
-### Tarefa 3.3 — Aplicar identidade nas páginas
+### Tarefa 3.3 — Aplicar identidade nas páginas [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 3.2

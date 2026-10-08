@@ -1,0 +1,48 @@
+/* 3.3 — identidade nas páginas: display grande, tokens, Figma sem overflow:hidden. */
+
+body {
+	background:
+		radial-gradient(
+			80rem 28rem at 85% -8%,
+			color-mix(in srgb, var(--accent) 8%, transparent),
+			transparent 55%
+		),
+		linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+	background-attachment: fixed;
+}
+
+.hero-title {
+	font-size: clamp(2.75rem, 7vw, 4.75rem);
+	font-weight: 800;
+	letter-spacing: -0.04em;
+	line-height: 1.02;
+}
+
+.about-info h1,
+.contact-page h1,
+.projects-list .section-head h1,
+.project-hero h1 {
+	font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.08;
+}
+
+.card-title {
+	font-family: var(--font-display);
+	letter-spacing: -0.02em;
+}
+
+.card:hover,
+.btn:hover,
+.btn-project:hover {
+	box-shadow: 0 18px 40px var(--glass);
+}
+
+.media-placeholder {
+	background: linear-gradient(90deg, var(--surface), var(--bg));
+}
+
+.figma-embed {
+	background: var(--surface);
+}
