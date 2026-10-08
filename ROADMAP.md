@@ -77,7 +77,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 - [x] Tarefa 2.14 — Aposentar HTML legado, admin e JSON runtime
 - [ ] Fase 3 — Identidade dark-first
 - [x] Tarefa 3.1 — Decidir acento e fonte display
-- [ ] Tarefa 3.2 — Tokens dark-first e light como alternativa
+- [x] Tarefa 3.2 — Tokens dark-first e light como alternativa
 - [ ] Tarefa 3.3 — Aplicar identidade nas páginas
 - [ ] Fase 4 — i18n PT + EN
 - [ ] Tarefa 4.1 — Rotas `/` e `/en/` com seletor
@@ -561,7 +561,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Commit sugerido:** `docs(3.1): registra acento e fonte display`
 
-### Tarefa 3.2 — Tokens dark-first e light como alternativa
+### Tarefa 3.2 — Tokens dark-first e light como alternativa [x]
 
 - **Tipo:** agente
 - **Bloqueada por:** 3.1
