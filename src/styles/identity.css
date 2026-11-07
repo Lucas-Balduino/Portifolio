@@ -55,3 +55,10 @@ body {
 .figma-embed {
 	background: var(--surface);
 }
+
+/* Botão logo abaixo do protótipo: abre o Figma em tela cheia sem voltar ao topo. */
+.figma-open {
+	display: flex;
+	justify-content: center;
+	margin: -0.25rem 0 1.5rem;
+}
