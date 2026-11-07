@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { micromark } from 'micromark';
 import Layout from '../../layouts/Layout.astro';
 import Gallery from '../../components/Gallery.astro';
+import TechList from '../../components/TechList.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -105,11 +106,7 @@ const coverSrc = publicSrc(data.image);
 			data.technologies.length > 0 && (
 				<section class="project-technologies">
 					<h2>Tecnologias</h2>
-					<div class="card-tags">
-						{data.technologies.map((tech) => (
-							<span class="badge">{tech}</span>
-						))}
-					</div>
+					<TechList technologies={data.technologies} />
 				</section>
 			)
 		}

@@ -42,6 +42,9 @@ Quando A2 valer: um arquivo `src/content/projects/<slug>.mdx`. Frontmatter = met
 
 ```text
 title, slug, short_desc, image, repo_url, live_url, technologies[]
+                                # technologies: nomes listados em src/lib/technologies.ts
+                                # viram "Ferramentas" com ícone (simple-icons); o resto
+                                # vira "Competências" em texto. Ferramenta nova = mapear lá.
 order: number                   # substitui a ordem do array JSON; preservar a ordem atual
 section_titles: record opcional
 gallery: string[]               # substitui images_section CSV

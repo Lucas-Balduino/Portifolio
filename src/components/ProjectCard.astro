@@ -1,4 +1,6 @@
 ---
+import TechList from './TechList.astro';
+
 interface Props {
 	title: string;
 	slug: string;
@@ -35,15 +37,7 @@ const detailHref = slug.trim() ? `/projetos/${slug}` : '';
 	<div class="card-body">
 		<h3 class="card-title">{title}</h3>
 		<p class="card-desc">{shortDesc}</p>
-		{
-			technologies.length > 0 && (
-				<div class="card-tags">
-					{technologies.map((tech) => (
-						<span class="badge">{tech}</span>
-					))}
-				</div>
-			)
-		}
+		{technologies.length > 0 && <TechList technologies={technologies} variant="card" />}
 		{
 			(githubHref || liveHref || detailHref) && (
 				<div class="card-actions">
