@@ -1,61 +1,259 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import TechList from '../components/TechList.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
 import { META } from '../site-config';
+import { getSortedProjects, projectMeta } from '../lib/projects';
 
-const recentProjects = (await getCollection('projects'))
-	.filter((entry) => entry.data.order >= 1 && entry.data.order <= 3)
-	.sort((a, b) => a.data.order - b.data.order);
+const projects = await getSortedProjects();
+
+// Mesma lista de competências de front-end/design do currículo.
+const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'Git', 'GitHub'];
 ---
 
 <Layout title={META.home.title} description={META.home.description}>
-	<section class="hero grid">
-		<div class="hero-card">
-			<h1 class="hero-title">Olá, eu sou <span class="accent">Lucas</span></h1>
-			<p class="hero-sub">
-				Designer e desenvolvedor UX/UI em formação — eu desenho e construo interfaces intuitivas,
-				pensadas para desempenho e acessibilidade.
+	<section class="home-hero">
+		<div class="home-hero-text">
+			<p class="home-eyebrow">Lucas Balduino · Designer UX/UI e desenvolvedor front-end em formação</p>
+			<h1 class="hero-title">Do protótipo no Figma ao código no ar.</h1>
+			<p class="home-lead">
+				Estudo Design na UnB e Ciência da Computação no UniCEUB. Trabalho com pesquisa, fluxos e
+				interfaces centradas no usuário, com atenção à usabilidade e à acessibilidade.
 			</p>
-			<div class="hero-cta">
-				<a class="btn-project" href="/projetos">Ver projetos</a>
-				<a class="btn ghost" href="/contato">Contrate-me</a>
+			<div class="home-cta">
+				<a class="btn-project" href="#projetos">Ver projetos</a>
+				<a class="btn ghost" href="/Resume/CurriculoPT.pdf" download>Baixar currículo</a>
 			</div>
-
-			<ul class="skills-quick" aria-label="Habilidades rápidas">
-				<li>HTML • CSS • JS</li>
-				<li>Figma • Git</li>
-				<li>Acessibilidade • Responsivo</li>
-			</ul>
 		</div>
-
-		<figure class="hero-figure" aria-hidden="false">
-			<img src={fotoMinha} alt="Foto do Lucas" class="hero-photo" />
-			<figcaption class="sr-only">Foto de Lucas</figcaption>
+		<figure class="home-photo">
+			<img src={fotoMinha} alt="Foto do Lucas Balduino" width="320" height="320" />
 		</figure>
 	</section>
 
-	<section class="projects-preview">
-		<div class="section-head">
-			<h2>Projetos recentes</h2>
-			<a class="link-muted" href="/projetos">Ver todos →</a>
-		</div>
+	<section class="home-facts" aria-label="Resumo">
+		<article class="fact">
+			<h2 class="fact-label">Agora</h2>
+			<p class="fact-main">Bolsista no projeto de extensão Gêmeos Digitais</p>
+			<p class="fact-sub">CAL/UnB · escaneamento 3D de obras e site do acervo online</p>
+		</article>
+		<article class="fact">
+			<h2 class="fact-label">Formação</h2>
+			<p class="fact-main">Design · UnB</p>
+			<p class="fact-sub">Previsão: 2028</p>
+			<p class="fact-main">Ciência da Computação · UniCEUB</p>
+			<p class="fact-sub">Previsão: 2027</p>
+		</article>
+		<article class="fact">
+			<h2 class="fact-label">Ferramentas</h2>
+			<TechList technologies={tools} variant="tools" />
+		</article>
+	</section>
 
-		<div class="projects-grid">
+	<section class="home-projects" id="projetos">
+		<div class="section-head">
+			<h2>Projetos</h2>
+			<a class="link-muted" href="/projetos">Ver lista →</a>
+		</div>
+		<div class="home-projects-grid">
 			{
-				recentProjects.map((entry) => (
+				projects.map((entry, index) => (
 					<ProjectCard
 						title={entry.data.title}
 						slug={entry.data.slug}
 						shortDesc={entry.data.short_desc}
 						image={entry.data.image}
 						technologies={entry.data.technologies}
-						repoUrl={entry.data.repo_url}
-						liveUrl={entry.data.live_url}
+						meta={projectMeta(entry.data.summary)}
+						featured={index === 0}
 					/>
 				))
 			}
 		</div>
 	</section>
+
+	<section class="home-contact">
+		<div>
+			<h2>Vamos conversar?</h2>
+			<p class="muted">Sobre uma vaga, um projeto ou algum dos cases acima.</p>
+		</div>
+		<div class="home-cta">
+			<a class="btn-project" href="/contato">Entrar em contato</a>
+			<a
+				class="btn ghost"
+				href="https://www.linkedin.com/in/lucas-balduino-661073327"
+				target="_blank"
+				rel="noopener noreferrer">LinkedIn</a
+			>
+		</div>
+	</section>
 </Layout>
+
+<style>
+	.home-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+		align-items: center;
+		gap: 3rem;
+		padding: 3.5rem 0 2.5rem;
+	}
+
+	.home-eyebrow {
+		margin: 0 0 1rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--muted);
+	}
+
+	.home-hero .hero-title {
+		margin: 0 0 1.25rem;
+		color: var(--text);
+	}
+
+	.home-lead {
+		max-width: 38rem;
+		margin: 0 0 1.75rem;
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: var(--muted);
+	}
+
+	.home-cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.home-photo {
+		margin: 0;
+		justify-self: end;
+	}
+
+	.home-photo img {
+		display: block;
+		width: 100%;
+		max-width: 320px;
+		height: auto;
+		aspect-ratio: 1;
+		object-fit: cover;
+		border-radius: 24px;
+		border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+	}
+
+	.home-facts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-bottom: 3.5rem;
+	}
+
+	.fact {
+		padding: 1.4rem;
+		border-radius: 16px;
+		background: var(--surface);
+		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.fact-label {
+		margin: 0 0 0.9rem;
+		font-family: inherit;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.fact-main {
+		margin: 0;
+		font-weight: 700;
+		line-height: 1.4;
+		color: var(--text);
+	}
+
+	.fact-sub {
+		margin: 0.2rem 0 0.8rem;
+		font-size: 0.9rem;
+		line-height: 1.45;
+		color: var(--muted);
+	}
+
+	.fact-sub:last-child {
+		margin-bottom: 0;
+	}
+
+	.home-projects .section-head h2 {
+		margin: 0;
+		font-size: clamp(1.6rem, 3vw, 2.1rem);
+		letter-spacing: -0.02em;
+	}
+
+	.home-projects-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.25rem;
+		margin-top: 1rem;
+	}
+
+	.home-contact {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		margin: 4rem 0 1rem;
+		padding: 2rem;
+		border-radius: 16px;
+		background: var(--surface);
+		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.home-contact h2 {
+		margin: 0 0 0.35rem;
+		font-size: 1.5rem;
+		letter-spacing: -0.02em;
+	}
+
+	.home-contact p {
+		margin: 0;
+	}
+
+	@media (max-width: 900px) {
+		.home-facts,
+		.home-projects-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.fact:last-child {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.home-hero {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			padding-top: 2rem;
+		}
+
+		.home-photo {
+			grid-row: 1;
+			justify-self: start;
+		}
+
+		.home-photo img {
+			max-width: 140px;
+			border-radius: 20px;
+		}
+
+		.home-facts,
+		.home-projects-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.home-contact {
+			padding: 1.5rem;
+		}
+	}
+</style>

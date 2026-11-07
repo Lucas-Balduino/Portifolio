@@ -7,11 +7,13 @@ interface Props {
 	shortDesc: string;
 	image: string;
 	technologies: string[];
-	repoUrl: string;
-	liveUrl: string;
+	/** Linha curta acima do título, ex.: "Projeto acadêmico · 2026.1". */
+	meta?: string;
+	/** Card em destaque: ocupa a linha inteira, imagem ao lado do texto. */
+	featured?: boolean;
 }
 
-const { title, slug, shortDesc, image, technologies, repoUrl, liveUrl } = Astro.props;
+const { title, slug, shortDesc, image, technologies, meta, featured = false } = Astro.props;
 
 const imageUrls = import.meta.glob<{ default: string }>('../../img/**/*.{png,jpg,jpeg}', {
 	eager: true,
@@ -27,37 +29,133 @@ const resolveImage = (posixPath: string) => {
 };
 
 const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolvimento.jpg');
-const githubHref = repoUrl.trim();
-const liveHref = liveUrl.trim();
-const detailHref = slug.trim() ? `/projetos/${slug}` : '';
 ---
 
-<article class="card project-card">
-	<img class="card-media" src={imageSrc} alt={`${title} screenshot`} loading="lazy" />
-	<div class="card-body">
-		<h3 class="card-title">{title}</h3>
-		<p class="card-desc">{shortDesc}</p>
-		{technologies.length > 0 && <TechList technologies={technologies} variant="card" />}
+<!-- O card inteiro é o link para o case; GitHub e demo ficam na ficha do case. -->
+<a class:list={['project-card', { 'project-card--featured': featured }]} href={`/projetos/${slug}`}>
+	<div class="project-card-media">
+		<img src={imageSrc} alt="" loading={featured ? 'eager' : 'lazy'} />
+	</div>
+	<div class="project-card-body">
+		{meta && <p class="project-card-meta">{meta}</p>}
+		<h3 class="project-card-title">{title}</h3>
+		<p class="project-card-desc">{shortDesc}</p>
 		{
-			(githubHref || liveHref || detailHref) && (
-				<div class="card-actions">
-					{githubHref ? (
-						<a class="card-link" href={githubHref} target="_blank" rel="noopener noreferrer">
-							GitHub
-						</a>
-					) : null}
-					{liveHref ? (
-						<a class="card-link" href={liveHref} target="_blank" rel="noopener noreferrer">
-							Live Demo
-						</a>
-					) : null}
-					{detailHref ? (
-						<a class="card-link card-link--primary" href={detailHref}>
-							Ver detalhes
-						</a>
-					) : null}
-				</div>
+			technologies.length > 0 && (
+				<TechList technologies={technologies} variant="card" limit={featured ? 4 : 3} />
 			)
 		}
+		<span class="project-card-cta" aria-hidden="true">Ver case →</span>
 	</div>
-</article>
+</a>
+
+<style>
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: 16px;
+		background: var(--surface);
+		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+		color: inherit;
+		text-decoration: none;
+		transition:
+			transform var(--transition),
+			border-color var(--transition),
+			box-shadow var(--transition);
+	}
+
+	.project-card:hover {
+		transform: translateY(-4px);
+		border-color: color-mix(in srgb, var(--text) 22%, transparent);
+		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+	}
+
+	.project-card:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+
+	.project-card-media {
+		overflow: hidden;
+		aspect-ratio: 16 / 9;
+		background: color-mix(in srgb, var(--text) 5%, transparent);
+	}
+
+	.project-card-media img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 600ms cubic-bezier(0.2, 0.9, 0.2, 1);
+	}
+
+	.project-card:hover .project-card-media img {
+		transform: scale(1.04);
+	}
+
+	.project-card-body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 0.7rem;
+		padding: 1.4rem;
+	}
+
+	.project-card-meta {
+		margin: 0;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.project-card-title {
+		margin: 0;
+		font-size: 1.3rem;
+		letter-spacing: -0.02em;
+		color: var(--text);
+	}
+
+	.project-card-desc {
+		margin: 0;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+
+	.project-card-cta {
+		margin-top: auto;
+		padding-top: 0.5rem;
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+
+	.project-card:hover .project-card-cta {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	@media (min-width: 760px) {
+		.project-card--featured {
+			display: grid;
+			grid-column: 1 / -1;
+			grid-template-columns: 1.15fr 1fr;
+		}
+
+		.project-card--featured .project-card-media {
+			aspect-ratio: auto;
+			min-height: 340px;
+		}
+
+		.project-card--featured .project-card-body {
+			justify-content: center;
+			padding: 2.25rem;
+		}
+
+		.project-card--featured .project-card-title {
+			font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+		}
+	}
+</style>

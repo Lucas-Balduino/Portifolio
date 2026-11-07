@@ -39,6 +39,15 @@ body {
 	box-shadow: 0 18px 40px var(--glass);
 }
 
+/* Botão secundário com borda visível nos dois temas (--glass some no escuro). */
+.btn.ghost {
+	border-color: color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.btn.ghost:hover {
+	border-color: color-mix(in srgb, var(--text) 40%, transparent);
+}
+
 .media-placeholder {
 	background: linear-gradient(90deg, var(--surface), var(--bg));
 }

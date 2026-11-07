@@ -3,6 +3,8 @@ import {
 	siExpo,
 	siFigma,
 	siFirebase,
+	siGit,
+	siGithub,
 	siHtml5,
 	siJavascript,
 	siMysql,
@@ -29,6 +31,8 @@ const TOOL_ICONS: Record<string, SimpleIcon | null> = {
 	MySQL: siMysql,
 	WebGL: siWebgl,
 	Java: siOpenjdk,
+	Git: siGit,
+	GitHub: siGithub,
 	JavaSwing: null
 };
 
