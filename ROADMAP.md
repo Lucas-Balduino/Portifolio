@@ -90,7 +90,7 @@ Se a tarefa tiver **PARAR — decisão do autor** e **Decisão registrada:** `(p
 |---|---|---|
 | 2.1 | Gerenciador de pacotes (npm / pnpm / yarn) | **npm** |
 | 2.12 | Projeto Vercel e URL de produção | **https://lucasbalduino.vercel.app** |
-| 3.1 | Hex de acento + família display | **`#F5F5F6` + Syne** |
+| 3.1 | Hex de acento + família display | **`#F5F5F6` + Inter** (Syne descartada; display nova pendente) |
 | 4.3 | Quais cases ganham EN depois do fallback | `(pendente)` — não bloqueia 4.3 |
 
 ---
@@ -542,7 +542,7 @@ Não reexecutar. Detalhe antigo não vira tarefa SDD.
 
 **Pergunta:** Qual hex de acento e qual família display?
 **Opções:** (a) Kinetic `#005CEE` + Lexend; (b) outros valores que o autor gravar aqui
-**Decisão registrada:** `#F5F5F6` + Syne (monocromático; não Kinetic nem Cursor)
+**Decisão registrada:** `#F5F5F6` + Syne (monocromático; não Kinetic nem Cursor). **Revisão do autor:** Syne descartada — títulos voltam para Inter até o autor escolher outra display.
 
 **Fazer:**
 

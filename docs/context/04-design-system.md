@@ -27,7 +27,7 @@ Direção **do site**. Não aplicar tokens novos nesta conversa da spec. Hex nov
 | Token | Hex / família | Uso |
 |---|---|---|
 | Acento | `#F5F5F6` | CTA, links, foco. Monocromático (3.1): contraste com os prints coloridos dos cases. Não é Kinetic `#005CEE` nem Cursor `#F54E00`. |
-| Display | **Syne** | Títulos grandes (hero / títulos de página). Corpo permanece Inter. |
+| Display | **Inter** (Syne descartada pelo autor) | Títulos grandes (hero / títulos de página) via `--font-display`. Nova display = `(pendente)`, decisão do autor. |
 | Fundo dark | `(pendente)` até a 3.2 | Superfícies e texto no default dark — tokens atuais de `style.css` até a 3.2 aplicar |
 
 Não copiar a paleta por modalidade do Kinetic para o site inteiro.
@@ -36,7 +36,7 @@ Não copiar a paleta por modalidade do Kinetic para o site inteiro.
 
 | Camada | Agora | Horizonte |
 |---|---|---|
-| UI | Inter (Google Fonts 300–800), `system-ui` fallback | Inter no corpo; **fonte display Syne** (3.1) |
+| UI | Inter (Google Fonts 300–800), `system-ui` fallback | Inter no corpo e nos títulos; display própria `(pendente)` — Syne descartada |
 | Espaço | `--container: 1100px`; cards `minmax(300px, 1fr)` | Redefinir na fase dark-first, não no scaffold |
 | Motion | `--transition: 240ms`; hover `translateY(-8px)` nos cards; `.reveal` | GSAP = horizonte / fora do ROADMAP atual |
 | Ícones sociais | Texto (“GitHub”, “LinkedIn”) | SVG `(pendente)` — artefato do autor |
