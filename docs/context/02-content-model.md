@@ -64,6 +64,6 @@ Sobre, contato, hero: copy no layout/página, não no modelo de projeto. i18n ho
 ## Regras
 
 - Não criar tipo “artigo”, “playground” ou “zine” até existir um arquivo real que não caiba em Projeto.
-- Agência de Viagens permanece no JSON até o autor decidir remover; não exigir screenshots novos para a migração.
+- Agência de Viagens **retirada do site pelo autor** (por enquanto). O MDX e a imagem estão no histórico do git; voltar só se o autor pedir.
 - Não inventar URL, hex, data de formatura diferente da que já está em `sobre.html`, nem atuação de grupo não confirmada.
 - Path de imagem: sempre `/` (Windows Explorer gera `\` — rejeitar).
