@@ -37,16 +37,7 @@ const projects = defineCollection({
 		design_system: z
 			.object({
 				title: z.string().optional(),
-				colors: z
-					.array(
-						z.object({
-							name: z.string().min(1),
-							hex: hexColor,
-							// Tons reais do projeto, do mais escuro ao mais claro. Não gerar.
-							scale: z.array(hexColor).optional()
-						})
-					)
-					.default([]),
+				colors: z.array(z.object({ name: z.string().min(1), hex: hexColor })).default([]),
 				fonts: z
 					.array(
 						z.object({
@@ -58,7 +49,8 @@ const projects = defineCollection({
 						})
 					)
 					.default([]),
-				components: z.array(z.object({ src: posixPath, alt: z.string().min(1) })).default([])
+				// Página externa com o design system completo (opcional).
+				link: z.object({ href: z.string().url(), label: z.string().min(1) }).optional()
 			})
 			.optional(),
 		// Ficha no topo do case. Valor "pendente" (ou ausente) não aparece no site.
