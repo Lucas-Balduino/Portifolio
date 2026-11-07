@@ -4,6 +4,7 @@ import { micromark } from 'micromark';
 import Layout from '../../layouts/Layout.astro';
 import Gallery from '../../components/Gallery.astro';
 import TechList from '../../components/TechList.astro';
+import CaseSummary from '../../components/CaseSummary.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -80,6 +81,13 @@ const coverSrc = publicSrc(data.image);
 				<a href="/projetos" class="btn ghost">← Voltar para projetos</a>
 			</div>
 		</header>
+
+		<CaseSummary
+			summary={data.summary}
+			technologies={data.technologies}
+			repoUrl={data.repo_url}
+			liveUrl={data.live_url}
+		/>
 
 		{
 			data.image && (

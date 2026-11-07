@@ -3,8 +3,11 @@ import { splitTechnologies } from '../lib/technologies';
 
 interface Props {
 	technologies: string[];
-	/** `card`: resumo curto (até `limit` itens). `full`: ferramentas e competências separadas. */
-	variant?: 'card' | 'full';
+	/**
+	 * `card`: resumo curto (até `limit` itens). `full`: ferramentas e competências separadas.
+	 * `tools`: só as ferramentas, sem limite (ficha do case).
+	 */
+	variant?: 'card' | 'full' | 'tools';
 	limit?: number;
 }
 
@@ -22,7 +25,22 @@ const hidden = hiddenLabels.length;
 ---
 
 {
-	variant === 'card' ? (
+	variant === 'tools' ? (
+		tools.length > 0 && (
+			<ul class="tech-list" aria-label="Ferramentas">
+				{tools.map((tool) => (
+					<li class="tech-chip">
+						{tool.icon && (
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d={tool.icon.path} />
+							</svg>
+						)}
+						{tool.label}
+					</li>
+				))}
+			</ul>
+		)
+	) : variant === 'card' ? (
 		<ul class="tech-list" aria-label="Tecnologias">
 			{cardTools.map((tool) => (
 				<li class="tech-chip">

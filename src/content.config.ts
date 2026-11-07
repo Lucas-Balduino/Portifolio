@@ -30,7 +30,20 @@ const projects = defineCollection({
 				how_to_run: z.string().optional()
 			})
 			.optional(),
-		gallery: z.array(posixPath)
+		gallery: z.array(posixPath),
+		// Ficha no topo do case. Valor "pendente" (ou ausente) não aparece no site.
+		summary: z
+			.object({
+				type: z.string(),
+				context: z.string(),
+				period: z.string(),
+				role: z.string(),
+				team: z.string(),
+				advisor: z.string(),
+				deliverable: z.string()
+			})
+			.partial()
+			.optional()
 	})
 });
 
