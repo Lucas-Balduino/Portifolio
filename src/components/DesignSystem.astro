@@ -1,0 +1,236 @@
+---
+interface Color {
+	name: string;
+	hex: string;
+	scale?: string[];
+}
+
+interface Font {
+	role: string;
+	family: string;
+	weights?: string;
+	webfont: boolean;
+}
+
+interface Props {
+	heading: string;
+	colors: Color[];
+	fonts: Font[];
+	components: { src: string; alt: string }[];
+}
+
+const { heading, colors, fonts, components } = Astro.props;
+
+// Texto branco ou escuro conforme a luminância da cor (WCAG).
+const textOn = (hex: string) => {
+	const channel = (i: number) => {
+		const value = parseInt(hex.slice(i, i + 2), 16) / 255;
+		return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+	};
+	const luminance = 0.2126 * channel(1) + 0.7152 * channel(3) + 0.0722 * channel(5);
+	return luminance > 0.4 ? '#111111' : '#ffffff';
+};
+
+// Só as famílias do Google Fonts são carregadas, e só nesta página.
+const webFamilies = [...new Set(fonts.filter((font) => font.webfont).map((font) => font.family))];
+const fontsHref = webFamilies.length
+	? `https://fonts.googleapis.com/css2?${webFamilies
+			.map((family) => `family=${family.replace(/ /g, '+')}:wght@400;700;900`)
+			.join('&')}&display=swap`
+	: '';
+const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
+---
+
+<section class="design-system">
+	{fontsHref && <link rel="stylesheet" href={fontsHref} />}
+	<h2>{heading}</h2>
+
+	{
+		colors.length > 0 && (
+			<div class="ds-block">
+				<h3>Cores</h3>
+				<ul class="ds-colors">
+					{colors.map((color) => (
+						<li class="ds-color">
+							<div class="ds-swatch" style={`background:${color.hex};color:${textOn(color.hex)}`}>
+								<span class="ds-color-name">{color.name}</span>
+								<span class="ds-color-hex">{color.hex.toUpperCase()}</span>
+							</div>
+							{color.scale && color.scale.length > 0 && (
+								<div class="ds-scale" aria-hidden="true">
+									{color.scale.map((tone) => (
+										<span style={`background:${tone}`} title={tone} />
+									))}
+								</div>
+							)}
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+
+	{
+		fonts.length > 0 && (
+			<div class="ds-block">
+				<h3>Tipografia</h3>
+				<ul class="ds-fonts">
+					{fonts.map((font) => (
+						<li class="ds-font">
+							<div class="ds-font-meta">
+								<span>{font.role}</span>
+								{font.webfont ? <span>{font.family}</span> : <span>Fonte do projeto</span>}
+							</div>
+							{font.webfont ? (
+								<p class="ds-specimen" style={`font-family:'${font.family}', system-ui, sans-serif`}>
+									Aa
+								</p>
+							) : (
+								<p class="ds-specimen ds-specimen--name">{font.family}</p>
+							)}
+							{font.weights && <p class="ds-font-weights">{font.weights}</p>}
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+
+	{
+		components.length > 0 && (
+			<div class="ds-block">
+				<h3>Componentes</h3>
+				<div class="ds-components">
+					{components.map((component) => (
+						<img src={publicSrc(component.src)} alt={component.alt} loading="lazy" />
+					))}
+				</div>
+			</div>
+		)
+	}
+</section>
+
+<style>
+	.design-system {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		border-radius: 12px;
+		background: var(--surface);
+	}
+
+	.design-system h2 {
+		margin: 0 0 1.25rem;
+		font-size: 1.5rem;
+		color: var(--accent);
+	}
+
+	.ds-block + .ds-block {
+		margin-top: 1.75rem;
+	}
+
+	.ds-block h3 {
+		margin: 0 0 0.75rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.ds-colors,
+	.ds-fonts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.ds-colors {
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 125px), 1fr));
+	}
+
+	.ds-color {
+		overflow: hidden;
+		border-radius: 14px;
+		border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+	}
+
+	.ds-swatch {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 0.5rem;
+		min-height: 6rem;
+		padding: 0.9rem 1rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+
+	.ds-color-hex {
+		font-variant-numeric: tabular-nums;
+		opacity: 0.9;
+	}
+
+	.ds-scale {
+		display: flex;
+		height: 2.25rem;
+	}
+
+	.ds-scale span {
+		flex: 1;
+	}
+
+	.ds-font {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		border-radius: 14px;
+		background: color-mix(in srgb, var(--text) 5%, transparent);
+	}
+
+	.ds-font-meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.5rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--muted);
+	}
+
+	.ds-specimen {
+		margin: 0.5rem 0 0;
+		font-size: 4.5rem;
+		font-weight: 500;
+		line-height: 1.1;
+		text-align: right;
+		color: var(--text);
+	}
+
+	.ds-specimen--name {
+		font-size: 1.75rem;
+		font-weight: 700;
+		text-align: left;
+		margin-top: 1.5rem;
+	}
+
+	.ds-font-weights {
+		margin: 0.5rem 0 0;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+
+	.ds-components {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.ds-components img {
+		display: block;
+		width: 100%;
+		max-width: 480px;
+		height: auto;
+		border-radius: 14px;
+	}
+</style>

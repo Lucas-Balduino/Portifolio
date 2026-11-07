@@ -48,6 +48,12 @@ title, slug, short_desc, image, repo_url, live_url, technologies[]
 order: number                   # substitui a ordem do array JSON; preservar a ordem atual
 section_titles: record opcional
 gallery: string[]               # substitui images_section CSV
+design_system: objeto opcional  # painel visual após a ideia principal:
+                                # title?, colors[{name, hex, scale?}],
+                                # fonts[{role, family, weights?, webfont}],
+                                # components[{src, alt}]. `scale` = tons reais
+                                # do projeto (não gerar). `webfont: true` só se a
+                                # família existir no Google Fonts.
 summary: objeto opcional        # ficha no topo do case: type, context, period,
                                 # advisor, role, team, deliverable (todos string).
                                 # "pendente" ou ausente = não aparece. Só o autor

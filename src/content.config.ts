@@ -9,6 +9,8 @@ const posixPath = z
 		message: 'paths de imagem devem usar /'
 	});
 
+const hexColor = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'cor deve ser hex #RRGGBB');
+
 const projects = defineCollection({
 	loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
 	schema: z.object({
@@ -31,6 +33,34 @@ const projects = defineCollection({
 			})
 			.optional(),
 		gallery: z.array(posixPath),
+		// Painel visual do design system do case (cores, tipografia, componentes).
+		design_system: z
+			.object({
+				title: z.string().optional(),
+				colors: z
+					.array(
+						z.object({
+							name: z.string().min(1),
+							hex: hexColor,
+							// Tons reais do projeto, do mais escuro ao mais claro. Não gerar.
+							scale: z.array(hexColor).optional()
+						})
+					)
+					.default([]),
+				fonts: z
+					.array(
+						z.object({
+							role: z.string().min(1),
+							family: z.string().min(1),
+							weights: z.string().optional(),
+							// true = família existe no Google Fonts e é carregada só nesta página.
+							webfont: z.boolean().default(false)
+						})
+					)
+					.default([]),
+				components: z.array(z.object({ src: posixPath, alt: z.string().min(1) })).default([])
+			})
+			.optional(),
 		// Ficha no topo do case. Valor "pendente" (ou ausente) não aparece no site.
 		summary: z
 			.object({

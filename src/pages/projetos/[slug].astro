@@ -5,6 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Gallery from '../../components/Gallery.astro';
 import TechList from '../../components/TechList.astro';
 import CaseSummary from '../../components/CaseSummary.astro';
+import DesignSystem from '../../components/DesignSystem.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -47,18 +48,23 @@ const sections = splitH2Sections(body);
 
 type Block =
 	| { type: 'section'; title: string; html: string }
+	| { type: 'design' }
 	| { type: 'gallery' };
+
+// Painel do design system e galeria entram logo depois da ideia principal.
+const visualBlocks: Block[] = [
+	...(data.design_system ? [{ type: 'design' } as const] : []),
+	...(data.gallery.length > 0 ? [{ type: 'gallery' } as const] : [])
+];
 
 const blocks: Block[] = [];
 for (const section of sections) {
 	blocks.push({ type: 'section', title: section.title, html: toHtml(section.markdown) });
-	if (section.title === mainIdeaTitle && data.gallery.length > 0) {
-		blocks.push({ type: 'gallery' });
-	}
+	if (section.title === mainIdeaTitle) blocks.push(...visualBlocks);
 }
-if (data.gallery.length > 0 && !blocks.some((block) => block.type === 'gallery')) {
+if (visualBlocks.length > 0 && !blocks.some((block) => block.type !== 'section')) {
 	const firstSection = blocks.findIndex((block) => block.type === 'section');
-	blocks.splice(firstSection === -1 ? 0 : firstSection + 1, 0, { type: 'gallery' });
+	blocks.splice(firstSection === -1 ? 0 : firstSection + 1, 0, ...visualBlocks);
 }
 
 const githubHref = data.repo_url.trim();
@@ -101,12 +107,19 @@ const coverSrc = publicSrc(data.image);
 			blocks.map((block) =>
 				block.type === 'gallery' ? (
 					<Gallery title={data.title} heading={galleryTitle} images={data.gallery} />
-				) : (
+				) : block.type === 'design' && data.design_system ? (
+					<DesignSystem
+						heading={data.design_system.title ?? 'Design System'}
+						colors={data.design_system.colors}
+						fonts={data.design_system.fonts}
+						components={data.design_system.components}
+					/>
+				) : block.type === 'section' ? (
 					<section class="project-section">
 						<h2>{block.title}</h2>
 						<div class="project-rich-text" set:html={block.html} />
 					</section>
-				)
+				) : null
 			)
 		}
 
