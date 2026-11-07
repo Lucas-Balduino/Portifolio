@@ -294,8 +294,8 @@ body.theme-dark .contact-form textarea:focus{
 .projects-list .section-head h1{ margin:0 0 0.5rem 0; font-size:2.5rem; }
 .projects-list-grid{ 
   display:grid; 
-  grid-template-columns: repeat(auto-fill,minmax(min(100%, 300px),1fr));
-  gap:1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:2rem;
   list-style:none; 
   padding:0; 
   margin:2rem 0 0 0; 
