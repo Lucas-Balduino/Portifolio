@@ -40,7 +40,7 @@ Uma fonte de verdade por tipo de link:
 | URL canônica / OG | `js/site-config.js` + tags no `<head>` de cada HTML | |
 | Contato funcional | mailto no HTML; EmailJS só se existir `js/config.js` local | |
 
-Ordem atual dos projetos (home = os três primeiros): Kinetic → Mapa Virtual do IdA → Descubra Cerrado → JetPack Guy → Agência de Viagens.
+Ordem atual dos projetos (home = os três primeiros): Kinetic → Mapa Virtual do IdA → Descubra Cerrado → JetPack Guy. (Agência de Viagens retirada pelo autor.)
 
 ### Sitemap público (agora)
 

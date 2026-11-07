@@ -294,8 +294,8 @@ body.theme-dark .contact-form textarea:focus{
 .projects-list .section-head h1{ margin:0 0 0.5rem 0; font-size:2.5rem; }
 .projects-list-grid{ 
   display:grid; 
-  grid-template-columns: repeat(auto-fit,minmax(350px,1fr)); 
-  gap:2rem; 
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:2rem;
   list-style:none; 
   padding:0; 
   margin:2rem 0 0 0; 
@@ -431,7 +431,9 @@ body.theme-dark .contact-form textarea:focus{
 /* Embeds Figma
    - NÃO usar overflow:hidden no wrapper: o modo tela cheia do player
      aplica fullscreen no iframe e o overflow do pai corta/destroi o layout.
-   - Preferir scaling=min-zoom + content-scaling=fixed na URL (frames de prototipo).
+   - Usar scaling=scale-down-width + content-scaling=fixed + hide-ui=1 na URL:
+     o frame ocupa a largura toda sem corte. min-zoom (tamanho real) cortava
+     o frame desktop; com a UI do Figma, o botão de tela cheia cobria o protótipo.
 */
 .figma-embed{
   position:relative;
@@ -486,11 +488,6 @@ body.theme-dark .contact-form textarea:focus{
 
 .muted{ color:var(--muted) }
 .link-muted{ color:var(--muted); text-decoration:none; font-weight:700 }
-
-/* Lightbox scaffold (JS will handle logic later) */
-.lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(0,0,0,0.7); z-index:9999; }
-.lightbox-img{ max-width:90vw; max-height:80vh; height:auto; border-radius:10px; display:block; }
-.lightbox-close{ position:absolute; right:1.25rem; top:1.25rem; background:transparent; border:0; color:white; font-size:1.2rem; cursor:pointer; }
 
 /* Accessibility helpers */
 .sr-only{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden }

@@ -1,0 +1,164 @@
+---
+import { splitTechnologies } from '../lib/technologies';
+
+interface Props {
+	technologies: string[];
+	/**
+	 * `card`: resumo curto (até `limit` itens). `full`: ferramentas e competências separadas.
+	 * `tools`: só as ferramentas, sem limite (ficha do case).
+	 */
+	variant?: 'card' | 'full' | 'tools';
+	limit?: number;
+}
+
+const { technologies, variant = 'full', limit = 4 } = Astro.props;
+const { tools, skills } = splitTechnologies(technologies);
+
+// No card, ferramentas vêm primeiro; competências completam até o limite.
+const cardTools = tools.slice(0, limit);
+const cardSkills = skills.slice(0, Math.max(0, limit - cardTools.length));
+const hiddenLabels = [
+	...tools.slice(cardTools.length).map((tool) => tool.label),
+	...skills.slice(cardSkills.length)
+];
+const hidden = hiddenLabels.length;
+---
+
+{
+	variant === 'tools' ? (
+		tools.length > 0 && (
+			<ul class="tech-list" aria-label="Ferramentas">
+				{tools.map((tool) => (
+					<li class="tech-chip">
+						{tool.icon && (
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d={tool.icon.path} />
+							</svg>
+						)}
+						{tool.label}
+					</li>
+				))}
+			</ul>
+		)
+	) : variant === 'card' ? (
+		<ul class="tech-list" aria-label="Tecnologias">
+			{cardTools.map((tool) => (
+				<li class="tech-chip">
+					{tool.icon && (
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d={tool.icon.path} />
+						</svg>
+					)}
+					{tool.label}
+				</li>
+			))}
+			{cardSkills.map((skill) => (
+				<li class="skill-chip">{skill}</li>
+			))}
+			{hidden > 0 && (
+				<li class="skill-chip more" title={hiddenLabels.join(', ')}>
+					+{hidden}
+				</li>
+			)}
+		</ul>
+	) : (
+		<div class="tech-groups">
+			{tools.length > 0 && (
+				<div class="tech-group">
+					<h3>Ferramentas</h3>
+					<ul class="tech-list tech-list--large">
+						{tools.map((tool) => (
+							<li class="tech-chip">
+								{tool.icon && (
+									<svg viewBox="0 0 24 24" aria-hidden="true">
+										<path d={tool.icon.path} />
+									</svg>
+								)}
+								{tool.label}
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+			{skills.length > 0 && (
+				<div class="tech-group">
+					<h3>Competências</h3>
+					<ul class="tech-list">
+						{skills.map((skill) => (
+							<li class="skill-chip">{skill}</li>
+						))}
+					</ul>
+				</div>
+			)}
+		</div>
+	)
+}
+
+<style>
+	.tech-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tech-chip,
+	.skill-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.3rem 0.55rem;
+		border-radius: 8px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	.tech-chip {
+		color: var(--text);
+		background: color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.tech-chip svg {
+		width: 1rem;
+		height: 1rem;
+		flex-shrink: 0;
+		fill: currentColor;
+	}
+
+	.skill-chip {
+		color: var(--muted);
+		border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+	}
+
+	.skill-chip.more {
+		cursor: help;
+	}
+
+	.tech-groups {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.tech-group h3 {
+		margin: 0 0 0.6rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.tech-list--large .tech-chip {
+		padding: 0.5rem 0.8rem;
+		font-size: 0.9rem;
+		border-radius: 10px;
+	}
+
+	.tech-list--large .tech-chip svg {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+</style>

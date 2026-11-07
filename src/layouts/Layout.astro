@@ -2,6 +2,8 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../../style.css';
+import '../styles/tokens.css';
+import '../styles/identity.css';
 import defaultOgImage from '../../img/og-image.png?url';
 import { SITE_NAME, absoluteUrl, canonicalUrl } from '../site-config';
 
@@ -46,12 +48,12 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 			rel="stylesheet"
 		/>
 	</head>
-	<body class="theme-light">
+	<body>
 		<script is:inline>
 			(function () {
 				try {
-					if (localStorage.getItem('theme') === 'dark') {
-						document.body.classList.add('theme-dark');
+					if (localStorage.getItem('theme') === 'light') {
+						document.body.classList.add('theme-light');
 					}
 				} catch (e) {}
 			})();
@@ -63,24 +65,13 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 		<Footer />
 		<script>
 			const themeToggle = document.getElementById('theme-toggle');
-			const savedTheme = localStorage.getItem('theme') || 'light';
-
-			if (savedTheme === 'dark') {
-				document.body.classList.add('theme-dark');
-				themeToggle?.setAttribute('aria-pressed', 'true');
-			}
+			const isLight = document.body.classList.contains('theme-light');
+			themeToggle?.setAttribute('aria-pressed', isLight ? 'false' : 'true');
 
 			themeToggle?.addEventListener('click', () => {
-				const isDark = document.body.classList.contains('theme-dark');
-				if (isDark) {
-					document.body.classList.remove('theme-dark');
-					localStorage.setItem('theme', 'light');
-					themeToggle.setAttribute('aria-pressed', 'false');
-				} else {
-					document.body.classList.add('theme-dark');
-					localStorage.setItem('theme', 'dark');
-					themeToggle.setAttribute('aria-pressed', 'true');
-				}
+				const light = document.body.classList.toggle('theme-light');
+				localStorage.setItem('theme', light ? 'light' : 'dark');
+				themeToggle.setAttribute('aria-pressed', light ? 'false' : 'true');
 			});
 
 			const burger = document.getElementById('nav-burger');

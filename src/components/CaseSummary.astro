@@ -1,0 +1,130 @@
+---
+import TechList from './TechList.astro';
+
+type Summary = Partial<
+	Record<'type' | 'context' | 'period' | 'role' | 'team' | 'advisor' | 'deliverable', string>
+>;
+
+interface Props {
+	summary?: Summary;
+	technologies: string[];
+	repoUrl: string;
+	liveUrl: string;
+}
+
+const { summary = {}, technologies, repoUrl, liveUrl } = Astro.props;
+
+const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim() !== 'pendente');
+
+// Campos curtos ficam lado a lado; os longos ocupam a linha inteira.
+const fields = [
+	{ key: 'type', label: 'Tipo', wide: false },
+	{ key: 'context', label: 'Contexto', wide: false },
+	{ key: 'period', label: 'Período', wide: false },
+	{ key: 'advisor', label: 'Orientação', wide: false },
+	{ key: 'role', label: 'Meu papel', wide: true },
+	{ key: 'team', label: 'Equipe', wide: true },
+	{ key: 'deliverable', label: 'Entrega', wide: true }
+] as const;
+
+const visibleFields = fields.filter((field) => isFilled(summary[field.key]));
+const githubHref = repoUrl.trim();
+const liveHref = liveUrl.trim();
+const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo';
+---
+
+<section class="case-summary" aria-label="Ficha do projeto">
+	{
+		visibleFields.length > 0 && (
+			<dl class="summary-grid">
+				{visibleFields.map((field) => (
+					<div class:list={['summary-item', { 'summary-item--wide': field.wide }]}>
+						<dt>{field.label}</dt>
+						<dd>{summary[field.key]}</dd>
+					</div>
+				))}
+			</dl>
+		)
+	}
+
+	<div class="summary-footer">
+		<TechList technologies={technologies} variant="tools" />
+		{
+			(githubHref || liveHref) && (
+				<div class="summary-actions">
+					{liveHref && (
+						<a class="btn" href={liveHref} target="_blank" rel="noopener noreferrer">
+							{liveLabel}
+						</a>
+					)}
+					{githubHref && (
+						<a class="btn ghost" href={githubHref} target="_blank" rel="noopener noreferrer">
+							GitHub
+						</a>
+					)}
+				</div>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.case-summary {
+		display: grid;
+		gap: 1.25rem;
+		margin: -1rem 0 2rem;
+		padding: 1.5rem;
+		border-radius: 12px;
+		background: var(--surface);
+		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.summary-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		gap: 1rem 1.5rem;
+		margin: 0;
+	}
+
+	.summary-item--wide {
+		grid-column: 1 / -1;
+	}
+
+	.summary-item dt {
+		margin-bottom: 0.25rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.summary-item dd {
+		margin: 0;
+		line-height: 1.5;
+		color: var(--text);
+	}
+
+	.summary-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.summary-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.summary-actions,
+		.summary-actions .btn {
+			width: 100%;
+		}
+	}
+</style>

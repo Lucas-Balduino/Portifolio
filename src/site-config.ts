@@ -11,7 +11,7 @@ export const META = {
 	projects: {
 		title: 'Projetos — Lucas',
 		description:
-			'Projetos de Lucas Balduino: código, deploys e notas sobre arquitetura de software e front-end.'
+			'Cases de design e projetos de código de Lucas Balduino: UX/UI, protótipos no Figma e front-end.'
 	},
 	project: {
 		title: 'Projeto — Lucas',

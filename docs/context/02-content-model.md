@@ -42,13 +42,27 @@ Quando A2 valer: um arquivo `src/content/projects/<slug>.mdx`. Frontmatter = met
 
 ```text
 title, slug, short_desc, image, repo_url, live_url, technologies[]
+                                # technologies: nomes listados em src/lib/technologies.ts
+                                # viram "Ferramentas" com ícone (simple-icons); o resto
+                                # vira "Competências" em texto. Ferramenta nova = mapear lá.
 order: number                   # substitui a ordem do array JSON; preservar a ordem atual
 section_titles: record opcional
 gallery: string[]               # substitui images_section CSV
+design_system: objeto opcional  # painel visual após a ideia principal:
+                                # title?, colors[{name, hex}] (com botão de
+                                # copiar), fonts[{role, family, weights?, webfont}],
+                                # link?{href, label}. Padrão único para todos os
+                                # cases: sem escalas de tom nem prints de
+                                # componentes. `webfont: true` só se a família
+                                # existir no Google Fonts.
+summary: objeto opcional        # ficha no topo do case: type, context, period,
+                                # advisor, role, team, deliverable (todos string).
+                                # "pendente" ou ausente = não aparece. Só o autor
+                                # confirma role/team/period — agente não inventa.
 draft: não usar                 # publicação = arquivo no repo
 ```
 
-Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=min-zoom`, `content-scaling=fixed`, sem `show-proto-sidebar`; `allowfullscreen` no iframe).
+Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=scale-down-width`, `content-scaling=fixed`, `hide-ui=1`, sem `show-proto-sidebar`; tela cheia pelo botão "Ver protótipo" da ficha).
 
 ### Página estática (não é collection)
 
@@ -57,6 +71,6 @@ Sobre, contato, hero: copy no layout/página, não no modelo de projeto. i18n ho
 ## Regras
 
 - Não criar tipo “artigo”, “playground” ou “zine” até existir um arquivo real que não caiba em Projeto.
-- Agência de Viagens permanece no JSON até o autor decidir remover; não exigir screenshots novos para a migração.
+- Agência de Viagens **retirada do site pelo autor** (por enquanto). O MDX e a imagem estão no histórico do git; voltar só se o autor pedir.
 - Não inventar URL, hex, data de formatura diferente da que já está em `sobre.html`, nem atuação de grupo não confirmada.
 - Path de imagem: sempre `/` (Windows Explorer gera `\` — rejeitar).
