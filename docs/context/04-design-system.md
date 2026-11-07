@@ -45,4 +45,4 @@ Não copiar a paleta por modalidade do Kinetic para o site inteiro.
 
 - Não tratar este arquivo como tarefa de implementar UI.
 - Não inventar hex para “ficar completo”.
-- Embeds Figma: wrapper `.figma-embed` já estabilizado (não `overflow: hidden` que quebra fullscreen; `min-zoom` + `fixed`).
+- Embeds Figma: wrapper `.figma-embed` já estabilizado (não `overflow: hidden` que quebra fullscreen; `scale-down-width` + `fixed` + `hide-ui=1`; `min-zoom` cortava o frame).

@@ -431,7 +431,9 @@ body.theme-dark .contact-form textarea:focus{
 /* Embeds Figma
    - NÃO usar overflow:hidden no wrapper: o modo tela cheia do player
      aplica fullscreen no iframe e o overflow do pai corta/destroi o layout.
-   - Preferir scaling=min-zoom + content-scaling=fixed na URL (frames de prototipo).
+   - Usar scaling=scale-down-width + content-scaling=fixed + hide-ui=1 na URL:
+     o frame ocupa a largura toda sem corte. min-zoom (tamanho real) cortava
+     o frame desktop; com a UI do Figma, o botão de tela cheia cobria o protótipo.
 */
 .figma-embed{
   position:relative;

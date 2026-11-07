@@ -62,7 +62,7 @@ summary: objeto opcional        # ficha no topo do case: type, context, period,
 draft: não usar                 # publicação = arquivo no repo
 ```
 
-Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=min-zoom`, `content-scaling=fixed`, sem `show-proto-sidebar`; `allowfullscreen` no iframe).
+Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=scale-down-width`, `content-scaling=fixed`, `hide-ui=1`, sem `show-proto-sidebar`; tela cheia pelo botão "Ver protótipo" da ficha).
 
 ### Página estática (não é collection)
 
