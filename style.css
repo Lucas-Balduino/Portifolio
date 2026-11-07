@@ -487,11 +487,6 @@ body.theme-dark .contact-form textarea:focus{
 .muted{ color:var(--muted) }
 .link-muted{ color:var(--muted); text-decoration:none; font-weight:700 }
 
-/* Lightbox scaffold (JS will handle logic later) */
-.lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(0,0,0,0.7); z-index:9999; }
-.lightbox-img{ max-width:90vw; max-height:80vh; height:auto; border-radius:10px; display:block; }
-.lightbox-close{ position:absolute; right:1.25rem; top:1.25rem; background:transparent; border:0; color:white; font-size:1.2rem; cursor:pointer; }
-
 /* Accessibility helpers */
 .sr-only{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden }
 

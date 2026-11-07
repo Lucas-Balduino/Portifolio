@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { micromark } from 'micromark';
 import Layout from '../../layouts/Layout.astro';
+import Gallery from '../../components/Gallery.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -90,16 +91,7 @@ const coverSrc = publicSrc(data.image);
 		{
 			blocks.map((block) =>
 				block.type === 'gallery' ? (
-					<section class="project-images">
-						<h2>{galleryTitle}</h2>
-						<div class="project-images-grid">
-							{data.gallery.map((src) => (
-								<figure class="project-shot">
-									<img src={publicSrc(src)} alt={data.title} loading="lazy" />
-								</figure>
-							))}
-						</div>
-					</section>
+					<Gallery title={data.title} heading={galleryTitle} images={data.gallery} />
 				) : (
 					<section class="project-section">
 						<h2>{block.title}</h2>
@@ -142,17 +134,4 @@ const coverSrc = publicSrc(data.image);
 			)
 		}
 	</article>
-
-	<script>
-		document.querySelectorAll('.project-shot img').forEach((img) => {
-			const tagOrientation = () => {
-				const figure = img.closest('.project-shot');
-				if (!(figure instanceof HTMLElement) || !img.naturalWidth) return;
-				figure.classList.toggle('is-landscape', img.naturalWidth > img.naturalHeight);
-				figure.classList.toggle('is-portrait', img.naturalWidth <= img.naturalHeight);
-			};
-			if (img.complete) tagOrientation();
-			else img.addEventListener('load', tagOrientation, { once: true });
-		});
-	</script>
 </Layout>
