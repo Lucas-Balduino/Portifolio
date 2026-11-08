@@ -1,0 +1,598 @@
+---
+/**
+ * Currículo em uma página A4. A mesma página serve para ler no navegador e para gerar o PDF
+ * (`npm run cv:pdf`), que substitui public/Resume/CurriculoPT.pdf.
+ * Os projetos vêm dos cases (summary), então o currículo acompanha o que está no site.
+ */
+import TechList from '../components/TechList.astro';
+import fotoMinha from '../../img/FotoMinha.jpg?url';
+import { getSortedProjects } from '../lib/projects';
+import { canonicalUrl } from '../site-config';
+import { siGithub } from 'simple-icons';
+
+const projects = await getSortedProjects();
+
+const contact = {
+	email: 'lucasgbalduino@gmail.com',
+	phone: '+55 61 99267-7538',
+	phoneHref: 'tel:+5561992677538',
+	city: 'Brasília, DF'
+};
+
+const links = [
+	{ label: 'lucasbalduino.vercel.app', href: 'https://lucasbalduino.vercel.app', icon: 'globe' },
+	{ label: 'github.com/Lucas-Balduino', href: 'https://github.com/Lucas-Balduino', icon: 'github' },
+	{
+		label: 'linkedin.com/in/lucas-balduino-661073327',
+		href: 'https://www.linkedin.com/in/lucas-balduino-661073327',
+		icon: 'linkedin'
+	}
+];
+
+const experience = [
+	{
+		role: 'Bolsista de extensão · Gêmeos Digitais',
+		org: 'CAL/UnB',
+		period: '2025 – atual',
+		points: [
+			'Geração de gêmeos digitais 3D de obras para a formação do acervo online da CAL, com foco em preservação e acessibilidade.',
+			'Apoio ao escaneamento das obras e à preparação do site do acervo (apêndice do portal da CAL).'
+		]
+	},
+	{
+		role: 'Monitor de HTML & CSS',
+		org: 'UniCEUB',
+		period: '2024.2',
+		points: [
+			'Apoio em aulas práticas de estrutura HTML, CSS responsivo e layout.',
+			'Orientação sobre responsividade e boas práticas de CSS, com feedback em atividades.'
+		]
+	}
+];
+
+const education = [
+	{ course: 'Design', school: 'Universidade de Brasília (UnB)', end: 'Previsão: 1º sem. 2028' },
+	{ course: 'Ciência da Computação', school: 'UniCEUB', end: 'Previsão: 2º sem. 2027' }
+];
+
+const skills = [
+	{ group: 'Design e prototipagem', items: ['Wireframes', 'Protótipos', 'Identidade visual', 'Design system'] },
+	{
+		group: 'UX',
+		items: ['Pesquisa exploratória', 'Arquitetura de informação', 'Fluxos de usabilidade', 'Design inclusivo (WCAG)']
+	}
+];
+
+const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'Expo', 'Firebase', 'Git', 'GitHub'];
+
+const languages = [
+	{ name: 'Português', level: 'nativo' },
+	{ name: 'Inglês', level: 'fluente' },
+	{ name: 'Espanhol', level: 'intermediário' }
+];
+
+const pitch = { label: 'youtu.be/meSSt11skSQ', href: 'https://youtu.be/meSSt11skSQ' };
+
+const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim() !== 'pendente');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonicalUrl('/curriculo')} />
+		<title>Currículo — Lucas Balduino</title>
+		<meta
+			name="description"
+			content="Currículo de Lucas Gonçalves Balduino: designer UX/UI e desenvolvedor front-end em formação."
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<nav class="cv-toolbar" aria-label="Ações do currículo">
+			<a href="/">← Voltar ao portfólio</a>
+			<a class="cv-download" href="/Resume/CurriculoPT.pdf" download>Baixar PDF</a>
+		</nav>
+
+		<article class="sheet">
+			<header class="cv-header">
+				<img class="cv-photo" src={fotoMinha} alt="Foto do Lucas Balduino" width="96" height="96" />
+				<div class="cv-id">
+					<h1>Lucas Gonçalves Balduino</h1>
+					<p class="cv-role">Designer UX/UI e desenvolvedor front-end em formação</p>
+					<ul class="cv-contact">
+						<li>
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z M3 6l9 7 9-7" /></svg>
+							<a href={`mailto:${contact.email}`}>{contact.email}</a>
+						</li>
+						<li>
+							<svg viewBox="0 0 24 24" aria-hidden="true"
+								><path
+									d="M6.6 3h3l1.5 4.5-2.2 1.4a11 11 0 0 0 6.2 6.2l1.4-2.2L21 14.4v3a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.2 2 2 0 0 1 6.6 3z"
+								></path></svg
+							>
+							<a href={contact.phoneHref}>{contact.phone}</a>
+						</li>
+						<li>
+							<svg viewBox="0 0 24 24" aria-hidden="true"
+								><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle
+									cx="12"
+									cy="9.5"
+									r="2.5"></circle></svg
+							>
+							{contact.city}
+						</li>
+					</ul>
+					<ul class="cv-contact cv-links">
+						{
+							links.map((link) => (
+								<li>
+									{link.icon === 'github' ? (
+										<svg class="filled" viewBox="0 0 24 24" aria-hidden="true">
+											<path d={siGithub.path} />
+										</svg>
+									) : link.icon === 'linkedin' ? (
+										<svg viewBox="0 0 24 24" aria-hidden="true">
+											<rect x="3" y="3" width="18" height="18" rx="3" />
+											<path d="M8 10.5V17 M8 7.5v.01 M12 17v-6.5 M12 13.5a2.5 2.5 0 0 1 5 0V17" />
+										</svg>
+									) : (
+										<svg viewBox="0 0 24 24" aria-hidden="true">
+											<circle cx="12" cy="12" r="9" />
+											<path d="M3 12h18 M12 3a14 14 0 0 1 0 18 M12 3a14 14 0 0 0 0 18" />
+										</svg>
+									)}
+									<a href={link.href}>{link.label}</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</header>
+
+			<p class="cv-profile">
+				Estudo <strong>Design na UnB</strong> e <strong>Ciência da Computação no UniCEUB</strong> ao
+				mesmo tempo. Trabalho com pesquisa, fluxos e interfaces centradas no usuário, com atenção à
+				usabilidade e à acessibilidade, e levo o protótipo do Figma até o código front-end.
+			</p>
+
+			<div class="cv-grid">
+				<div class="cv-main">
+					<section>
+						<h2>Experiência</h2>
+						{
+							experience.map((item) => (
+								<div class="cv-item">
+									<div class="cv-item-head">
+										<h3>{item.role}</h3>
+										<span class="cv-date">{item.period}</span>
+									</div>
+									<p class="cv-org">{item.org}</p>
+									<ul class="cv-points">
+										{item.points.map((point) => (
+											<li>{point}</li>
+										))}
+									</ul>
+								</div>
+							))
+						}
+					</section>
+
+					<section>
+						<h2>Projetos</h2>
+						<p class="cv-note">Cases completos, com protótipos e imagens, em lucasbalduino.vercel.app</p>
+						{
+							projects.map((entry) => (
+								<div class="cv-item cv-project">
+									<div class="cv-item-head">
+										<h3>
+											<a href={`https://lucasbalduino.vercel.app/projetos/${entry.data.slug}`}>
+												{entry.data.title}
+											</a>
+										</h3>
+										{isFilled(entry.data.summary?.period) && (
+											<span class="cv-date">{entry.data.summary?.period}</span>
+										)}
+									</div>
+									<p class="cv-org">
+										{[entry.data.summary?.type, entry.data.summary?.context]
+											.filter(isFilled)
+											.join(' · ')}
+									</p>
+									{isFilled(entry.data.summary?.role) && (
+										<p class="cv-text">{entry.data.summary?.role}</p>
+									)}
+									{isFilled(entry.data.summary?.deliverable) && (
+										<p class="cv-text cv-muted">Entrega: {entry.data.summary?.deliverable}</p>
+									)}
+								</div>
+							))
+						}
+					</section>
+				</div>
+
+				<aside class="cv-side">
+					<section>
+						<h2>Formação</h2>
+						{
+							education.map((item) => (
+								<div class="cv-item">
+									<h3>{item.course}</h3>
+									<p class="cv-org">{item.school}</p>
+									<p class="cv-muted">{item.end}</p>
+								</div>
+							))
+						}
+					</section>
+
+					<section>
+						<h2>Ferramentas</h2>
+						<TechList technologies={tools} variant="tools" />
+					</section>
+
+					<section>
+						<h2>Competências</h2>
+						{
+							skills.map((group) => (
+								<div class="cv-skill-group">
+									<h3>{group.group}</h3>
+									<p class="cv-text">{group.items.join(' · ')}</p>
+								</div>
+							))
+						}
+					</section>
+
+					<section>
+						<h2>Idiomas</h2>
+						<ul class="cv-languages">
+							{
+								languages.map((lang) => (
+									<li>
+										<strong>{lang.name}</strong> {lang.level}
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section>
+						<h2>Vídeo de apresentação</h2>
+						<p class="cv-text">
+							Pitch em vídeo:<br />
+							<a href={pitch.href}>{pitch.label}</a>
+						</p>
+					</section>
+				</aside>
+			</div>
+		</article>
+	</body>
+</html>
+
+<style>
+	:global(html) {
+		/* Tudo em rem escala a partir daqui: 10pt é o corpo do currículo. */
+		font-size: 10pt;
+	}
+
+	:global(body) {
+		--text: #0b0b0d;
+		--muted: #5c5c64;
+		--line: #e4e4e7;
+		--dark: #0b0b0d;
+		--on-dark: #f5f5f6;
+		--on-dark-muted: #a1a1aa;
+		margin: 0;
+		padding: 0 0 3rem;
+		background: #d4d4d8;
+		color: var(--text);
+		font-family: 'Inter', system-ui, sans-serif;
+		line-height: 1.45;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.cv-toolbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		max-width: 210mm;
+		margin: 0 auto;
+		padding: 1.25rem 0;
+		font-weight: 600;
+	}
+
+	.cv-download {
+		padding: 0.55rem 1rem;
+		border-radius: 8px;
+		background: var(--dark);
+		color: var(--on-dark);
+	}
+
+	.sheet {
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		width: 210mm;
+		min-height: 297mm;
+		margin: 0 auto;
+		background: #fff;
+		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+	}
+
+	/* Faixa escura no topo: a mesma cara do site (fundo #0B0B0D, Inter, cantos arredondados). */
+	.cv-header {
+		display: flex;
+		align-items: center;
+		gap: 1.6rem;
+		padding: 2.2rem 2.6rem;
+		background: var(--dark);
+		color: var(--on-dark);
+	}
+
+	.cv-photo {
+		flex-shrink: 0;
+		width: 96px;
+		height: 96px;
+		object-fit: cover;
+		border-radius: 18px;
+	}
+
+	.cv-id h1 {
+		margin: 0;
+		font-size: 2.3rem;
+		font-weight: 800;
+		letter-spacing: -0.035em;
+		line-height: 1.05;
+	}
+
+	.cv-role {
+		margin: 0.35rem 0 0.9rem;
+		font-size: 1.05rem;
+		color: var(--on-dark-muted);
+	}
+
+	.cv-contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem 1.1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: 0.9rem;
+	}
+
+	.cv-links {
+		margin-top: 0.35rem;
+	}
+
+	.cv-contact li {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.cv-contact svg {
+		width: 0.95rem;
+		height: 0.95rem;
+		flex-shrink: 0;
+		fill: none;
+		stroke: var(--on-dark-muted);
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.cv-contact svg.filled {
+		fill: var(--on-dark-muted);
+		stroke: none;
+	}
+
+	.cv-profile {
+		margin: 0;
+		padding: 1.4rem 2.6rem;
+		font-size: 1.05rem;
+		line-height: 1.55;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.cv-grid {
+		display: grid;
+		flex: 1;
+		grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+	}
+
+	.cv-main {
+		padding: 1.4rem 2rem 1.6rem 2.6rem;
+	}
+
+	.cv-side {
+		padding: 1.4rem 2.6rem 1.6rem 1.8rem;
+		background: #f7f7f8;
+		border-left: 1px solid var(--line);
+	}
+
+	section + section {
+		margin-top: 1.4rem;
+	}
+
+	h2 {
+		margin: 0 0 0.75rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	h3 {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+	}
+
+	.cv-item + .cv-item {
+		margin-top: 0.85rem;
+	}
+
+	.cv-item-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+	}
+
+	.cv-date {
+		flex-shrink: 0;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--muted);
+	}
+
+	.cv-org {
+		margin: 0.1rem 0 0;
+		font-size: 0.9rem;
+		color: var(--muted);
+	}
+
+	.cv-points {
+		margin: 0.35rem 0 0;
+		padding-left: 1.05rem;
+	}
+
+	.cv-points li + li {
+		margin-top: 0.2rem;
+	}
+
+	.cv-note {
+		margin: -0.35rem 0 0.75rem;
+		font-size: 0.85rem;
+		color: var(--muted);
+	}
+
+	.cv-project h3 a {
+		text-decoration: underline;
+		text-decoration-color: var(--line);
+		text-underline-offset: 3px;
+	}
+
+	.cv-text {
+		margin: 0.25rem 0 0;
+	}
+
+	.cv-muted {
+		margin: 0.1rem 0 0;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+
+	.cv-side .cv-item + .cv-item {
+		margin-top: 0.7rem;
+	}
+
+	.cv-skill-group + .cv-skill-group {
+		margin-top: 0.6rem;
+	}
+
+	.cv-skill-group h3 {
+		font-size: 0.9rem;
+	}
+
+	.cv-skill-group .cv-text {
+		font-size: 0.9rem;
+		color: var(--muted);
+	}
+
+	.cv-languages {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.cv-languages li + li {
+		margin-top: 0.15rem;
+	}
+
+	.cv-side a {
+		text-decoration: underline;
+		text-decoration-color: #c4c4ca;
+		text-underline-offset: 2px;
+	}
+
+	/* Celular: a folha vira coluna única e ocupa a tela toda. */
+	@media screen and (max-width: 820px) {
+		:global(body) {
+			padding: 0;
+			background: #fff;
+		}
+
+		.cv-toolbar {
+			padding: 1rem;
+		}
+
+		.sheet {
+			width: 100%;
+			min-height: 0;
+			box-shadow: none;
+		}
+
+		.cv-header {
+			flex-direction: column;
+			align-items: flex-start;
+			padding: 1.75rem 1.25rem;
+		}
+
+		.cv-profile,
+		.cv-main,
+		.cv-side {
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+		}
+
+		.cv-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.cv-side {
+			border-left: 0;
+			border-top: 1px solid var(--line);
+		}
+	}
+
+	@page {
+		size: A4;
+		margin: 0;
+	}
+
+	@media print {
+		:global(body) {
+			padding: 0;
+			background: #fff;
+		}
+
+		.cv-toolbar {
+			display: none;
+		}
+
+		.sheet {
+			height: 297mm;
+			overflow: hidden;
+			box-shadow: none;
+		}
+	}
+</style>

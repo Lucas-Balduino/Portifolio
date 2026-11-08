@@ -11,6 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "cv:pdf": "node scripts/cv-pdf.mjs",
     "serve:legacy": "npx serve ."
   },
   "dependencies": {
