@@ -132,6 +132,12 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		width: calc((100cqw - 2rem) / 3);
+		/* Se o card ficar estreito demais, os botões crescem em vez de quebrar o texto. */
+		min-width: max-content;
+	}
+
+	.home-cta--hero > * {
+		white-space: nowrap;
 	}
 
 	.home-photo {
@@ -268,10 +274,18 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 
 		.home-cta--hero {
 			width: 100%;
+			min-width: 0;
 		}
 
 		.home-contact {
 			padding: 1.5rem;
+		}
+	}
+
+	/* Celulares estreitos: lado a lado, "Baixar currículo" não cabe numa linha. */
+	@media (max-width: 420px) {
+		.home-cta--hero {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
