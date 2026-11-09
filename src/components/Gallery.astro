@@ -102,6 +102,19 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 			});
 		});
 
+		// Imagens dos cards do case abrem a mesma galeria, na posição da imagem.
+		document.querySelectorAll<HTMLButtonElement>('[data-open-in-gallery]').forEach((button) => {
+			const index = thumbs.findIndex(
+				(thumb) => thumb.getAttribute('src') === button.dataset.openInGallery
+			);
+			if (index === -1) return;
+			button.addEventListener('click', () => {
+				lastTrigger = button;
+				show(index);
+				dialog.showModal();
+			});
+		});
+
 		gallery.querySelector('.lightbox-prev')?.addEventListener('click', () => show(current - 1));
 		gallery.querySelector('.lightbox-next')?.addEventListener('click', () => show(current + 1));
 		gallery.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close());

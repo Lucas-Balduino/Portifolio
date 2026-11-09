@@ -62,7 +62,14 @@ summary: objeto opcional        # ficha no topo do case: type, context, period,
 draft: não usar                 # publicação = arquivo no repo
 ```
 
-Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=scale-down-width`, `content-scaling=fixed`, `hide-ui=1`, sem `show-proto-sidebar`; tela cheia pelo botão "Ver protótipo" da ficha).
+Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_details` / `presentation` / `how_to_run` (ou aos títulos custom). Embed Figma continua iframe no MDX, com os parâmetros já estabilizados (`scaling=scale-down-width`, `content-scaling=fixed`, `hide-ui=1`, sem `show-proto-sidebar`), seguido do botão `.figma-open` "Abrir em tela cheia no Figma".
+
+Menos texto corrido no corpo:
+
+- Seção `##` com dois ou mais `###` vira **grade de cards**, um por subtítulo (2 ou 4 cards = duas colunas). Texto antes do primeiro `###` vira introdução da seção.
+- Uma linha `![alt](img/...)` dentro do `###` vira a **imagem do card**. Se a imagem estiver na `gallery`, clicar nela abre a galeria ampliada.
+- `> pergunta` vira citação em destaque (a pergunta que orientou o projeto).
+- Escrever para cards: 1 a 3 frases ou até 4 tópicos curtos por subtítulo.
 
 ### Página estática (não é collection)
 

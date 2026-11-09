@@ -45,9 +45,47 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 const mainIdeaTitle = data.section_titles?.main_idea ?? 'Ideia Principal';
 const galleryTitle = data.section_titles?.images ?? 'Imagens';
 const sections = splitH2Sections(body);
+const gallerySrcs = new Set(data.gallery.map(publicSrc));
+
+type Card = { title: string; html: string; image?: { src: string; alt: string; inGallery: boolean } };
+
+const IMAGE_LINE = /^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/;
+
+/**
+ * Seções com dois ou mais `###` viram uma grade de cards (um por subtítulo), em vez de texto corrido.
+ * Uma linha de imagem `![alt](img/...)` dentro do subtítulo vira a imagem do card.
+ * Blocos de código não são divididos.
+ */
+const splitCards = (markdown: string) => {
+	const intro: string[] = [];
+	const cards: { title: string; lines: string[] }[] = [];
+	let inCode = false;
+	for (const line of markdown.split('\n')) {
+		if (/^```/.test(line)) inCode = !inCode;
+		const heading = inCode ? null : /^###\s+(.+)$/.exec(line);
+		if (heading) cards.push({ title: heading[1].trim(), lines: [] });
+		else if (cards.length > 0) cards[cards.length - 1].lines.push(line);
+		else intro.push(line);
+	}
+	if (cards.length < 2) return null;
+	return {
+		intro: toHtml(intro.join('\n').trim()),
+		cards: cards.map(({ title, lines }): Card => {
+			const imageIndex = lines.findIndex((line) => IMAGE_LINE.test(line.trim()));
+			let image: Card['image'];
+			if (imageIndex !== -1) {
+				const [, alt, src] = IMAGE_LINE.exec(lines[imageIndex].trim())!;
+				const normalized = publicSrc(src);
+				image = { src: normalized, alt, inGallery: gallerySrcs.has(normalized) };
+				lines.splice(imageIndex, 1);
+			}
+			return { title, html: toHtml(lines.join('\n').trim()), image };
+		})
+	};
+};
 
 type Block =
-	| { type: 'section'; title: string; html: string }
+	| { type: 'section'; title: string; html: string; intro?: string; cards?: Card[] }
 	| { type: 'design' }
 	| { type: 'gallery' };
 
@@ -59,7 +97,12 @@ const visualBlocks: Block[] = [
 
 const blocks: Block[] = [];
 for (const section of sections) {
-	blocks.push({ type: 'section', title: section.title, html: toHtml(section.markdown) });
+	const split = splitCards(section.markdown);
+	blocks.push(
+		split
+			? { type: 'section', title: section.title, html: '', intro: split.intro, cards: split.cards }
+			: { type: 'section', title: section.title, html: toHtml(section.markdown) }
+	);
 	if (section.title === mainIdeaTitle) blocks.push(...visualBlocks);
 }
 if (visualBlocks.length > 0 && !blocks.some((block) => block.type !== 'section')) {
@@ -67,8 +110,6 @@ if (visualBlocks.length > 0 && !blocks.some((block) => block.type !== 'section')
 	blocks.splice(firstSection === -1 ? 0 : firstSection + 1, 0, ...visualBlocks);
 }
 
-const githubHref = data.repo_url.trim();
-const liveHref = data.live_url.trim();
 const coverSrc = publicSrc(data.image);
 ---
 
@@ -117,7 +158,43 @@ const coverSrc = publicSrc(data.image);
 				) : block.type === 'section' ? (
 					<section class="project-section">
 						<h2>{block.title}</h2>
-						<div class="project-rich-text" set:html={block.html} />
+						{block.cards ? (
+							<>
+								{block.intro && <div class="project-rich-text case-intro" set:html={block.intro} />}
+								<div
+									class:list={[
+										'case-cards',
+										{ 'case-cards--pairs': block.cards.length === 2 || block.cards.length === 4 }
+									]}
+								>
+									{block.cards.map((card) => (
+										<article class:list={['case-card', { 'case-card--media': card.image }]}>
+											{card.image &&
+												(card.image.inGallery ? (
+													<button
+														type="button"
+														class="case-card-media"
+														data-open-in-gallery={card.image.src}
+														aria-label={`Ampliar imagem: ${card.image.alt || card.title}`}
+													>
+														<img src={card.image.src} alt={card.image.alt} loading="lazy" />
+													</button>
+												) : (
+													<div class="case-card-media">
+														<img src={card.image.src} alt={card.image.alt} loading="lazy" />
+													</div>
+												))}
+											<div class="case-card-body">
+												<h3>{card.title}</h3>
+												<div class="project-rich-text" set:html={card.html} />
+											</div>
+										</article>
+									))}
+								</div>
+							</>
+						) : (
+							<div class="project-rich-text" set:html={block.html} />
+						)}
 					</section>
 				) : null
 			)
@@ -132,24 +209,110 @@ const coverSrc = publicSrc(data.image);
 			)
 		}
 
-		{
-			(githubHref || liveHref) && (
-				<section class="project-links">
-					<h2>Links</h2>
-					<div class="project-links-row">
-						{githubHref ? (
-							<a href={githubHref} target="_blank" rel="noopener noreferrer" class="btn">
-								Ver no GitHub
-							</a>
-						) : null}
-						{liveHref ? (
-							<a href={liveHref} target="_blank" rel="noopener noreferrer" class="btn">
-								Ver Demo
-							</a>
-						) : null}
-					</div>
-				</section>
-			)
-		}
 	</article>
 </Layout>
+
+<style>
+	.case-intro {
+		margin-bottom: 1.25rem;
+	}
+
+	/* Subtítulos da seção lado a lado, em vez de texto corrido. */
+	.case-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+		gap: 1rem;
+	}
+
+	/* 2 ou 4 cards: duas colunas, para não sobrar um card sozinho na linha. */
+	@media (min-width: 640px) {
+		.case-cards--pairs {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	.case-card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: 12px;
+		background: var(--bg);
+		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+	}
+
+	.case-card-body {
+		padding: 1.1rem 1.15rem 1.2rem;
+	}
+
+	.case-card h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.05rem;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
+		color: var(--text);
+	}
+
+	.case-card .project-rich-text {
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	/* O card já usa o fundo da página; o código precisa de outro tom para se destacar. */
+	.case-card :global(code),
+	.case-card :global(pre) {
+		background: var(--surface);
+	}
+
+	.case-card :global(pre code) {
+		background: transparent;
+	}
+
+	.case-card-media {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 240px;
+		padding: 0.75rem;
+		border: 0;
+		background: color-mix(in srgb, var(--text) 5%, transparent);
+		color: inherit;
+		font: inherit;
+	}
+
+	button.case-card-media {
+		cursor: zoom-in;
+	}
+
+	button.case-card-media:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+
+	.case-card-media img {
+		display: block;
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		border-radius: 6px;
+		transition: transform 300ms ease;
+	}
+
+	button.case-card-media:hover img {
+		transform: scale(1.03);
+	}
+
+	/* A pergunta que orientou o projeto, em destaque. */
+	.project-section :global(blockquote) {
+		margin: 1.5rem 0;
+		padding: 0.2rem 0 0.2rem 1.25rem;
+		border-left: 3px solid var(--text);
+		font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+		font-weight: 600;
+		line-height: 1.4;
+		letter-spacing: -0.01em;
+	}
+
+	.project-section :global(blockquote p) {
+		margin: 0;
+	}
+</style>
