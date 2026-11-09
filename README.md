@@ -11,7 +11,10 @@ npm install
 npm run dev      # http://localhost:4321
 npm run build    # saída em dist/
 npm run preview  # conferir o build
+npm run cv:pdf   # com o dev rodando: gera public/Resume/CurriculoPT.pdf a partir de /curriculo
 ```
+
+O currículo é a página `src/pages/curriculo.astro` (A4). Os projetos vêm do `summary` dos cases.
 
 ### Estrutura
 
