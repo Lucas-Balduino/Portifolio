@@ -67,7 +67,7 @@ Corpo: headings alinhados às chaves `introduction` / `main_idea` / `technical_d
 Menos texto corrido no corpo:
 
 - Seção `##` com dois ou mais `###` vira **grade de cards**, um por subtítulo (2 ou 4 cards = duas colunas). Texto antes do primeiro `###` vira introdução da seção.
-- Uma linha `![alt](img/...)` dentro do `###` vira a **imagem do card**. Se a imagem estiver na `gallery`, clicar nela abre a galeria ampliada.
+- Uma linha `![alt](/img/...)` (com `/` no início, senão o MDX tenta importar o arquivo) dentro do `###` vira a **imagem do card**. Se a imagem estiver na `gallery`, clicar nela abre a galeria ampliada.
 - `> pergunta` vira citação em destaque (a pergunta que orientou o projeto).
 - Escrever para cards: 1 a 3 frases ou até 4 tópicos curtos por subtítulo.
 
