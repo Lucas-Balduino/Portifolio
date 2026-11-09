@@ -164,7 +164,9 @@ const coverSrc = publicSrc(data.image);
 								<div
 									class:list={[
 										'case-cards',
-										{ 'case-cards--pairs': block.cards.length === 2 || block.cards.length === 4 }
+										block.cards.some((card) => card.html.includes('<pre'))
+											? 'case-cards--stack'
+											: { 'case-cards--pairs': block.cards.length === 2 || block.cards.length === 4 }
 									]}
 								>
 									{block.cards.map((card) => (
@@ -212,6 +214,56 @@ const coverSrc = publicSrc(data.image);
 	</article>
 </Layout>
 
+<script>
+	// Botão "Copiar" em cada bloco de código do case.
+	const COPY_ICON =
+		'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+	const CHECK_ICON =
+		'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+
+	const copyText = async (text: string) => {
+		try {
+			await navigator.clipboard.writeText(text);
+			return true;
+		} catch {
+			// Sem acesso à área de transferência (ex.: http): copia por seleção.
+			const area = document.createElement('textarea');
+			area.value = text;
+			area.setAttribute('readonly', '');
+			area.style.position = 'fixed';
+			area.style.opacity = '0';
+			document.body.append(area);
+			area.select();
+			const ok = document.execCommand('copy');
+			area.remove();
+			return ok;
+		}
+	};
+
+	for (const pre of document.querySelectorAll<HTMLPreElement>('.project-detail pre')) {
+		const code = pre.querySelector('code') ?? pre;
+		const text = code.textContent?.trimEnd() ?? '';
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.className = 'code-copy';
+		const setState = (copied: boolean) => {
+			button.innerHTML = copied ? CHECK_ICON : COPY_ICON;
+			button.dataset.tip = copied ? 'Copiado' : 'Copiar';
+			button.setAttribute('aria-label', copied ? 'Comandos copiados' : 'Copiar comandos');
+			button.toggleAttribute('data-copied', copied);
+		};
+		setState(false);
+		let timer: number | undefined;
+		button.addEventListener('click', async () => {
+			if (!(await copyText(text))) return;
+			setState(true);
+			window.clearTimeout(timer);
+			timer = window.setTimeout(() => setState(false), 2000);
+		});
+		pre.append(button);
+	}
+</script>
+
 <style>
 	.case-intro {
 		margin-bottom: 1.25rem;
@@ -229,6 +281,11 @@ const coverSrc = publicSrc(data.image);
 		.case-cards--pairs {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
+	}
+
+	/* Cards com comandos (ex.: Como executar): um por linha, para o código ter a largura toda. */
+	.case-cards--stack {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.case-card {
@@ -265,6 +322,83 @@ const coverSrc = publicSrc(data.image);
 
 	.case-card :global(pre code) {
 		background: transparent;
+	}
+
+	/* Linhas longas quebram em vez de cortar; copiar continua levando o comando inteiro. */
+	.project-detail :global(pre) {
+		position: relative;
+		padding-right: 3.25rem;
+	}
+
+	.project-detail :global(pre code) {
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+
+	/* Só o ícone no canto; o hover mostra "Copiar" (e "Copiado" depois do clique). */
+	.project-detail :global(.code-copy) {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		display: grid;
+		place-items: center;
+		width: 30px;
+		height: 30px;
+		padding: 0;
+		border: 0;
+		border-radius: 6px;
+		background: transparent;
+		color: var(--muted);
+		cursor: pointer;
+		transition:
+			color 150ms ease,
+			background-color 150ms ease,
+			transform 160ms ease-out;
+	}
+
+	.project-detail :global(.code-copy:hover),
+	.project-detail :global(.code-copy:focus-visible),
+	.project-detail :global(.code-copy[data-copied]) {
+		color: var(--text);
+		background: color-mix(in srgb, var(--text) 10%, transparent);
+	}
+
+	.project-detail :global(.code-copy:active) {
+		transform: scale(0.97);
+	}
+
+	.project-detail :global(.code-copy svg) {
+		width: 16px;
+		height: 16px;
+	}
+
+	/* Dica à esquerda do ícone, dentro do bloco (o pre corta o que sai dele). */
+	.project-detail :global(.code-copy::after) {
+		content: attr(data-tip);
+		position: absolute;
+		top: 50%;
+		right: calc(100% + 6px);
+		padding: 0.2rem 0.45rem;
+		border-radius: 4px;
+		background: var(--text);
+		color: var(--bg);
+		font-family: 'Inter', system-ui, sans-serif;
+		font-size: 0.72rem;
+		font-weight: 600;
+		white-space: nowrap;
+		pointer-events: none;
+		opacity: 0;
+		transform: translate(4px, -50%);
+		transition:
+			opacity 150ms ease,
+			transform 150ms ease;
+	}
+
+	.project-detail :global(.code-copy:hover::after),
+	.project-detail :global(.code-copy:focus-visible::after),
+	.project-detail :global(.code-copy[data-copied]::after) {
+		opacity: 1;
+		transform: translate(0, -50%);
 	}
 
 	.case-card-media {
