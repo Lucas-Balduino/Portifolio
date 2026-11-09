@@ -15,8 +15,8 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 <Layout title={META.home.title} description={META.home.description}>
 	<section class="home-hero">
 		<div class="home-hero-text">
-			<p class="home-eyebrow">Designer UX/UI e desenvolvedor front-end em formação</p>
 			<h1 class="hero-title">Olá, eu sou Lucas</h1>
+			<p class="home-role">Designer UX/UI e desenvolvedor front-end em formação</p>
 			<p class="home-lead">
 				Estudo Design na UnB e Ciência da Computação no UniCEUB. Trabalho com pesquisa, fluxos e
 				interfaces centradas no usuário, com atenção à usabilidade e à acessibilidade.
@@ -100,17 +100,56 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		padding: 3.5rem 0 2.5rem;
 	}
 
-	.home-eyebrow {
-		margin: 0 0 1rem;
-		font-size: 0.85rem;
-		font-weight: 700;
-		letter-spacing: 0.02em;
-		color: var(--muted);
+	.home-hero .hero-title {
+		margin: 0 0 0.9rem;
+		color: var(--text);
 	}
 
-	.home-hero .hero-title {
+	/* Cargo logo abaixo do título, discreto para não competir com ele. */
+	.home-role {
 		margin: 0 0 1.25rem;
-		color: var(--text);
+		font-size: 1rem;
+		font-weight: 500;
+		line-height: 1.4;
+		color: var(--muted);
+		text-wrap: balance;
+	}
+
+	/* Entrada em cascata do topo, uma vez por carregamento: 50ms entre itens. */
+	.home-hero-text > *,
+	.home-photo {
+		animation: home-enter 600ms cubic-bezier(0.23, 1, 0.32, 1) both;
+	}
+
+	.home-hero-text > :nth-child(2) {
+		animation-delay: 50ms;
+	}
+
+	.home-hero-text > :nth-child(3) {
+		animation-delay: 100ms;
+	}
+
+	.home-hero-text > :nth-child(4) {
+		animation-delay: 150ms;
+	}
+
+	.home-photo {
+		animation-delay: 120ms;
+	}
+
+	@keyframes home-enter {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+			filter: blur(4px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.home-hero-text > *,
+		.home-photo {
+			animation: none;
+		}
 	}
 
 	.home-lead {
@@ -152,7 +191,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		height: auto;
 		aspect-ratio: 1;
 		object-fit: cover;
-		border-radius: 24px;
+		border-radius: 8px;
 		border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
 	}
 
@@ -165,7 +204,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 
 	.fact {
 		padding: 1.4rem;
-		border-radius: 16px;
+		border-radius: 8px;
 		background: var(--surface);
 		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
 	}
@@ -219,7 +258,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		gap: 1.5rem;
 		margin: 4rem 0 1rem;
 		padding: 2rem;
-		border-radius: 16px;
+		border-radius: 8px;
 		background: var(--surface);
 		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
 	}
@@ -264,7 +303,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 
 		.home-photo img {
 			max-width: 140px;
-			border-radius: 20px;
+			border-radius: 8px;
 		}
 
 		.home-facts,

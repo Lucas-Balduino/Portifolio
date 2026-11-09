@@ -17,10 +17,10 @@ Direção **do site**. Não aplicar tokens novos nesta conversa da spec. Hex nov
 | `--bg` | `#ffffff` light / `#0b0b0d` dark | Fundo |
 | `--surface` | `#f7f7f8` / `#0f1113` | Cards, header |
 | `--text` | `#0b0b0b` / `#f5f5f6` | Texto |
-| `--muted` | `#a7a7ad` / `#7b7b83` | Descrições |
+| `--muted` | `#5d5d66` / `#9a9aa2` | Descrições (contraste ≥ 4.5:1 nos dois temas) |
 | `--accent` | `#111111` / `#ffffff` | Títulos, links, botão primário do card |
 | `--glass` | preto/branco em alpha | Bordas, chips, botões secundários |
-| `--radius` | `12px` | Cards |
+| `--radius` | `8px` | Cards, blocos, foto; botões e chips `6px`; pílulas e círculos ficam como estão |
 
 ### Horizonte (A4)
 
@@ -32,13 +32,15 @@ Direção **do site**. Não aplicar tokens novos nesta conversa da spec. Hex nov
 
 Não copiar a paleta por modalidade do Kinetic para o site inteiro.
 
+Fundo liso (`--bg`), sem brilho radial. Seleção de texto, contorno de foco e barra de rolagem usam a paleta (branco/cinza no escuro, preto/cinza no claro).
+
 ## Tipo e espaço
 
 | Camada | Agora | Horizonte |
 |---|---|---|
 | UI | Inter (Google Fonts 300–800), `system-ui` fallback | Inter no corpo e nos títulos; display própria `(pendente)` — Syne descartada |
 | Espaço | `--container: 1100px`; cards `minmax(300px, 1fr)` | Redefinir na fase dark-first, não no scaffold |
-| Motion | `--transition: 240ms`; hover `translateY(-8px)` nos cards; `.reveal` | GSAP = horizonte / fora do ROADMAP atual |
+| Motion | `--transition: 240ms`; topo da home entra em cascata (50ms entre itens, `cubic-bezier(0.23, 1, 0.32, 1)`), uma vez; botões afundam a 97% no clique, sem pular no hover; respeita `prefers-reduced-motion` | GSAP = horizonte / fora do ROADMAP atual |
 | Ícones sociais | Texto (“GitHub”, “LinkedIn”) | SVG `(pendente)` — artefato do autor |
 
 ## Fora (agora)

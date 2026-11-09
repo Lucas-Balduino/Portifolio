@@ -3,7 +3,8 @@
 :root {
 	--bg: #0b0b0d;
 	--surface: #0f1113;
-	--muted: #7b7b83;
+	/* Cinza mais claro: contraste ~7:1 no fundo escuro (antes #7b7b83, ~4.4:1). */
+	--muted: #9a9aa2;
 	--text: #f5f5f6;
 	--accent: #f5f5f6;
 	--glass: rgba(255, 255, 255, 0.03);
@@ -17,7 +18,8 @@
 body.theme-light {
 	--bg: #ffffff;
 	--surface: #f7f7f8;
-	--muted: #a7a7ad;
+	/* No claro, cinza mais escuro para ler bem no branco (antes #a7a7ad, ~2.3:1). */
+	--muted: #5d5d66;
 	--text: #0b0b0b;
 	--accent: #111111;
 	--glass: rgba(0, 0, 0, 0.04);

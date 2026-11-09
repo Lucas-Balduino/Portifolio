@@ -5,7 +5,7 @@
   --muted: #a7a7ad;
   --text: #0b0b0b;
   --accent: #111111; /* neutral almost-black accent */
-  --radius: 12px;
+  --radius: 8px;
   --container: 1100px;
   --glass: rgba(0,0,0,0.04);
   --transition: 240ms cubic-bezier(.2,.9,.2,1);
@@ -60,7 +60,7 @@ body{
 .brand-dot{ color:var(--muted); margin-left:4px; font-weight:800; }
 .nav{ margin-left:auto; }
 .nav-list{ display:flex; gap:0.5rem; list-style:none; padding:0; margin:0; align-items:center }
-.nav-link{ display:inline-block; padding:0.45rem 0.6rem; color:var(--muted); text-decoration:none; border-radius:8px; transition:all var(--transition); font-weight:600; }
+.nav-link{ display:inline-block; padding:0.45rem 0.6rem; color:var(--muted); text-decoration:none; border-radius:6px; transition:all var(--transition); font-weight:600; }
 .nav-link:hover, .nav-link:focus{ color:var(--accent); transform:translateY(-2px); box-shadow: 0 6px 18px var(--glass); outline:none; }
 .nav-link.active{ color:var(--accent); background:var(--surface); box-shadow:0 4px 14px var(--glass); }
 
@@ -113,7 +113,7 @@ body.theme-dark .btn-theme::before{
 .accent{ color:var(--accent); font-weight:800; }
 .hero-sub{ color:var(--muted); margin:0 0 1rem 0; }
 .hero-cta{ display:flex; gap:0.75rem; margin-bottom:1rem; }
-.btn{ background:var(--accent); color:var(--bg); padding:0.6rem 0.9rem; border-radius:10px; text-decoration:none; font-weight:700; transition: transform var(--transition), box-shadow var(--transition); font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; border: none; }
+.btn{ background:var(--accent); color:var(--bg); padding:0.6rem 0.9rem; border-radius:6px; text-decoration:none; font-weight:700; transition: transform var(--transition), box-shadow var(--transition); font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; border: none; }
 .btn:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
 .btn.ghost{ background:transparent; color:var(--accent); border:1px solid var(--glass) }
 
@@ -125,7 +125,7 @@ body.theme-dark .btn-theme::before{
   background:var(--accent); 
   color:var(--bg) !important; 
   padding:0.6rem 0.9rem; 
-  border-radius:10px; 
+  border-radius:6px; 
   text-decoration:none; 
   font-weight:700; 
   transition: transform var(--transition), box-shadow var(--transition);
@@ -140,13 +140,13 @@ body.theme-dark .btn-theme::before{
 .skills-quick{ display:flex; gap:0.75rem; list-style:none; padding:0; margin:0; color:var(--muted); font-weight:600; }
 
 .hero-figure{ display:flex; align-items:center; justify-content:center; }
-.hero-photo{ max-width:320px; width:100%; height:auto; border-radius:14px; box-shadow: 0 10px 30px var(--glass); transform-origin:center; transition: transform var(--transition); }
+.hero-photo{ max-width:320px; width:100%; height:auto; border-radius:8px; box-shadow: 0 10px 30px var(--glass); transform-origin:center; transition: transform var(--transition); }
 .hero-photo:hover{ transform:translateY(-6px) scale(1.01); }
 
 /* Projects preview */
 .section-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:1.75rem 0 0.75rem 0; }
 .projects-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
-.card{ background:var(--surface); border-radius:12px; overflow:hidden; transition: transform var(--transition), box-shadow var(--transition); display:flex; flex-direction:column; }
+.card{ background:var(--surface); border-radius:8px; overflow:hidden; transition: transform var(--transition), box-shadow var(--transition); display:flex; flex-direction:column; }
 .card:hover{ transform: translateY(-8px); box-shadow: 0 18px 40px rgba(0,0,0,0.08); }
 .card.project-card{ min-height: 320px; }
 
@@ -165,7 +165,7 @@ body.theme-dark .btn-theme::before{
   padding-top:0.75rem;
   border-top:1px solid var(--glass);
 }
-.badge{ background:transparent; border:1px solid var(--glass); padding:0.25rem 0.45rem; border-radius:8px; font-weight:700; font-size:0.8rem; color:var(--muted) }
+.badge{ background:transparent; border:1px solid var(--glass); padding:0.25rem 0.45rem; border-radius:6px; font-weight:700; font-size:0.8rem; color:var(--muted) }
 .card-link{
   color:var(--accent);
   text-decoration:none;
@@ -197,7 +197,7 @@ body.theme-dark .btn-theme::before{
 .education-list li, .experience-list li{ 
   background:var(--surface); 
   padding:1.5rem; 
-  border-radius:12px; 
+  border-radius:8px; 
   display:flex; 
   flex-direction:column; 
   gap:0.5rem; 
@@ -226,7 +226,7 @@ body.theme-dark .btn-theme::before{
   align-items:center; 
   padding:1rem; 
   background:var(--surface); 
-  border-radius:8px; 
+  border-radius:6px; 
 }
 .language-name{ font-weight:600; color:var(--accent); }
 .language-level{ color:var(--muted); font-size:0.9rem; }
@@ -241,7 +241,7 @@ body.theme-dark .btn-theme::before{
 .contact-info{ 
   background:var(--surface); 
   padding:1.5rem; 
-  border-radius:12px; 
+  border-radius:8px; 
   margin-bottom:2rem;
   border:1px solid var(--glass);
 }
@@ -253,7 +253,7 @@ body.theme-dark .btn-theme::before{
 .contact-form{ 
   background:var(--surface); 
   padding:2rem; 
-  border-radius:16px; 
+  border-radius:8px; 
   box-shadow:0 8px 25px var(--glass);
   display:flex;
   flex-direction:column;
@@ -270,7 +270,7 @@ body.theme-dark .btn-theme::before{
   width:100%; 
   padding:0.8rem; 
   border:1px solid var(--glass); 
-  border-radius:8px; 
+  border-radius:6px; 
   background:var(--bg); 
   color:var(--text); 
   font-family:inherit; 
@@ -316,7 +316,7 @@ body.theme-dark .contact-form textarea:focus{
   width:auto;
   height:auto;
   object-fit:contain;
-  border-radius:16px;
+  border-radius:8px;
   box-shadow:0 10px 30px var(--glass);
   background:var(--surface);
 }
@@ -324,7 +324,7 @@ body.theme-dark .contact-form textarea:focus{
   margin:2rem 0; 
   padding:1.5rem; 
   background:var(--surface); 
-  border-radius:12px;
+  border-radius:8px;
   overflow-x:auto;
   max-width:100%;
 }
@@ -364,7 +364,7 @@ body.theme-dark .contact-form textarea:focus{
   margin:0 0 1rem 0;
   padding:1rem;
   background:var(--bg);
-  border-radius:8px;
+  border-radius:6px;
   overflow-x:auto;
   max-width:100%;
   -webkit-overflow-scrolling:touch;
@@ -394,7 +394,7 @@ body.theme-dark .contact-form textarea:focus{
 .project-shot{
   margin:0;
   background:var(--surface);
-  border-radius:12px;
+  border-radius:8px;
   padding:0.6rem;
   box-shadow:0 4px 12px var(--glass);
   display:flex;
@@ -413,14 +413,14 @@ body.theme-dark .contact-form textarea:focus{
   width:auto;
   height:auto;
   object-fit:contain;
-  border-radius:8px;
+  border-radius:6px;
   display:block;
 }
 .project-technologies, .project-links{ 
   margin:2rem 0; 
   padding:1.5rem; 
   background:var(--surface); 
-  border-radius:12px; 
+  border-radius:8px; 
 }
 .project-technologies h2, .project-links h2{ 
   margin:0 0 1rem 0; 
@@ -439,7 +439,7 @@ body.theme-dark .contact-form textarea:focus{
   position:relative;
   width:100%;
   margin:1rem 0 1.5rem;
-  border-radius:12px;
+  border-radius:8px;
   background:#111;
   box-shadow:0 4px 16px var(--glass);
 }
@@ -449,7 +449,7 @@ body.theme-dark .contact-form textarea:focus{
   width:100%;
   height:100%;
   border:0;
-  border-radius:12px;
+  border-radius:8px;
 }
 .figma-embed--desktop{
   aspect-ratio:16 / 9;
@@ -535,7 +535,7 @@ body.theme-dark .contact-form textarea:focus{
 /* Form de contato — mensagens de status */
 .contact-status {
   padding: 0.85rem 1rem;
-  border-radius: 8px;
+  border-radius: 6px;
   margin-bottom: 1.5rem;
   font-size: 0.95rem;
   font-weight: 500;
