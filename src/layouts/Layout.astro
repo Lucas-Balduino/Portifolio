@@ -58,39 +58,63 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 				} catch (e) {}
 			})();
 		</script>
+		<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 		<Header currentPath={currentPath} />
-		<main class="container main-content">
+		<main class="container main-content" id="conteudo" tabindex="-1">
 			<slot />
 		</main>
 		<Footer />
 		<script>
+			// Tema: o botão é um interruptor "Tema escuro" (ligado = escuro).
 			const themeToggle = document.getElementById('theme-toggle');
-			const isLight = document.body.classList.contains('theme-light');
-			themeToggle?.setAttribute('aria-pressed', isLight ? 'false' : 'true');
+			const syncTheme = () => {
+				const light = document.body.classList.contains('theme-light');
+				themeToggle?.setAttribute('aria-checked', light ? 'false' : 'true');
+			};
+			syncTheme();
 
 			themeToggle?.addEventListener('click', () => {
 				const light = document.body.classList.toggle('theme-light');
-				localStorage.setItem('theme', light ? 'light' : 'dark');
-				themeToggle.setAttribute('aria-pressed', light ? 'false' : 'true');
+				try {
+					localStorage.setItem('theme', light ? 'light' : 'dark');
+				} catch {}
+				syncTheme();
 			});
 
+			// Cabeçalho ganha linha inferior depois de rolar.
+			const header = document.querySelector<HTMLElement>('.site-header');
+			const syncScrolled = () => header?.classList.toggle('is-scrolled', window.scrollY > 4);
+			syncScrolled();
+			window.addEventListener('scroll', syncScrolled, { passive: true });
+
+			// Menu do celular: abre/fecha pelo botão, Esc, toque fora, ao navegar ou quando o foco sai.
 			const burger = document.getElementById('nav-burger');
-			const navList = document.getElementById('nav-list');
-			if (burger && navList) {
-				burger.addEventListener('click', () => {
-					const expanded = burger.getAttribute('aria-expanded') === 'true';
-					burger.setAttribute('aria-expanded', String(!expanded));
-					navList.style.display = navList.style.display === 'flex' ? '' : 'flex';
-					navList.style.flexDirection = 'column';
-					navList.style.gap = '0.5rem';
-					navList.style.background = 'var(--surface)';
-					navList.style.padding = '0.8rem';
-					navList.style.position = 'absolute';
-					navList.style.right = '1rem';
-					navList.style.top = '60px';
-					navList.style.borderRadius = '8px';
-					navList.style.boxShadow = '0 8px 20px rgba(0,0,0,0.08)';
+			if (header && burger) {
+				const setOpen = (open: boolean) => {
+					header.classList.toggle('is-open', open);
+					burger.setAttribute('aria-expanded', String(open));
+					burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+				};
+				const isOpen = () => header.classList.contains('is-open');
+
+				burger.addEventListener('click', () => setOpen(!isOpen()));
+				document.addEventListener('keydown', (event) => {
+					if (event.key === 'Escape' && isOpen()) {
+						setOpen(false);
+						burger.focus();
+					}
 				});
+				document.addEventListener('click', (event) => {
+					if (isOpen() && !header.contains(event.target as Node)) setOpen(false);
+				});
+				header.addEventListener('focusout', (event) => {
+					if (isOpen() && !header.contains(event.relatedTarget as Node | null)) setOpen(false);
+				});
+				header.querySelectorAll('.nav-link').forEach((link) =>
+					link.addEventListener('click', () => setOpen(false))
+				);
+				// Volta ao layout de computador: menu fechado.
+				window.matchMedia('(min-width: 981px)').addEventListener('change', () => setOpen(false));
 			}
 		</script>
 	</body>

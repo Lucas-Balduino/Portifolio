@@ -55,7 +55,7 @@ body{
 }
 
 /* Header */
-.site-header{ position:sticky; top:0; backdrop-filter: blur(6px); background:transparent; z-index:40; padding:0.75rem 0; }
+.site-header{ position:sticky; top:0; z-index:40; padding:0.75rem 0; }
 .brand{ font-weight:800; text-decoration:none; color:var(--accent); font-size:1.1rem; letter-spacing:-0.02em; }
 .brand-dot{ color:var(--muted); margin-left:4px; font-weight:800; }
 .nav{ margin-left:auto; }
@@ -64,7 +64,7 @@ body{
 .nav-link:hover, .nav-link:focus{ color:var(--accent); transform:translateY(-2px); box-shadow: 0 6px 18px var(--glass); outline:none; }
 .nav-link.active{ color:var(--accent); background:var(--surface); box-shadow:0 4px 14px var(--glass); }
 
-.nav-burger{ display:none; background:none; border:0; font-size:1.2rem; margin-left:0.5rem; cursor:pointer; color:var(--accent) }
+.nav-burger{ display:none; background:none; border:0; padding:0; margin-left:0.25rem; cursor:pointer; color:var(--text) }
 
 /* Theme Switch */
 .btn-theme{ 
@@ -483,7 +483,7 @@ body.theme-dark .contact-form textarea:focus{
 
 .brand-small{ font-weight:800; color:var(--accent); font-size:1rem; margin:0 0 0.25rem 0; }
 
-.socials .social{ text-decoration:none; color:var(--muted); margin-left:0.5rem; transition: color var(--transition); }
+.socials .social{ display:inline-block; padding:0.5rem 0.25rem; text-decoration:none; color:var(--muted); margin-left:0.5rem; transition: color var(--transition); }
 .socials .social:hover{ color:var(--accent) }
 
 .muted{ color:var(--muted) }
@@ -504,8 +504,7 @@ body.theme-dark .contact-form textarea:focus{
 /* Responsive adjustments */
 @media (max-width:980px){
   .grid{ grid-template-columns: 1fr 300px; }
-  .nav-list{ display:none }
-  .nav-burger{ display:inline-block }
+  .nav-burger{ display:grid }
   .header-inner{align-items:center}
   .about-header{ grid-template-columns: 1fr; text-align:center; }
   .skills-grid{ grid-template-columns: 1fr; }
