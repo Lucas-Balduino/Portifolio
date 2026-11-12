@@ -21,6 +21,32 @@ const isActive = (href: string) => {
 <header class="site-header">
 	<div class="container header-inner">
 		<a class="brand" href="/">lucas<span class="brand-dot">.</span></a>
+		<!-- Botões antes do menu no HTML: no celular, Tab vai do botão do menu direto para os links. -->
+		<button
+			class="btn-theme"
+			id="theme-toggle"
+			type="button"
+			role="switch"
+			aria-checked="true"
+			aria-label="Tema escuro"
+			title="Alternar tema claro/escuro"></button>
+
+		<button
+			class="nav-burger"
+			id="nav-burger"
+			type="button"
+			aria-label="Abrir menu"
+			aria-expanded="false"
+			aria-controls="nav-list"
+		>
+			<svg class="nav-burger-open" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M4 8h16M4 16h16" />
+			</svg>
+			<svg class="nav-burger-close" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M6 6l12 12M18 6L6 18" />
+			</svg>
+		</button>
+
 		<nav aria-label="Principal" class="nav">
 			<ul class="nav-list" id="nav-list">
 				{
@@ -29,6 +55,7 @@ const isActive = (href: string) => {
 							<a
 								class:list={['nav-link', { active: isActive(link.href) }]}
 								href={link.href}
+								aria-current={isActive(link.href) ? 'page' : undefined}
 							>
 								{link.label}
 							</a>
@@ -37,9 +64,5 @@ const isActive = (href: string) => {
 				}
 			</ul>
 		</nav>
-
-		<button class="btn-theme" id="theme-toggle" aria-pressed="false" title="Alternar tema"></button>
-
-		<button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
 	</div>
 </header>

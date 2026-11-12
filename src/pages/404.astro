@@ -4,9 +4,51 @@ import { META } from '../site-config';
 ---
 
 <Layout title={META.notFound.title} description={META.notFound.description}>
-	<article class="project-detail">
-		<h1>Projeto não encontrado</h1>
-		<p>O projeto solicitado não foi encontrado.</p>
-		<a href="/projetos" class="btn">Voltar para projetos</a>
-	</article>
+	<section class="not-found">
+		<p class="not-found-code">404</p>
+		<h1>Página não encontrada</h1>
+		<p class="muted">O endereço pode ter mudado ou não existir mais.</p>
+		<div class="not-found-actions">
+			<a href="/" class="btn-project">Ir para o início</a>
+			<a href="/projetos" class="btn ghost">Ver projetos</a>
+		</div>
+	</section>
 </Layout>
+
+<style>
+	.not-found {
+		display: grid;
+		justify-items: center;
+		align-content: center;
+		gap: 0.75rem;
+		min-height: 60vh;
+		padding: 3rem 0;
+		text-align: center;
+	}
+
+	.not-found-code {
+		margin: 0;
+		font-size: clamp(4rem, 14vw, 8rem);
+		font-weight: 800;
+		letter-spacing: -0.05em;
+		line-height: 1;
+		color: color-mix(in srgb, var(--text) 14%, transparent);
+	}
+
+	.not-found h1 {
+		margin: 0;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		letter-spacing: -0.03em;
+	}
+
+	.not-found p.muted {
+		margin: 0 0 1rem;
+	}
+
+	.not-found-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+</style>

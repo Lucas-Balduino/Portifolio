@@ -28,8 +28,8 @@ export const META = {
 			'Entre em contato com Lucas para projetos freelance, colaborações e oportunidades em front-end e UI/UX.'
 	},
 	notFound: {
-		title: 'Projeto não encontrado — Lucas',
-		description: 'O projeto solicitado não foi encontrado.'
+		title: 'Página não encontrada — Lucas',
+		description: 'O endereço pode ter mudado ou não existir mais.'
 	}
 } as const;
 

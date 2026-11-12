@@ -139,3 +139,156 @@ body {
 		transition: none;
 	}
 }
+
+/* Cabeçalho: fundo quase opaco com desfoque, para o conteúdo não aparecer por trás do menu. */
+.site-header {
+	background: color-mix(in srgb, var(--bg) 85%, transparent);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	border-bottom: 1px solid transparent;
+	transition: border-color 200ms ease;
+}
+
+.site-header.is-scrolled {
+	border-bottom-color: color-mix(in srgb, var(--text) 10%, transparent);
+}
+
+/* Sem pulo no hover do menu; o realce fica na cor. */
+.nav-link {
+	transition:
+		color 200ms ease,
+		background-color 200ms ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+	transform: none;
+	box-shadow: none;
+}
+
+.nav-link.active {
+	box-shadow: none;
+}
+
+/* Botão do menu (celular): 44×44, ícone em SVG que troca para X quando aberto. */
+.nav-burger {
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	margin-right: -10px;
+	border-radius: 6px;
+}
+
+.nav-burger svg {
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+
+.nav-burger-close,
+.site-header.is-open .nav-burger-open {
+	display: none;
+}
+
+.site-header.is-open .nav-burger-close {
+	display: block;
+}
+
+/* Interruptor de tema: área de toque de 44px de altura sem mudar o desenho. */
+.btn-theme {
+	flex: none;
+}
+
+.btn-theme::after {
+	content: '';
+	position: absolute;
+	inset: -10px -4px;
+}
+
+.btn-theme:hover {
+	transform: none;
+}
+
+@media (max-width: 980px) {
+	/* Menu em painel de largura total, logo abaixo do cabeçalho. */
+	.nav {
+		margin-left: auto;
+	}
+
+	.nav-list {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		display: none;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		padding: 0.5rem 1.25rem 1rem;
+		background: var(--bg);
+		border-bottom: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+	}
+
+	.site-header.is-open {
+		background: var(--bg);
+		border-bottom-color: color-mix(in srgb, var(--text) 10%, transparent);
+	}
+
+	.site-header.is-open .nav-list {
+		display: flex;
+	}
+
+	.nav-list .nav-link {
+		display: flex;
+		align-items: center;
+		min-height: 48px;
+		padding: 0 0.75rem;
+		font-size: 1.05rem;
+	}
+}
+
+/* Rodapé: links com altura de toque confortável. */
+.socials .social {
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+}
+
+/* Link "Pular para o conteúdo": só aparece com o teclado. */
+.skip-link {
+	position: absolute;
+	top: 0.75rem;
+	left: 0.75rem;
+	z-index: 100;
+	padding: 0.6rem 0.9rem;
+	border-radius: 6px;
+	background: var(--text);
+	color: var(--bg);
+	font-weight: 700;
+	text-decoration: none;
+	transform: translateY(-200%);
+}
+
+.skip-link:focus {
+	transform: none;
+}
+
+.main-content:focus {
+	outline: none;
+}
+
+/* Ordem visual no computador: marca, menu, tema (no HTML os botões vêm antes do menu). */
+.header-inner > .nav {
+	order: 1;
+}
+
+.header-inner > .btn-theme {
+	order: 2;
+}
+
+.header-inner > .nav-burger {
+	order: 3;
+}
