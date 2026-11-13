@@ -1,0 +1,52 @@
+---
+/** Chamado de contato no fim da home e de cada case. */
+interface Props {
+	text?: string;
+}
+
+const { text = 'Sobre uma vaga, um projeto ou algum dos cases acima.' } = Astro.props;
+---
+
+<section class="contact-cta">
+	<div>
+		<h2>Vamos conversar?</h2>
+		<p class="muted">{text}</p>
+	</div>
+	<div class="contact-cta-actions">
+		<a class="btn-project" href="/contato">Entrar em contato</a>
+		<a
+			class="btn ghost"
+			href="https://www.linkedin.com/in/lucas-balduino-661073327"
+			target="_blank"
+			rel="noopener noreferrer">LinkedIn</a
+		>
+	</div>
+</section>
+
+<style>
+	.contact-cta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-5);
+		margin: var(--rhythm-section) 0 var(--space-6);
+		padding-top: var(--space-7);
+		border-top: 1px solid var(--line);
+	}
+
+	.contact-cta h2 {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-lg);
+	}
+
+	.contact-cta p {
+		margin: 0;
+	}
+
+	.contact-cta-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+	}
+</style>

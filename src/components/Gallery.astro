@@ -1,33 +1,60 @@
 ---
+import { imageSize } from '../lib/image-size';
+
 interface Props {
+	id?: string;
 	title: string;
 	heading: string;
-	images: string[];
+	images: { src: string; caption?: string }[];
 }
 
-const { title, heading, images } = Astro.props;
+const { id, title, heading, images } = Astro.props;
 const total = images.length;
 const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
+const shots = images.map(({ src, caption }, index) => ({
+	src: publicSrc(src),
+	caption,
+	alt: caption ?? `${title} — tela ${index + 1} de ${total}`,
+	size: imageSize(src)
+}));
 ---
 
-<section class="project-images" data-gallery>
-	<h2>{heading}</h2>
-	<div class="project-images-grid">
+<section class="project-images" id={id} data-gallery>
+	<div class="shots-head">
+		<h2>{heading}</h2>
 		{
-			images.map((src, index) => (
-				<figure class="project-shot">
+			total > 1 && (
+				<div class="shots-nav">
+					<button type="button" class="shots-btn" data-shots-prev aria-label="Telas anteriores">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+					</button>
+					<button type="button" class="shots-btn" data-shots-next aria-label="Próximas telas">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+					</button>
+				</div>
+			)
+		}
+	</div>
+	<div class="shots" tabindex="0" role="region" aria-label={`${heading}: role para o lado para ver mais`}>
+		{
+			shots.map((shot, index) => (
+				<figure class="shot">
 					<button
 						type="button"
 						class="shot-trigger"
 						data-index={index}
-						aria-label={`Ampliar imagem ${index + 1} de ${total}`}
+						aria-label={`Ampliar: ${shot.alt}`}
 					>
 						<img
-							src={publicSrc(src)}
-							alt={`${title} — imagem ${index + 1} de ${total}`}
+							src={shot.src}
+							alt={shot.alt}
+							width={shot.size?.width}
+							height={shot.size?.height}
 							loading="lazy"
+							decoding="async"
 						/>
 					</button>
+					{shot.caption && <figcaption>{shot.caption}</figcaption>}
 				</figure>
 			))
 		}
@@ -66,18 +93,6 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 		const counter = gallery.querySelector<HTMLElement>('.lightbox-counter');
 		if (!dialog || !stage || !image || !counter) return;
 
-		// Imagens horizontais ocupam duas colunas na grade.
-		thumbs.forEach((thumb) => {
-			const tagOrientation = () => {
-				const figure = thumb.closest('.project-shot');
-				if (!(figure instanceof HTMLElement) || !thumb.naturalWidth) return;
-				figure.classList.toggle('is-landscape', thumb.naturalWidth > thumb.naturalHeight);
-				figure.classList.toggle('is-portrait', thumb.naturalWidth <= thumb.naturalHeight);
-			};
-			if (thumb.complete) tagOrientation();
-			else thumb.addEventListener('load', tagOrientation, { once: true });
-		});
-
 		let current = 0;
 		let lastTrigger: HTMLButtonElement | null = null;
 
@@ -86,7 +101,8 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 			const thumb = thumbs[current];
 			image.src = thumb.currentSrc || thumb.src;
 			image.alt = thumb.alt;
-			counter.textContent = `${current + 1} / ${thumbs.length}`;
+			const caption = thumb.closest('figure')?.querySelector('figcaption')?.textContent;
+			counter.textContent = `${current + 1} / ${thumbs.length}${caption ? ` · ${caption}` : ''}`;
 			// Pré-carrega as vizinhas para a navegação não piscar.
 			[current - 1, current + 1].forEach((i) => {
 				const neighbor = thumbs[(i + thumbs.length) % thumbs.length];
@@ -142,34 +158,166 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 			startX = null;
 			if (Math.abs(deltaX) > 50) show(current + (deltaX < 0 ? 1 : -1));
 		});
+
+		// Faixa de telas: setas rolam quase uma largura; somem nas pontas.
+		const strip = gallery.querySelector<HTMLElement>('.shots');
+		const prev = gallery.querySelector<HTMLButtonElement>('[data-shots-prev]');
+		const next = gallery.querySelector<HTMLButtonElement>('[data-shots-next]');
+		if (strip && prev && next) {
+			const step = (direction: number) =>
+				strip.scrollBy({ left: direction * strip.clientWidth * 0.8, behavior: 'smooth' });
+			prev.addEventListener('click', () => step(-1));
+			next.addEventListener('click', () => step(1));
+			const update = () => {
+				const max = strip.scrollWidth - strip.clientWidth;
+				prev.disabled = strip.scrollLeft <= 4;
+				next.disabled = strip.scrollLeft >= max - 4;
+				gallery.classList.toggle('is-scrollable', max > 4);
+			};
+			strip.addEventListener('scroll', update, { passive: true });
+			new ResizeObserver(update).observe(strip);
+			update();
+		}
 	});
 </script>
 
 <style>
-	.shot-trigger {
+	/* D7 — faixa de telas: grandes, lado a lado, rolando para o lado com encaixe. */
+	.project-images {
+		--shot-h: 520px;
+	}
+
+	.shots-head {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
+		justify-content: space-between;
+		gap: var(--space-4);
+		margin-bottom: var(--space-5);
+	}
+
+	.shots-head h2 {
+		margin: 0;
+	}
+
+	.shots-nav {
+		display: none;
+		gap: var(--space-2);
+	}
+
+	.is-scrollable .shots-nav {
+		display: flex;
+	}
+
+	.shots-btn {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+		border-radius: 6px;
+		background: transparent;
+		color: var(--text);
+		cursor: pointer;
+		transition:
+			border-color var(--transition),
+			opacity var(--transition),
+			transform 160ms ease-out;
+	}
+
+	.shots-btn:hover:not(:disabled) {
+		border-color: color-mix(in srgb, var(--text) 40%, transparent);
+	}
+
+	.shots-btn:active:not(:disabled) {
+		transform: scale(0.97);
+	}
+
+	.shots-btn:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+
+	.shots-btn svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.shots {
+		display: flex;
+		gap: var(--space-4);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: thin;
+		padding-bottom: var(--space-3);
+	}
+
+	.shots:focus-visible {
+		outline-offset: 4px;
+	}
+
+	.shot {
+		flex: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		width: min-content;
+		margin: 0;
+		scroll-snap-align: start;
+	}
+
+	.shot figcaption {
+		font-size: var(--text-sm);
+		line-height: 1.45;
+		color: var(--muted);
+	}
+
+	.shot-trigger {
+		display: block;
 		padding: 0;
 		border: 0;
-		border-radius: 6px;
+		border-radius: 8px;
 		background: none;
 		cursor: zoom-in;
 	}
 
 	.shot-trigger img {
-		transition: transform var(--transition);
+		display: block;
+		width: auto;
+		height: var(--shot-h);
+		max-width: none;
+		border-radius: 8px;
+		border: 1px solid var(--line);
+		background: var(--surface);
+		transition: opacity var(--transition);
 	}
 
 	.shot-trigger:hover img {
-		transform: scale(1.02);
+		opacity: 0.88;
 	}
 
 	.shot-trigger:focus-visible {
 		outline: 2px solid var(--accent);
 		outline-offset: 4px;
+	}
+
+	@media (max-width: 700px) {
+		.project-images {
+			--shot-h: 420px;
+		}
+
+		/* No celular a faixa encosta nas bordas da tela; arrastar com o dedo basta. */
+		.shots {
+			margin-inline: calc(var(--space-5) * -1);
+			padding-inline: var(--space-5);
+			scroll-padding-inline: var(--space-5);
+		}
 	}
 
 	.lightbox {
@@ -213,6 +361,7 @@ const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 		position: absolute;
 		top: 1.25rem;
 		left: 1.5rem;
+		max-width: calc(100% - 6rem);
 		margin: 0;
 		font-size: var(--text-sm);
 		font-weight: 600;

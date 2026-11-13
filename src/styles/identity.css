@@ -73,6 +73,11 @@ h3 {
 	margin: calc(var(--space-1) * -1) 0 var(--space-5);
 }
 
+/* O parágrafo do botão ocupa a largura toda (não a linha de leitura), para centralizar com o protótipo. */
+.project-rich-text > .figma-open {
+	max-width: none;
+}
+
 /* Botões: sem pular no hover; afundam um pouco no clique, na hora. */
 .btn,
 .btn-project {
