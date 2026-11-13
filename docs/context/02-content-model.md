@@ -47,7 +47,14 @@ title, slug, short_desc, image, repo_url, live_url, technologies[]
                                 # vira "Competências" em texto. Ferramenta nova = mapear lá.
 order: number                   # substitui a ordem do array JSON; preservar a ordem atual
 section_titles: record opcional
-gallery: string[]               # substitui images_section CSV
+gallery: (string | {src, caption})[]
+                                # substitui images_section CSV. Faixa de telas no
+                                # case; `caption` aparece sob a tela e vira o alt.
+                                # Uma legenda curta por tela, descrevendo o que ela mostra.
+outcome: string opcional        # D2: uma frase "problema → o que fiz → o que saiu",
+                                # abaixo do título do case e no lugar da descrição no
+                                # card. Só o autor escreve; "pendente" não aparece.
+                                # Sem métrica inventada.
 design_system: objeto opcional  # painel visual após a ideia principal:
                                 # title?, colors[{name, hex}] (com botão de
                                 # copiar), fonts[{role, family, weights?, webfont}],
@@ -70,6 +77,18 @@ Menos texto corrido no corpo:
 - Uma linha `![alt](/img/...)` (com `/` no início, senão o MDX tenta importar o arquivo) dentro do `###` vira a **imagem do card**. Se a imagem estiver na `gallery`, clicar nela abre a galeria ampliada.
 - A pergunta que orientou o projeto fica no texto, em itálico. O autor não quer citação em destaque (`>`).
 - Escrever para cards: 1 a 3 frases ou até 4 tópicos curtos por subtítulo.
+
+### Dois moldes de case (D10)
+
+A ordem das seções `##` segue um de dois moldes. A barra de seções do case lista os `##`, o painel de design system e as telas, nessa ordem.
+
+| Molde | Ordem | Cases |
+|---|---|---|
+| **Design** | Contexto (e Problema) → Decisões de Design → Identidade/Design System e Telas → Processo e Pesquisa → Resultado e Aprendizados → Protótipo Interativo | Mapa Virtual do IdA, Descubra Cerrado |
+| **Design + bloco técnico** | Molde Design, com **Como Funciona** (stack, arquitetura) depois das telas e **Como Executar** no fim | Kinetic (sem Processo nem Resultado: `pendente`, só o autor escreve) |
+| **Código** | Visão Geral (+ demo) → Decisões Técnicas → Design System e Telas → Como Funciona → Como Executar | JetPack Guy |
+
+Não usar os títulos genéricos "Introdução", "Ideia Principal" nem "Imagens". `section_titles.main_idea` diz depois de qual seção entram o design system e as telas; `section_titles.images` dá o título das telas (padrão: "Telas").
 
 ### Página estática (não é collection)
 

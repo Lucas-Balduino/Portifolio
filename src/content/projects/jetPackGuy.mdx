@@ -47,17 +47,27 @@ design_system:
   link:
     href: https://lucas-balduino.github.io/JetPackGuy/design.html
     label: Ver design system completo
+outcome: pendente
+section_titles:
+  introduction: Visão Geral
+  main_idea: Decisões Técnicas
+  images: Telas
+  technical_details: Como Funciona
+  how_to_run: Como Executar
 gallery:
-  - img/JetPackGuyJogo.png
-  - img/JetPackGuyMorte.png
-  - img/JetPackGuyPause.png
+  - src: img/JetPackGuyJogo.png
+    caption: Jogo em andamento
+  - src: img/JetPackGuyMorte.png
+    caption: Tela de game over
+  - src: img/JetPackGuyPause.png
+    caption: Pausa, com o placar e a moldura
 ---
 
-## Introdução
+## Visão Geral
 
 O **JetPack Guy** é uma recriação web do JetPack Joyride em pixel art, feita com WebGL puro, HTML e CSS. O objetivo foi unir um jogo de verdade (física, obstáculos e pontuação) ao estudo do pipeline gráfico de baixo nível: shaders, buffers e atributos.
 
-## Ideia Principal
+## Decisões Técnicas
 
 ### 1. Pixel art como dado
 
@@ -77,7 +87,7 @@ Gravidade, salto, obstáculos e pontuação ficam no JavaScript; os shaders só 
 
 Moldura, placar e layout responsivo são HTML e CSS, por cima do canvas. O placar precisa ser legível durante o jogo: hierarquia e contraste fazem parte da experiência.
 
-## Detalhes Técnicos
+## Como Funciona
 
 ### Pipeline WebGL
 

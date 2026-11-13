@@ -21,6 +21,7 @@ const projects = await getSortedProjects();
 						title={entry.data.title}
 						slug={entry.data.slug}
 						shortDesc={entry.data.short_desc}
+						outcome={entry.data.outcome}
 						image={entry.data.image}
 						technologies={entry.data.technologies}
 						meta={projectMeta(entry.data.summary)}

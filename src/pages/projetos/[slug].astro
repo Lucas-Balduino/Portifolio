@@ -3,21 +3,25 @@ import { getCollection } from 'astro:content';
 import { micromark } from 'micromark';
 import Layout from '../../layouts/Layout.astro';
 import Gallery from '../../components/Gallery.astro';
-import TechList from '../../components/TechList.astro';
 import CaseSummary from '../../components/CaseSummary.astro';
 import DesignSystem from '../../components/DesignSystem.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { imageSize } from '../../lib/image-size';
 
 export async function getStaticPaths() {
-	const projects = await getCollection('projects');
-	return projects.map((project) => ({
+	const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+	return projects.map((project, index) => ({
 		params: { slug: project.data.slug },
-		props: { project }
+		// D3 — o fim de cada case leva ao seguinte (o último volta ao primeiro).
+		props: { project, next: projects[(index + 1) % projects.length] }
 	}));
 }
 
-const { project } = Astro.props;
+const { project, next } = Astro.props;
 const data = project.data;
 const body = (project.body ?? '').replace(/\r\n/g, '\n');
+
+const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim() !== 'pendente');
 
 const splitH2Sections = (markdown: string) => {
 	const sections: { title: string; markdown: string }[] = [];
@@ -41,11 +45,21 @@ const splitH2Sections = (markdown: string) => {
 
 const toHtml = (markdown: string) => micromark(markdown, { allowDangerousHtml: true });
 const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
+/** "Decisões de Design" → "decisoes-de-design", para os links da barra de seções. */
+const slugify = (text: string) =>
+	text
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
 
 const mainIdeaTitle = data.section_titles?.main_idea ?? 'Ideia Principal';
-const galleryTitle = data.section_titles?.images ?? 'Imagens';
+const galleryTitle = data.section_titles?.images ?? 'Telas';
+const designTitle = data.design_system?.title ?? 'Design System';
 const sections = splitH2Sections(body);
-const gallerySrcs = new Set(data.gallery.map(publicSrc));
+const galleryImages = data.gallery.map((item) => (typeof item === 'string' ? { src: item } : item));
+const gallerySrcs = new Set(galleryImages.map((image) => publicSrc(image.src)));
 
 type Card = { title: string; html: string; image?: { src: string; alt: string; inGallery: boolean } };
 
@@ -84,24 +98,30 @@ const splitCards = (markdown: string) => {
 	};
 };
 
-type Block =
-	| { type: 'section'; title: string; html: string; intro?: string; cards?: Card[] }
+type Block = { id: string; title: string } & (
+	| { type: 'section'; html: string; intro?: string; cards?: Card[] }
 	| { type: 'design' }
-	| { type: 'gallery' };
+	| { type: 'gallery' }
+);
 
 // Painel do design system e galeria entram logo depois da ideia principal.
 const visualBlocks: Block[] = [
-	...(data.design_system ? [{ type: 'design' } as const] : []),
-	...(data.gallery.length > 0 ? [{ type: 'gallery' } as const] : [])
+	...(data.design_system
+		? [{ type: 'design', id: slugify(designTitle), title: designTitle } as const]
+		: []),
+	...(galleryImages.length > 0
+		? [{ type: 'gallery', id: slugify(galleryTitle), title: galleryTitle } as const]
+		: [])
 ];
 
 const blocks: Block[] = [];
 for (const section of sections) {
 	const split = splitCards(section.markdown);
+	const base = { id: slugify(section.title), title: section.title };
 	blocks.push(
 		split
-			? { type: 'section', title: section.title, html: '', intro: split.intro, cards: split.cards }
-			: { type: 'section', title: section.title, html: toHtml(section.markdown) }
+			? { ...base, type: 'section', html: '', intro: split.intro, cards: split.cards }
+			: { ...base, type: 'section', html: toHtml(section.markdown) }
 	);
 	if (section.title === mainIdeaTitle) blocks.push(...visualBlocks);
 }
@@ -111,6 +131,13 @@ if (visualBlocks.length > 0 && !blocks.some((block) => block.type !== 'section')
 }
 
 const coverSrc = publicSrc(data.image);
+const coverSize = imageSize(data.image);
+const outcome = isFilled(data.outcome) ? data.outcome : undefined;
+const githubHref = data.repo_url.trim();
+const liveHref = data.live_url.trim();
+const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo';
+const nextProject = next && next.data.slug !== data.slug ? next.data : undefined;
+const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
 ---
 
 <Layout
@@ -120,43 +147,88 @@ const coverSrc = publicSrc(data.image);
 >
 	<article class="project-detail">
 		<header class="project-hero">
-			<div class="project-hero-row">
-				<div>
-					<h1>{data.title}</h1>
-					<p class="muted">{data.short_desc}</p>
-				</div>
-				<a href="/projetos" class="btn ghost">← Voltar para projetos</a>
-			</div>
+			<nav class="case-crumbs" aria-label="Caminho">
+				<a href="/projetos">Projetos</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{data.title}</span>
+			</nav>
+			<h1>{data.title}</h1>
+			{outcome && <p class="case-outcome">{outcome}</p>}
+			<p class="muted">{data.short_desc}</p>
+			{
+				(liveHref || githubHref) && (
+					<div class="case-actions">
+						{liveHref && (
+							<a class="btn" href={liveHref} target="_blank" rel="noopener noreferrer">
+								{liveLabel}
+							</a>
+						)}
+						{githubHref && (
+							<a class="btn ghost" href={githubHref} target="_blank" rel="noopener noreferrer">
+								GitHub
+							</a>
+						)}
+					</div>
+				)
+			}
 		</header>
-
-		<CaseSummary
-			summary={data.summary}
-			technologies={data.technologies}
-			repoUrl={data.repo_url}
-			liveUrl={data.live_url}
-		/>
 
 		{
 			data.image && (
-				<section class="project-image">
-					<img class="project-hero-img" src={coverSrc} alt={data.title} loading="lazy" />
-				</section>
+				<figure class="project-image">
+					<img
+						class="project-hero-img"
+						src={coverSrc}
+						alt={data.title}
+						width={coverSize?.width}
+						height={coverSize?.height}
+						fetchpriority="high"
+					/>
+				</figure>
 			)
 		}
 
+		<CaseSummary summary={data.summary} technologies={data.technologies} />
+
+		<div class="case-body">
 		{
-			blocks.map((block) =>
+			blocks.length > 1 && (
+				<nav class="case-toc" aria-label="Seções do case" data-case-toc>
+					<div class="case-toc-inner">
+						<p class="case-toc-label">Neste case</p>
+						<ol>
+							{blocks.map((block) => (
+								<li>
+									<a href={`#${block.id}`}>
+										<span class="case-toc-text">{block.title}</span>
+									</a>
+								</li>
+							))}
+						</ol>
+					</div>
+					<span class="case-toc-progress" aria-hidden="true" />
+				</nav>
+			)
+		}
+
+		<div class="case-content">
+		{
+			blocks.map((block, index) =>
 				block.type === 'gallery' ? (
-					<Gallery title={data.title} heading={galleryTitle} images={data.gallery} />
+					<Gallery id={block.id} title={data.title} heading={block.title} images={galleryImages} />
 				) : block.type === 'design' && data.design_system ? (
 					<DesignSystem
-						heading={data.design_system.title ?? 'Design System'}
+						id={block.id}
+						heading={block.title}
 						colors={data.design_system.colors}
 						fonts={data.design_system.fonts}
 						link={data.design_system.link}
 					/>
 				) : block.type === 'section' ? (
-					<section class="project-section">
+					<section
+						class:list={['project-section', { 'project-section--lead': index === 0 && !block.cards }]}
+						id={block.id}
+					>
 						<h2>{block.title}</h2>
 						{block.cards ? (
 							<>
@@ -201,17 +273,37 @@ const coverSrc = publicSrc(data.image);
 				) : null
 			)
 		}
-
-		{
-			data.technologies.length > 0 && (
-				<section class="project-technologies">
-					<h2>Tecnologias</h2>
-					<TechList technologies={data.technologies} />
-				</section>
-			)
-		}
-
+		</div>
+		</div>
 	</article>
+
+	{
+		nextProject && (
+			<nav class="case-next" aria-label="Próximo projeto">
+				<a class="case-next-link" href={`/projetos/${nextProject.slug}`}>
+					<span class="case-next-text">
+						<span class="case-next-label">Próximo projeto</span>
+						<span class="case-next-title">{nextProject.title}</span>
+						<span class="case-next-desc">{nextProject.short_desc}</span>
+						<span class="case-next-cta" aria-hidden="true">
+							Ver case →
+						</span>
+					</span>
+					<span class="case-next-media">
+						<img
+							src={publicSrc(nextProject.image)}
+							alt=""
+							width={nextSize?.width}
+							height={nextSize?.height}
+							loading="lazy"
+						/>
+					</span>
+				</a>
+			</nav>
+		)
+	}
+
+	<ContactCta text="Sobre uma vaga, um projeto ou este case." />
 </Layout>
 
 <script>
@@ -262,9 +354,438 @@ const coverSrc = publicSrc(data.image);
 		});
 		pre.append(button);
 	}
+
+	// D3 — barra de seções: segue a altura do cabeçalho, marca a seção atual e mostra o progresso.
+	const header = document.querySelector<HTMLElement>('.site-header');
+	const toc = document.querySelector<HTMLElement>('[data-case-toc]');
+	const article = document.querySelector<HTMLElement>('.project-detail');
+
+	if (header) {
+		const setHeaderHeight = () =>
+			document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
+		new ResizeObserver(setHeaderHeight).observe(header);
+		setHeaderHeight();
+	}
+
+	if (toc && article) {
+		const progress = toc.querySelector<HTMLElement>('.case-toc-progress');
+		const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
+		const targets = links.map((link) =>
+			document.getElementById(decodeURIComponent(link.hash.slice(1)))
+		);
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let active = -1;
+		let queued = false;
+
+		const update = () => {
+			queued = false;
+			const line = (header?.offsetHeight ?? 0) + window.innerHeight * 0.25;
+			const atBottom =
+				window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+			let current = -1;
+			targets.forEach((target, index) => {
+				if (target && target.getBoundingClientRect().top <= line) current = index;
+			});
+			if (atBottom) current = targets.length - 1;
+
+			if (current !== active) {
+				active = current;
+				links.forEach((link, index) => {
+					if (index === active) link.setAttribute('aria-current', 'true');
+					else link.removeAttribute('aria-current');
+				});
+			}
+
+			if (progress) {
+				const rect = article.getBoundingClientRect();
+				const total = Math.max(1, rect.height - window.innerHeight);
+				const ratio = Math.min(1, Math.max(0, -rect.top / total));
+				progress.style.transform = `scaleX(${ratio})`;
+			}
+		};
+
+		const queue = () => {
+			if (queued) return;
+			queued = true;
+			requestAnimationFrame(update);
+		};
+
+		window.addEventListener('scroll', queue, { passive: true });
+		window.addEventListener('resize', queue);
+		update();
+
+		// Pular para a seção leva o foco junto (teclado e leitor de tela continuam dali).
+		links.forEach((link, index) => {
+			link.addEventListener('click', (event) => {
+				const target = targets[index];
+				if (!target) return;
+				event.preventDefault();
+				target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+				history.replaceState(null, '', link.hash);
+				const heading = target.querySelector<HTMLElement>('h2') ?? target;
+				heading.setAttribute('tabindex', '-1');
+				heading.focus({ preventScroll: true });
+			});
+		});
+	}
 </script>
 
 <style>
+	/* D3 — caminho discreto acima do título, no lugar do botão "Voltar". */
+	.case-crumbs {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+		margin-bottom: var(--space-4);
+		font-size: var(--text-sm);
+		line-height: 1.5;
+		color: var(--muted);
+	}
+
+	/* Área de toque de 44px sem empurrar o título. */
+	.case-crumbs a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		margin-block: calc((44px - 1.5em) / -2);
+		color: var(--muted);
+		text-decoration: none;
+		transition: color 200ms ease;
+	}
+
+	.case-crumbs a:hover {
+		color: var(--text);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.case-crumbs [aria-current] {
+		color: var(--text);
+	}
+
+	/* D2 — frase de resultado logo abaixo do título (só aparece quando o autor preencher). */
+	.case-outcome {
+		max-width: var(--measure);
+		margin: 0 0 var(--space-3);
+		font-size: var(--text-md);
+		font-weight: 500;
+		line-height: 1.5;
+		color: var(--text);
+	}
+
+	.case-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		margin-top: var(--space-5);
+	}
+
+	/* D4 — a primeira seção abre como texto de abertura, um degrau maior. */
+	.project-section--lead :global(.project-rich-text > p) {
+		font-size: var(--text-md);
+		line-height: 1.6;
+	}
+
+	/* Ao pular pelo índice, a seção para logo abaixo do cabeçalho. */
+	.project-detail :global(:is(.project-section, .project-images, .design-system)) {
+		scroll-margin-top: calc(var(--header-h, 68px) + var(--space-5));
+	}
+
+	.project-detail :global(h2[tabindex='-1']:focus) {
+		outline: none;
+	}
+
+	.case-body {
+		position: relative;
+		margin-top: var(--space-6);
+	}
+
+	/* A primeira seção começa logo abaixo da ficha, sem linha. */
+	.case-content > :global(:first-child) {
+		margin-top: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	/* Até 1279px a margem é estreita demais: o índice é só uma linha de progresso de 2px sob o cabeçalho. */
+	.case-toc {
+		position: sticky;
+		top: var(--header-h, 68px);
+		z-index: 30;
+		height: 2px;
+		margin: 0 calc(var(--space-5) * -1) var(--space-6);
+	}
+
+	.case-toc-inner {
+		display: none;
+	}
+
+	.case-toc-progress {
+		display: block;
+		height: 2px;
+		background: var(--text);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+
+	/* A partir de 1280px o índice sai do bloco central e vive na margem esquerda, como guia de rolagem. */
+	@media (min-width: 1280px) {
+		.case-body {
+			margin-top: var(--space-7);
+		}
+
+		/* Fixo na lateral esquerda, perto da borda e longe do texto, no meio da altura da janela. */
+		.case-toc {
+			position: fixed;
+			top: 50%;
+			left: var(--space-5);
+			z-index: 5;
+			width: var(--space-5);
+			height: auto;
+			margin: 0;
+			transform: translateY(-50%);
+		}
+
+		.case-toc-progress {
+			display: none;
+		}
+
+		.case-toc-inner {
+			display: block;
+		}
+
+		.case-toc ol {
+			display: grid;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		/* 1280–1535px: um traço por seção; o da seção atual é mais longo. O nome aparece no hover/foco. */
+		.case-toc-label {
+			display: none;
+		}
+
+		.case-toc a {
+			position: relative;
+			display: flex;
+			align-items: center;
+			height: 20px;
+			color: var(--muted);
+			text-decoration: none;
+		}
+
+		.case-toc a::before {
+			content: '';
+			width: 12px;
+			height: 2px;
+			border-radius: 2px;
+			background: color-mix(in srgb, var(--text) 30%, transparent);
+			transition:
+				width 200ms ease,
+				background-color 200ms ease;
+		}
+
+		.case-toc a:hover::before {
+			background: var(--muted);
+		}
+
+		.case-toc a[aria-current='true']::before {
+			width: 24px;
+			background: var(--text);
+		}
+
+		.case-toc-text {
+			position: absolute;
+			top: 50%;
+			left: calc(100% + var(--space-2));
+			padding: var(--space-1) var(--space-2);
+			border-radius: 4px;
+			background: var(--text);
+			color: var(--bg);
+			font-size: var(--text-xs);
+			font-weight: 600;
+			white-space: nowrap;
+			pointer-events: none;
+			opacity: 0;
+			transform: translate(-4px, -50%);
+			transition:
+				opacity 150ms ease,
+				transform 150ms ease;
+		}
+
+		.case-toc a:hover .case-toc-text,
+		.case-toc a:focus-visible .case-toc-text {
+			opacity: 1;
+			transform: translate(0, -50%);
+		}
+
+		.case-toc a:focus-visible {
+			outline-offset: 2px;
+		}
+	}
+
+	/* ≥1536px: a margem comporta os nomes longe do texto; o índice vira a lista "Neste case". */
+	@media (min-width: 1536px) {
+		.case-toc {
+			width: 9.5rem;
+		}
+
+		.case-toc-label {
+			display: block;
+			margin: 0 0 var(--space-3);
+			font-size: var(--text-sm);
+			font-weight: 500;
+			color: var(--muted);
+		}
+
+		.case-toc ol {
+			border-left: 1px solid var(--line);
+		}
+
+		.case-toc a {
+			display: block;
+			height: auto;
+			margin-left: -1px;
+			padding: var(--space-2) 0 var(--space-2) var(--space-3);
+			border-left: 2px solid transparent;
+			font-size: var(--text-sm);
+			line-height: 1.4;
+			transition:
+				color 200ms ease,
+				border-color 200ms ease;
+		}
+
+		.case-toc a::before {
+			display: none;
+		}
+
+		.case-toc a:hover {
+			color: var(--text);
+		}
+
+		.case-toc a[aria-current='true'] {
+			color: var(--text);
+			font-weight: 500;
+			border-left-color: var(--text);
+		}
+
+		.case-toc-text {
+			position: static;
+			padding: 0;
+			background: none;
+			color: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			white-space: normal;
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+
+		.case-toc a:focus-visible {
+			outline-offset: -2px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.case-toc a::before,
+		.case-toc-text {
+			transition: none;
+		}
+	}
+
+	/* D3 — fim do case: o próximo projeto, com a capa. */
+	.case-next {
+		margin-top: var(--rhythm-section);
+		padding-top: var(--space-7);
+		border-top: 1px solid var(--line);
+	}
+
+	.case-next-link {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		align-items: center;
+		gap: var(--space-7);
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.case-next-text {
+		display: grid;
+		gap: var(--space-3);
+	}
+
+	.case-next-label {
+		font-size: var(--text-sm);
+		font-weight: 500;
+		color: var(--muted);
+	}
+
+	.case-next-title {
+		font-family: var(--font-display);
+		font-size: var(--text-xl);
+		font-weight: 700;
+		line-height: var(--leading-heading);
+		letter-spacing: var(--tracking-heading);
+		text-wrap: balance;
+	}
+
+	.case-next-desc {
+		max-width: var(--measure);
+		line-height: 1.6;
+		color: var(--muted);
+	}
+
+	.case-next-cta {
+		margin-top: var(--space-2);
+		font-weight: 600;
+	}
+
+	.case-next-media {
+		display: block;
+		overflow: hidden;
+		aspect-ratio: 16 / 10;
+		border-radius: 8px;
+		border: 1px solid var(--line);
+		background: var(--surface);
+	}
+
+	.case-next-media img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
+	}
+
+	.case-next-link:hover .case-next-media img {
+		transform: scale(1.03);
+	}
+
+	.case-next-link:hover .case-next-cta {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	@media (max-width: 760px) {
+		.case-next-link {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-5);
+		}
+
+		.case-next-media {
+			order: -1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.case-next-media img {
+			transition: none;
+		}
+	}
+
 	.case-intro {
 		margin-bottom: var(--space-5);
 	}

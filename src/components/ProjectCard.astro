@@ -9,11 +9,14 @@ interface Props {
 	technologies: string[];
 	/** Linha curta acima do título, ex.: "Projeto acadêmico · 2026.1". */
 	meta?: string;
+	/** D2: frase de resultado do autor; quando existir, substitui a descrição curta. */
+	outcome?: string;
 	/** Card em destaque: ocupa a linha inteira, imagem ao lado do texto. */
 	featured?: boolean;
 }
 
-const { title, slug, shortDesc, image, technologies, meta, featured = false } = Astro.props;
+const { title, slug, shortDesc, image, technologies, meta, outcome, featured = false } = Astro.props;
+const description = outcome && outcome.trim() && outcome.trim() !== 'pendente' ? outcome : shortDesc;
 
 const imageUrls = import.meta.glob<{ default: string }>('../../img/**/*.{png,jpg,jpeg}', {
 	eager: true,
@@ -39,7 +42,7 @@ const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolviment
 	<div class="project-card-body">
 		{meta && <p class="project-card-meta">{meta}</p>}
 		<h3 class="project-card-title">{title}</h3>
-		<p class="project-card-desc">{shortDesc}</p>
+		<p class="project-card-desc">{description}</p>
 		{
 			technologies.length > 0 && (
 				<TechList technologies={technologies} variant="card" limit={featured ? 4 : 3} />

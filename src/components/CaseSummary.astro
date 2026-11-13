@@ -8,38 +8,42 @@ type Summary = Partial<
 interface Props {
 	summary?: Summary;
 	technologies: string[];
-	repoUrl: string;
-	liveUrl: string;
 }
 
-const { summary = {}, technologies, repoUrl, liveUrl } = Astro.props;
+const { summary = {}, technologies } = Astro.props;
 
 const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim() !== 'pendente');
 
-// Campos curtos ficam lado a lado; os longos ocupam a linha inteira.
+// "Meu papel" fica em destaque à esquerda; o resto, em campos curtos ao lado.
+const role = isFilled(summary.role) ? summary.role : undefined;
 const fields = [
 	{ key: 'type', label: 'Tipo', wide: false },
-	{ key: 'context', label: 'Contexto', wide: false },
 	{ key: 'period', label: 'Período', wide: false },
+	{ key: 'context', label: 'Contexto', wide: false },
 	{ key: 'advisor', label: 'Orientação', wide: false },
-	{ key: 'role', label: 'Meu papel', wide: true },
 	{ key: 'team', label: 'Equipe', wide: true },
 	{ key: 'deliverable', label: 'Entrega', wide: true }
 ] as const;
 
 const visibleFields = fields.filter((field) => isFilled(summary[field.key]));
-const githubHref = repoUrl.trim();
-const liveHref = liveUrl.trim();
-const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo';
 ---
 
-<section class="case-summary" aria-label="Ficha do projeto">
+<section class:list={['case-summary', { 'case-summary--split': role }]} aria-label="Ficha do projeto">
+	{
+		role && (
+			<div class="summary-role">
+				<p class="summary-label">Meu papel</p>
+				<p class="summary-role-text">{role}</p>
+			</div>
+		)
+	}
+
 	{
 		visibleFields.length > 0 && (
 			<dl class="summary-grid">
 				{visibleFields.map((field) => (
 					<div class:list={['summary-item', { 'summary-item--wide': field.wide }]}>
-						<dt>{field.label}</dt>
+						<dt class="summary-label">{field.label}</dt>
 						<dd>{summary[field.key]}</dd>
 					</div>
 				))}
@@ -47,24 +51,8 @@ const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo'
 		)
 	}
 
-	<div class="summary-footer">
+	<div class="summary-tools">
 		<TechList technologies={technologies} variant="tools" />
-		{
-			(githubHref || liveHref) && (
-				<div class="summary-actions">
-					{liveHref && (
-						<a class="btn" href={liveHref} target="_blank" rel="noopener noreferrer">
-							{liveLabel}
-						</a>
-					)}
-					{githubHref && (
-						<a class="btn ghost" href={githubHref} target="_blank" rel="noopener noreferrer">
-							GitHub
-						</a>
-					)}
-				</div>
-			)
-		}
 	</div>
 </section>
 
@@ -72,16 +60,36 @@ const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo'
 	.case-summary {
 		display: grid;
 		gap: var(--space-5);
-		margin: 0;
+		margin: var(--space-6) 0 0;
 		padding: var(--space-5);
 		border-radius: 8px;
 		background: var(--surface);
 		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
 	}
 
+	.summary-label {
+		margin: 0 0 var(--space-1);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	/* A pergunta nº 1 de quem contrata: o que eu fiz. */
+	.summary-role-text {
+		margin: 0;
+		font-size: var(--text-md);
+		font-weight: 500;
+		line-height: 1.45;
+		letter-spacing: -0.01em;
+		color: var(--text);
+		text-wrap: pretty;
+	}
+
 	.summary-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--space-4) var(--space-5);
 		margin: 0;
 	}
@@ -90,41 +98,27 @@ const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo'
 		grid-column: 1 / -1;
 	}
 
-	.summary-item dt {
-		margin-bottom: var(--space-1);
-		font-size: var(--text-xs);
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--muted);
-	}
-
 	.summary-item dd {
 		margin: 0;
+		font-size: var(--text-sm);
 		line-height: 1.5;
 		color: var(--text);
 	}
 
-	.summary-footer {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-4);
-		padding-top: var(--space-5);
+	.summary-tools {
+		padding-top: var(--space-4);
 		border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
 	}
 
-	.summary-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2);
-	}
+	/* Computador: papel numa coluna, campos na outra; ferramentas na linha de baixo. */
+	@media (min-width: 820px) {
+		.case-summary--split {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			column-gap: var(--space-7);
+		}
 
-	@media (max-width: 640px) {
-		.summary-actions,
-		.summary-actions .btn {
-			width: 100%;
+		.case-summary--split .summary-tools {
+			grid-column: 1 / -1;
 		}
 	}
 </style>

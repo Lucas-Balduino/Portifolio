@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ContactCta from '../components/ContactCta.astro';
 import TechList from '../components/TechList.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
 import { META } from '../site-config';
@@ -62,6 +63,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 						title={entry.data.title}
 						slug={entry.data.slug}
 						shortDesc={entry.data.short_desc}
+						outcome={entry.data.outcome}
 						image={entry.data.image}
 						technologies={entry.data.technologies}
 						meta={projectMeta(entry.data.summary)}
@@ -72,21 +74,7 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		</div>
 	</section>
 
-	<section class="home-contact">
-		<div>
-			<h2>Vamos conversar?</h2>
-			<p class="muted">Sobre uma vaga, um projeto ou algum dos cases acima.</p>
-		</div>
-		<div class="home-cta">
-			<a class="btn-project" href="/contato">Entrar em contato</a>
-			<a
-				class="btn ghost"
-				href="https://www.linkedin.com/in/lucas-balduino-661073327"
-				target="_blank"
-				rel="noopener noreferrer">LinkedIn</a
-			>
-		</div>
-	</section>
+	<ContactCta />
 </Layout>
 
 <style>
@@ -249,26 +237,6 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--space-5);
-	}
-
-	.home-contact {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-5);
-		margin: var(--rhythm-section) 0 var(--space-6);
-		padding-top: var(--space-7);
-		border-top: 1px solid var(--line);
-	}
-
-	.home-contact h2 {
-		margin: 0 0 var(--space-2);
-		font-size: var(--text-lg);
-	}
-
-	.home-contact p {
-		margin: 0;
 	}
 
 	@media (max-width: 900px) {

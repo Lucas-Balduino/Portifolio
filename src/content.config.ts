@@ -32,7 +32,12 @@ const projects = defineCollection({
 				how_to_run: z.string().optional()
 			})
 			.optional(),
-		gallery: z.array(posixPath),
+		// D2 — uma frase "problema → o que fiz → o que saiu", escrita pelo autor. "pendente" não aparece.
+		outcome: z.string().optional(),
+		// Cada tela: só o caminho, ou { src, caption } com a legenda que também vira o alt.
+		gallery: z.array(
+			z.union([posixPath, z.object({ src: posixPath, caption: z.string().min(1) })])
+		),
 		// Painel visual do design system do case (cores, tipografia, componentes).
 		design_system: z
 			.object({
