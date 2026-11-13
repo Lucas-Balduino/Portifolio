@@ -266,14 +266,14 @@ const coverSrc = publicSrc(data.image);
 
 <style>
 	.case-intro {
-		margin-bottom: 1.25rem;
+		margin-bottom: var(--space-5);
 	}
 
 	/* Subtítulos da seção lado a lado, em vez de texto corrido. */
 	.case-cards {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
-		gap: 1rem;
+		gap: var(--space-4);
 	}
 
 	/* 2 ou 4 cards: duas colunas, para não sobrar um card sozinho na linha. */
@@ -298,36 +298,26 @@ const coverSrc = publicSrc(data.image);
 	}
 
 	.case-card-body {
-		padding: 1.1rem 1.15rem 1.2rem;
+		padding: var(--space-4) var(--space-4) var(--space-4);
 	}
 
 	.case-card h3 {
-		margin: 0 0 0.5rem;
-		font-size: 1.05rem;
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-md);
 		line-height: 1.3;
 		letter-spacing: -0.01em;
 		color: var(--text);
 	}
 
 	.case-card .project-rich-text {
-		font-size: 0.95rem;
+		font-size: var(--text-base);
 		line-height: 1.6;
-	}
-
-	/* O card já usa o fundo da página; o código precisa de outro tom para se destacar. */
-	.case-card :global(code),
-	.case-card :global(pre) {
-		background: var(--surface);
-	}
-
-	.case-card :global(pre code) {
-		background: transparent;
 	}
 
 	/* Linhas longas quebram em vez de cortar; copiar continua levando o comando inteiro. */
 	.project-detail :global(pre) {
 		position: relative;
-		padding-right: 3.25rem;
+		padding-right: var(--space-7);
 	}
 
 	.project-detail :global(pre code) {
@@ -378,12 +368,12 @@ const coverSrc = publicSrc(data.image);
 		position: absolute;
 		top: 50%;
 		right: calc(100% + 6px);
-		padding: 0.2rem 0.45rem;
+		padding: var(--space-1) var(--space-2);
 		border-radius: 4px;
 		background: var(--text);
 		color: var(--bg);
 		font-family: 'Inter', system-ui, sans-serif;
-		font-size: 0.72rem;
+		font-size: var(--text-xs);
 		font-weight: 600;
 		white-space: nowrap;
 		pointer-events: none;
@@ -406,7 +396,7 @@ const coverSrc = publicSrc(data.image);
 		align-items: center;
 		justify-content: center;
 		height: 240px;
-		padding: 0.75rem;
+		padding: var(--space-3);
 		border: 0;
 		background: color-mix(in srgb, var(--text) 5%, transparent);
 		color: inherit;

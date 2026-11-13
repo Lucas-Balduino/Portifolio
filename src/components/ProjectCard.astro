@@ -98,23 +98,22 @@ const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolviment
 		display: flex;
 		flex: 1;
 		flex-direction: column;
-		gap: 0.7rem;
-		padding: 1.4rem;
+		gap: var(--space-3);
+		padding: var(--space-5);
 	}
 
 	.project-card-meta {
 		margin: 0;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-size: var(--text-sm);
+		font-weight: 500;
 		color: var(--muted);
 	}
 
 	.project-card-title {
 		margin: 0;
-		font-size: 1.3rem;
-		letter-spacing: -0.02em;
+		font-size: var(--text-lg);
+		letter-spacing: var(--tracking-title);
+		line-height: var(--leading-title);
 		color: var(--text);
 	}
 
@@ -126,8 +125,8 @@ const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolviment
 
 	.project-card-cta {
 		margin-top: auto;
-		padding-top: 0.5rem;
-		font-size: 0.9rem;
+		padding-top: var(--space-2);
+		font-size: var(--text-sm);
 		font-weight: 700;
 		color: var(--text);
 	}
@@ -151,11 +150,13 @@ const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolviment
 
 		.project-card--featured .project-card-body {
 			justify-content: center;
-			padding: 2.25rem;
+			padding: var(--space-6);
 		}
 
 		.project-card--featured .project-card-title {
-			font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+			font-size: var(--text-xl);
+			letter-spacing: var(--tracking-heading);
+			line-height: var(--leading-heading);
 		}
 	}
 </style>

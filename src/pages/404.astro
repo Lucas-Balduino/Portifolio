@@ -20,35 +20,36 @@ import { META } from '../site-config';
 		display: grid;
 		justify-items: center;
 		align-content: center;
-		gap: 0.75rem;
+		gap: var(--space-3);
 		min-height: 60vh;
-		padding: 3rem 0;
+		padding: var(--space-7) 0;
 		text-align: center;
 	}
 
 	.not-found-code {
 		margin: 0;
-		font-size: clamp(4rem, 14vw, 8rem);
+		font-size: var(--text-display);
 		font-weight: 800;
-		letter-spacing: -0.05em;
-		line-height: 1;
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-display);
 		color: color-mix(in srgb, var(--text) 14%, transparent);
 	}
 
 	.not-found h1 {
 		margin: 0;
-		font-size: clamp(1.75rem, 4vw, 2.5rem);
-		letter-spacing: -0.03em;
+		font-size: var(--text-xl);
+		letter-spacing: var(--tracking-heading);
+		line-height: var(--leading-heading);
 	}
 
 	.not-found p.muted {
-		margin: 0 0 1rem;
+		margin: 0 0 var(--space-4);
 	}
 
 	.not-found-actions {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: 0.75rem;
+		gap: var(--space-3);
 	}
 </style>

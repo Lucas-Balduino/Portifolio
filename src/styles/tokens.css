@@ -13,6 +13,49 @@
 	/* Syne descartada pelo autor; títulos voltam para Inter até escolher outra display. */
 	--font-display: 'Inter', system-ui, sans-serif;
 	color-scheme: dark;
+
+	/* B1 — escala tipográfica: 7 degraus. Nenhum font-size solto fora daqui. */
+	--text-xs: 0.75rem; /* 12 — chips, rótulos da ficha, dicas */
+	--text-sm: 0.875rem; /* 14 — metadado, legenda, texto secundário */
+	--text-base: 1rem; /* 16 — corpo */
+	--text-md: 1.125rem; /* 18 — texto de abertura, subtítulo de card */
+	--text-lg: 1.5rem; /* 24 — título de seção e de card */
+	--text-xl: clamp(2rem, 1.25rem + 2.5vw, 3rem); /* 32–48 — título de página */
+	--text-display: clamp(2.75rem, 7vw, 4.75rem); /* 44–76 — título da home */
+
+	/* Altura de linha e espaçamento entre letras por degrau: título grande mais apertado. */
+	--leading-display: 1.02;
+	--leading-heading: 1.1;
+	--leading-title: 1.25;
+	--leading-body: 1.6;
+	--tracking-display: -0.04em;
+	--tracking-heading: -0.03em;
+	--tracking-title: -0.02em;
+
+	/* B4 — escala de espaço (4 · 8 · 12 · 16 · 24 · 32 · 48 · 72 · 112px). */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.5rem;
+	--space-6: 2rem;
+	--space-7: 3rem;
+	--space-8: 4.5rem;
+	--space-9: 7rem;
+
+	/* Três ritmos: dentro do grupo, entre grupos, entre seções. */
+	--rhythm-item: var(--space-3);
+	--rhythm-group: var(--space-6);
+	--rhythm-section: clamp(var(--space-8), 9vw, var(--space-9));
+
+	/* B2 — uma grade (--container, 1100px) para todas as páginas; texto longo numa coluna à esquerda. */
+	--measure: 68ch;
+	--column: 46rem;
+}
+
+/* Linha fina de separação. Declarada no body para seguir o --text do tema ativo. */
+body {
+	--line: color-mix(in srgb, var(--text) 10%, transparent);
 }
 
 body.theme-light {
