@@ -39,7 +39,11 @@ Fundo liso (`--bg`), sem brilho radial. Seleção de texto, contorno de foco e b
 | Camada | Agora | Horizonte |
 |---|---|---|
 | UI | Inter (Google Fonts 300–800), `system-ui` fallback | Inter no corpo e nos títulos; display própria `(pendente)` — Syne descartada |
-| Espaço | `--container: 1100px`; cards `minmax(300px, 1fr)` | Redefinir na fase dark-first, não no scaffold |
+| Escala de tipo | 7 degraus em `tokens.css`: `--text-xs` 12 · `--text-sm` 14 · `--text-base` 16 · `--text-md` 18 · `--text-lg` 24 · `--text-xl` 32–48 (título de página) · `--text-display` 44–76 (título da home). Nenhum `font-size` solto fora dos tokens (exceto `/curriculo`, que é A4) | Fonte display `(pendente)` — B7 |
+| Espaço | Escala `--space-1`…`--space-9` (4 · 8 · 12 · 16 · 24 · 32 · 48 · 72 · 112px); ritmos `--rhythm-item` (12), `--rhythm-group` (32), `--rhythm-section` (72–112) | — |
+| Grade | Uma largura para todas as páginas: `--container: 1100px`, conteúdo alinhado ao "lucas." do cabeçalho. Texto longo limitado a `--measure` (68ch) e colunas de texto a `--column` (46rem), sempre à esquerda | — |
+| Superfícies | Máximo 2 níveis. Seções do case sem caixa: linha fina (`--line`, texto a 10%) + título. Caixa só para objetos: card de projeto, card de decisão, ficha, bloco de código, amostras | — |
+| Rótulos | Maiúsculas com espaçamento só nos rótulos da ficha do case; nos demais lugares, texto normal em `--muted` | — |
 | Motion | `--transition: 240ms`; topo da home entra em cascata (50ms entre itens, `cubic-bezier(0.23, 1, 0.32, 1)`), uma vez; botões afundam a 97% no clique, sem pular no hover; respeita `prefers-reduced-motion` | GSAP = horizonte / fora do ROADMAP atual |
 | Ícones sociais | Texto (“GitHub”, “LinkedIn”) | SVG `(pendente)` — artefato do autor |
 
