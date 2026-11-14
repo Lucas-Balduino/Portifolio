@@ -1,16 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import ProjectRow from '../components/ProjectRow.astro';
 import ContactCta from '../components/ContactCta.astro';
-import TechList from '../components/TechList.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
 import { META } from '../site-config';
 import { getSortedProjects, projectMeta } from '../lib/projects';
 
 const projects = await getSortedProjects();
-
-// Mesma lista de competências de front-end/design do currículo.
-const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'Git', 'GitHub'];
+const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim() !== 'pendente');
 ---
 
 <Layout title={META.home.title} description={META.home.description}>
@@ -19,8 +16,8 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 			<h1 class="hero-title">Olá, eu sou Lucas</h1>
 			<p class="home-role">Designer UX/UI e desenvolvedor front-end em formação</p>
 			<p class="home-lead">
-				Estudo Design na UnB e Ciência da Computação no UniCEUB. Trabalho com pesquisa, fluxos e
-				interfaces centradas no usuário, com atenção à usabilidade e à acessibilidade.
+				Designer e desenvolvedor em formação (Design na UnB, Ciência da Computação no UniCEUB). Levo
+				a interface do Figma até o app funcionando.
 			</p>
 			<div class="home-cta home-cta--hero">
 				<a class="btn-project" href="#projetos">Ver projetos</a>
@@ -32,42 +29,37 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		</figure>
 	</section>
 
-	<section class="home-facts" aria-label="Resumo">
-		<article class="fact">
-			<h2 class="fact-label">Agora</h2>
-			<p class="fact-main">Bolsista no projeto de extensão Gêmeos Digitais</p>
-			<p class="fact-sub">CAL/UnB · escaneamento 3D de obras e site do acervo online</p>
-		</article>
-		<article class="fact">
-			<h2 class="fact-label">Formação</h2>
-			<p class="fact-main">Design · UnB</p>
-			<p class="fact-sub">Previsão: 2028</p>
-			<p class="fact-main">Ciência da Computação · UniCEUB</p>
-			<p class="fact-sub">Previsão: 2027</p>
-		</article>
-		<article class="fact">
-			<h2 class="fact-label">Ferramentas</h2>
-			<TechList technologies={tools} variant="tools" />
-		</article>
-	</section>
+	<!-- C2 — resumo em uma faixa; as ferramentas ficam nos cases e no currículo. -->
+	<dl class="home-strip" aria-label="Resumo">
+		<div>
+			<dt>Agora</dt>
+			<dd>Bolsista no projeto de extensão Gêmeos Digitais · CAL/UnB</dd>
+		</div>
+		<div>
+			<dt>Formação</dt>
+			<dd>Design · UnB (previsão 2028) · Ciência da Computação · UniCEUB (previsão 2027)</dd>
+		</div>
+	</dl>
 
 	<section class="home-projects" id="projetos">
 		<div class="section-head">
 			<h2>Projetos</h2>
 			<a class="link-muted" href="/projetos">Ver lista →</a>
 		</div>
-		<div class="home-projects-grid">
+		<div class="home-projects-list">
 			{
 				projects.map((entry, index) => (
-					<ProjectCard
+					<ProjectRow
 						title={entry.data.title}
 						slug={entry.data.slug}
-						shortDesc={entry.data.short_desc}
-						outcome={entry.data.outcome}
+						description={
+							isFilled(entry.data.outcome) ? entry.data.outcome! : entry.data.short_desc
+						}
 						image={entry.data.image}
 						technologies={entry.data.technologies}
 						meta={projectMeta(entry.data.summary)}
-						featured={index === 0}
+						reverse={index % 2 === 1}
+						eager={index === 0}
 					/>
 				))
 			}
@@ -79,13 +71,11 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 
 <style>
 	.home-hero {
-		/* Permite medir a largura da home (cqw) para alinhar os botões aos cards abaixo. */
-		container-type: inline-size;
 		display: grid;
 		grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
 		align-items: center;
 		gap: var(--space-7);
-		padding: var(--space-8) 0 var(--space-7);
+		padding: var(--space-6) 0 var(--space-6);
 	}
 
 	.home-hero .hero-title {
@@ -154,13 +144,10 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		gap: var(--space-3);
 	}
 
-	/* Botões do hero com a mesma largura do card "Agora": 1/3 da grade de resumo (gap 1rem). */
+	/* Botões do hero com a mesma largura entre si (a do mais largo). */
 	.home-cta--hero {
-		display: grid;
+		display: inline-grid;
 		grid-template-columns: 1fr 1fr;
-		width: calc((100cqw - 2rem) / 3);
-		/* Se o card ficar estreito demais, os botões crescem em vez de quebrar o texto. */
-		min-width: max-content;
 	}
 
 	.home-cta--hero > * {
@@ -183,49 +170,34 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
 	}
 
-	.home-facts {
+	/* C2 — faixa de resumo entre linhas finas: rótulo discreto + texto. */
+	.home-strip {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-4);
-	}
-
-	/* Ritmo entre seções: bem maior que o espaço dentro de cada uma. */
-	.home-projects {
-		margin-top: var(--rhythm-section);
-	}
-
-	.fact {
-		padding: var(--space-5);
-		border-radius: 8px;
-		background: var(--surface);
-		border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
-	}
-
-	.fact-label {
-		margin: 0 0 var(--space-3);
-		font-family: inherit;
+		grid-template-columns: max-content minmax(0, 1fr);
+		gap: var(--space-2) var(--space-5);
+		margin: 0;
+		padding: var(--space-4) 0;
+		border-block: 1px solid var(--line);
 		font-size: var(--text-sm);
+		line-height: 1.5;
+	}
+
+	.home-strip div {
+		display: contents;
+	}
+
+	.home-strip dt {
 		font-weight: 500;
-		letter-spacing: 0;
 		color: var(--muted);
 	}
 
-	.fact-main {
+	.home-strip dd {
 		margin: 0;
-		font-weight: 700;
-		line-height: 1.4;
 		color: var(--text);
 	}
 
-	.fact-sub {
-		margin: var(--space-1) 0 var(--space-3);
-		font-size: var(--text-sm);
-		line-height: 1.45;
-		color: var(--muted);
-	}
-
-	.fact-sub:last-child {
-		margin-bottom: 0;
+	.home-projects {
+		margin-top: var(--space-7);
 	}
 
 	.home-projects .section-head h2 {
@@ -233,26 +205,10 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 		font-size: var(--text-lg);
 	}
 
-	.home-projects-grid {
+	/* C4 — um projeto por linha, com bastante ar entre eles. */
+	.home-projects-list {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-5);
-	}
-
-	@media (max-width: 900px) {
-		.home-facts,
-		.home-projects-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.fact:last-child {
-			grid-column: 1 / -1;
-		}
-
-		/* Grade de resumo em 2 colunas: card "Agora" = metade. */
-		.home-cta--hero {
-			width: calc((100cqw - 1rem) / 2);
-		}
+		gap: var(--space-8);
 	}
 
 	@media (max-width: 700px) {
@@ -272,14 +228,13 @@ const tools = ['Figma', 'HTML', 'CSS', 'JavaScript', 'React', 'React Native', 'G
 			border-radius: 8px;
 		}
 
-		.home-facts,
-		.home-projects-grid {
-			grid-template-columns: 1fr;
+		.home-cta--hero {
+			display: grid;
+			width: 100%;
 		}
 
-		.home-cta--hero {
-			width: 100%;
-			min-width: 0;
+		.home-projects-list {
+			gap: var(--space-7);
 		}
 
 	}

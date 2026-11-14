@@ -1,0 +1,153 @@
+---
+import TechList from './TechList.astro';
+import { splitTechnologies } from '../lib/technologies';
+import { imageSize } from '../lib/image-size';
+
+/** C4 — projeto da home em linha grande: capa larga de um lado, texto do outro. */
+interface Props {
+	title: string;
+	slug: string;
+	description: string;
+	image: string;
+	technologies: string[];
+	/** Linha curta acima do título, ex.: "Projeto acadêmico · 2026.1". */
+	meta?: string;
+	/** Capa à direita (as linhas alternam o lado). */
+	reverse?: boolean;
+	/** Primeira linha: capa carrega sem esperar a rolagem. */
+	eager?: boolean;
+}
+
+const { title, slug, description, image, technologies, meta, reverse = false, eager = false } =
+	Astro.props;
+
+// Só 2–3 ferramentas; as competências ficam no case.
+const tools = splitTechnologies(technologies)
+	.tools.slice(0, 3)
+	.map((tool) => tool.label);
+const src = `/${image.replace(/^\/+/, '')}`;
+const size = imageSize(image);
+---
+
+<a class:list={['project-row', { 'project-row--reverse': reverse }]} href={`/projetos/${slug}`}>
+	<div class="project-row-media">
+		<img
+			src={src}
+			alt=""
+			width={size?.width}
+			height={size?.height}
+			loading={eager ? 'eager' : 'lazy'}
+			decoding="async"
+		/>
+	</div>
+	<div class="project-row-text">
+		{meta && <p class="project-row-meta">{meta}</p>}
+		<h3 class="project-row-title">{title}</h3>
+		<p class="project-row-desc">{description}</p>
+		{tools.length > 0 && <TechList technologies={tools} variant="tools" />}
+		<span class="project-row-cta" aria-hidden="true">Ver case →</span>
+	</div>
+</a>
+
+<style>
+	.project-row {
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		align-items: center;
+		gap: var(--space-7);
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.project-row--reverse {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+	}
+
+	.project-row--reverse .project-row-media {
+		order: 2;
+	}
+
+	/* Capa em 16:10, a proporção do molde de capas (C1). */
+	.project-row-media {
+		overflow: hidden;
+		aspect-ratio: 16 / 10;
+		border-radius: 8px;
+		border: 1px solid var(--line);
+		background: var(--surface);
+	}
+
+	.project-row-media img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
+	}
+
+	.project-row:hover .project-row-media img {
+		transform: scale(1.03);
+	}
+
+	.project-row-text {
+		display: grid;
+		justify-items: start;
+		gap: var(--space-3);
+	}
+
+	.project-row-meta {
+		margin: 0;
+		font-size: var(--text-sm);
+		font-weight: 500;
+		color: var(--muted);
+	}
+
+	.project-row-title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--text-xl);
+		font-weight: 700;
+		line-height: var(--leading-heading);
+		letter-spacing: var(--tracking-heading);
+		color: var(--text);
+	}
+
+	.project-row-desc {
+		margin: 0 0 var(--space-1);
+		line-height: 1.6;
+		color: var(--muted);
+	}
+
+	.project-row-cta {
+		margin-top: var(--space-2);
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.project-row:hover .project-row-cta {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.project-row:focus-visible {
+		outline-offset: 6px;
+		border-radius: 8px;
+	}
+
+	@media (max-width: 760px) {
+		.project-row,
+		.project-row--reverse {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-5);
+		}
+
+		.project-row--reverse .project-row-media {
+			order: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.project-row-media img {
+			transition: none;
+		}
+	}
+</style>
