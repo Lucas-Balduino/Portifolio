@@ -70,35 +70,39 @@ const Heading = page ? 'h1' : 'h2';
 </section>
 
 <script>
-	for (const button of document.querySelectorAll<HTMLButtonElement>('.contact-copy')) {
-		let timer: number | undefined;
-		button.addEventListener('click', async () => {
-			const value = button.dataset.copy ?? '';
-			try {
-				await navigator.clipboard.writeText(value);
-			} catch {
-				// Sem acesso à área de transferência (ex.: http): copia por seleção.
-				const area = document.createElement('textarea');
-				area.value = value;
-				area.style.position = 'fixed';
-				area.style.opacity = '0';
-				document.body.append(area);
-				area.select();
-				const ok = document.execCommand('copy');
-				area.remove();
-				if (!ok) return;
-			}
-			button.dataset.tip = 'Copiado';
-			button.setAttribute('aria-label', 'Email copiado');
-			button.toggleAttribute('data-copied', true);
-			window.clearTimeout(timer);
-			timer = window.setTimeout(() => {
-				button.dataset.tip = 'Copiar';
-				button.setAttribute('aria-label', 'Copiar email');
-				button.toggleAttribute('data-copied', false);
-			}, 2000);
-		});
-	}
+	import { onPage } from '../lib/page';
+
+	onPage((signal) => {
+		for (const button of document.querySelectorAll<HTMLButtonElement>('.contact-copy')) {
+			let timer: number | undefined;
+			button.addEventListener('click', async () => {
+				const value = button.dataset.copy ?? '';
+				try {
+					await navigator.clipboard.writeText(value);
+				} catch {
+					// Sem acesso à área de transferência (ex.: http): copia por seleção.
+					const area = document.createElement('textarea');
+					area.value = value;
+					area.style.position = 'fixed';
+					area.style.opacity = '0';
+					document.body.append(area);
+					area.select();
+					const ok = document.execCommand('copy');
+					area.remove();
+					if (!ok) return;
+				}
+				button.dataset.tip = 'Copiado';
+				button.setAttribute('aria-label', 'Email copiado');
+				button.toggleAttribute('data-copied', true);
+				window.clearTimeout(timer);
+				timer = window.setTimeout(() => {
+					button.dataset.tip = 'Copiar';
+					button.setAttribute('aria-label', 'Copiar email');
+					button.toggleAttribute('data-copied', false);
+				}, 2000);
+			});
+		}
+	});
 </script>
 
 <style>

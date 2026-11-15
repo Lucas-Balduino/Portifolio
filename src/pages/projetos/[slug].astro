@@ -165,6 +165,8 @@ const outcome = isFilled(data.outcome) ? data.outcome : undefined;
 const githubHref = data.repo_url.trim();
 const liveHref = data.live_url.trim();
 const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo';
+// D8 — projeto jogável: o jogo (live_url) entra no lugar da capa, só depois do clique em "Jogar".
+const playHref = data.playable && liveHref ? liveHref : undefined;
 const nextProject = next && next.data.slug !== data.slug ? next.data : undefined;
 const nextCover = nextProject
 	? await responsiveImage(
@@ -210,9 +212,14 @@ const nextCover = nextProject
 
 		{
 			data.image && (
-				<figure class="project-image">
+				<figure
+					class:list={['project-image', { 'case-play': playHref }]}
+					data-play={playHref}
+					data-play-title={playHref ? `${data.title} — jogo` : undefined}
+				>
 					<img
 						class="project-hero-img"
+						transition:name={`capa-${data.slug}`}
 						src={cover.src}
 						srcset={cover.srcset}
 						sizes={cover.sizes}
@@ -221,6 +228,14 @@ const nextCover = nextProject
 						height={cover.height}
 						fetchpriority="high"
 					/>
+					{playHref && (
+						<button type="button" class="btn case-play-btn" data-play-start>
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M8 5.5v13l10.5-6.5z" />
+							</svg>
+							Jogar
+						</button>
+					)}
 				</figure>
 			)
 		}
@@ -285,6 +300,7 @@ const nextCover = nextProject
 													<button
 														type="button"
 														class="case-card-media"
+														data-reveal
 														data-open-in-gallery={card.image.key}
 														aria-label={`Ampliar imagem: ${card.image.alt || card.title}`}
 													>
@@ -300,7 +316,7 @@ const nextCover = nextProject
 														/>
 													</button>
 												) : (
-													<div class="case-card-media">
+													<div class="case-card-media" data-reveal>
 														<img
 															src={card.image.img!.src}
 															srcset={card.image.img!.srcset}
@@ -344,8 +360,9 @@ const nextCover = nextProject
 							Ver case →
 						</span>
 					</span>
-					<span class="case-next-media">
+					<span class="case-next-media" data-reveal>
 						<img
+							data-transition-name={`capa-${nextProject.slug}`}
 							src={nextCover!.src}
 							srcset={nextCover!.srcset}
 							sizes={nextCover!.sizes}
@@ -364,127 +381,156 @@ const nextCover = nextProject
 </Layout>
 
 <script>
-	// Botão "Copiar" em cada bloco de código do case.
-	const COPY_ICON =
-		'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-	const CHECK_ICON =
-		'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+	import { onPage } from '../../lib/page';
 
-	const copyText = async (text: string) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			return true;
-		} catch {
-			// Sem acesso à área de transferência (ex.: http): copia por seleção.
-			const area = document.createElement('textarea');
-			area.value = text;
-			area.setAttribute('readonly', '');
-			area.style.position = 'fixed';
-			area.style.opacity = '0';
-			document.body.append(area);
-			area.select();
-			const ok = document.execCommand('copy');
-			area.remove();
-			return ok;
+	onPage((signal) => {
+		// D8 — o jogo só carrega no clique em "Jogar" e já recebe o foco (espaço e ↑ vão para ele).
+		for (const stage of document.querySelectorAll<HTMLElement>('[data-play]')) {
+			stage.querySelector('[data-play-start]')?.addEventListener('click', () => {
+				const frame = document.createElement('iframe');
+				frame.className = 'case-play-frame';
+				frame.src = stage.dataset.play ?? '';
+				frame.title = stage.dataset.playTitle ?? 'Jogo';
+				frame.allow = 'autoplay; fullscreen';
+				frame.addEventListener('load', () => frame.focus(), { once: true });
+				stage.replaceChildren(frame);
+				stage.classList.add('is-playing');
+			});
 		}
-	};
 
-	for (const pre of document.querySelectorAll<HTMLPreElement>('.project-detail pre')) {
-		const code = pre.querySelector('code') ?? pre;
-		const text = code.textContent?.trimEnd() ?? '';
-		const button = document.createElement('button');
-		button.type = 'button';
-		button.className = 'code-copy';
-		const setState = (copied: boolean) => {
-			button.innerHTML = copied ? CHECK_ICON : COPY_ICON;
-			button.dataset.tip = copied ? 'Copiado' : 'Copiar';
-			button.setAttribute('aria-label', copied ? 'Comandos copiados' : 'Copiar comandos');
-			button.toggleAttribute('data-copied', copied);
-		};
-		setState(false);
-		let timer: number | undefined;
-		button.addEventListener('click', async () => {
-			if (!(await copyText(text))) return;
-			setState(true);
-			window.clearTimeout(timer);
-			timer = window.setTimeout(() => setState(false), 2000);
+		// F1 — a capa do próximo projeto só ganha nome de transição no clique. Com nome fixo, ela
+		// "voaria" até o card do mesmo projeto ao voltar para a home ou para /projetos.
+		document.querySelector('.case-next-link')?.addEventListener('click', (event) => {
+			const image = (event.currentTarget as HTMLElement).querySelector('img');
+			if (image?.dataset.transitionName) {
+				image.style.viewTransitionName = image.dataset.transitionName;
+			}
 		});
-		pre.append(button);
-	}
 
-	// D3 — barra de seções: segue a altura do cabeçalho, marca a seção atual e mostra o progresso.
-	const header = document.querySelector<HTMLElement>('.site-header');
-	const toc = document.querySelector<HTMLElement>('[data-case-toc]');
-	const article = document.querySelector<HTMLElement>('.project-detail');
+		// Botão "Copiar" em cada bloco de código do case.
+		const COPY_ICON =
+			'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+		const CHECK_ICON =
+			'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
 
-	if (header) {
-		const setHeaderHeight = () =>
-			document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
-		new ResizeObserver(setHeaderHeight).observe(header);
-		setHeaderHeight();
-	}
+		const copyText = async (text: string) => {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch {
+				// Sem acesso à área de transferência (ex.: http): copia por seleção.
+				const area = document.createElement('textarea');
+				area.value = text;
+				area.setAttribute('readonly', '');
+				area.style.position = 'fixed';
+				area.style.opacity = '0';
+				document.body.append(area);
+				area.select();
+				const ok = document.execCommand('copy');
+				area.remove();
+				return ok;
+			}
+		};
 
-	if (toc && article) {
-		const progress = toc.querySelector<HTMLElement>('.case-toc-progress');
-		const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
-		const targets = links.map((link) =>
-			document.getElementById(decodeURIComponent(link.hash.slice(1)))
-		);
-		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-		let active = -1;
-		let queued = false;
-
-		const update = () => {
-			queued = false;
-			const line = (header?.offsetHeight ?? 0) + window.innerHeight * 0.25;
-			const atBottom =
-				window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-			let current = -1;
-			targets.forEach((target, index) => {
-				if (target && target.getBoundingClientRect().top <= line) current = index;
+		for (const pre of document.querySelectorAll<HTMLPreElement>('.project-detail pre')) {
+			const code = pre.querySelector('code') ?? pre;
+			const text = code.textContent?.trimEnd() ?? '';
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.className = 'code-copy';
+			const setState = (copied: boolean) => {
+				button.innerHTML = copied ? CHECK_ICON : COPY_ICON;
+				button.dataset.tip = copied ? 'Copiado' : 'Copiar';
+				button.setAttribute('aria-label', copied ? 'Comandos copiados' : 'Copiar comandos');
+				button.toggleAttribute('data-copied', copied);
+			};
+			setState(false);
+			let timer: number | undefined;
+			button.addEventListener('click', async () => {
+				if (!(await copyText(text))) return;
+				setState(true);
+				window.clearTimeout(timer);
+				timer = window.setTimeout(() => setState(false), 2000);
 			});
-			if (atBottom) current = targets.length - 1;
+			pre.append(button);
+		}
 
-			if (current !== active) {
-				active = current;
-				links.forEach((link, index) => {
-					if (index === active) link.setAttribute('aria-current', 'true');
-					else link.removeAttribute('aria-current');
+		// D3 — barra de seções: segue a altura do cabeçalho, marca a seção atual e mostra o progresso.
+		const header = document.querySelector<HTMLElement>('.site-header');
+		const toc = document.querySelector<HTMLElement>('[data-case-toc]');
+		const article = document.querySelector<HTMLElement>('.project-detail');
+
+		if (header) {
+			const setHeaderHeight = () =>
+				document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
+			const headerObserver = new ResizeObserver(setHeaderHeight);
+			headerObserver.observe(header);
+			signal.addEventListener('abort', () => headerObserver.disconnect());
+			setHeaderHeight();
+		}
+
+		if (toc && article) {
+			const progress = toc.querySelector<HTMLElement>('.case-toc-progress');
+			const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
+			const targets = links.map((link) =>
+				document.getElementById(decodeURIComponent(link.hash.slice(1)))
+			);
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+			let active = -1;
+			let queued = false;
+
+			const update = () => {
+				queued = false;
+				const line = (header?.offsetHeight ?? 0) + window.innerHeight * 0.25;
+				const atBottom =
+					window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+				let current = -1;
+				targets.forEach((target, index) => {
+					if (target && target.getBoundingClientRect().top <= line) current = index;
 				});
-			}
+				if (atBottom) current = targets.length - 1;
 
-			if (progress) {
-				const rect = article.getBoundingClientRect();
-				const total = Math.max(1, rect.height - window.innerHeight);
-				const ratio = Math.min(1, Math.max(0, -rect.top / total));
-				progress.style.transform = `scaleX(${ratio})`;
-			}
-		};
+				if (current !== active) {
+					active = current;
+					links.forEach((link, index) => {
+						if (index === active) link.setAttribute('aria-current', 'true');
+						else link.removeAttribute('aria-current');
+					});
+				}
 
-		const queue = () => {
-			if (queued) return;
-			queued = true;
-			requestAnimationFrame(update);
-		};
+				if (progress) {
+					const rect = article.getBoundingClientRect();
+					const total = Math.max(1, rect.height - window.innerHeight);
+					const ratio = Math.min(1, Math.max(0, -rect.top / total));
+					progress.style.transform = `scaleX(${ratio})`;
+				}
+			};
 
-		window.addEventListener('scroll', queue, { passive: true });
-		window.addEventListener('resize', queue);
-		update();
+			const queue = () => {
+				if (queued) return;
+				queued = true;
+				requestAnimationFrame(update);
+			};
 
-		// Pular para a seção leva o foco junto (teclado e leitor de tela continuam dali).
-		links.forEach((link, index) => {
-			link.addEventListener('click', (event) => {
-				const target = targets[index];
-				if (!target) return;
-				event.preventDefault();
-				target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-				history.replaceState(null, '', link.hash);
-				const heading = target.querySelector<HTMLElement>('h2') ?? target;
-				heading.setAttribute('tabindex', '-1');
-				heading.focus({ preventScroll: true });
+			window.addEventListener('scroll', queue, { passive: true, signal });
+			window.addEventListener('resize', queue, { signal });
+			update();
+
+			// Pular para a seção leva o foco junto (teclado e leitor de tela continuam dali).
+			links.forEach((link, index) => {
+				link.addEventListener('click', (event) => {
+					const target = targets[index];
+					if (!target) return;
+					event.preventDefault();
+					target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+					history.replaceState(null, '', link.hash);
+					const heading = target.querySelector<HTMLElement>('h2') ?? target;
+					heading.setAttribute('tabindex', '-1');
+					heading.focus({ preventScroll: true });
+				});
 			});
-		});
-	}
+		}
+	});
 </script>
 
 <style>
@@ -845,6 +891,51 @@ const nextCover = nextProject
 
 	.case-intro {
 		margin-bottom: var(--space-5);
+	}
+
+	/* D8 — palco do jogo: a capa em 16:10; depois do clique, altura para o jogo (que é em pé). */
+	.case-play {
+		position: relative;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border-radius: 8px;
+		border: 1px solid var(--line);
+		background: var(--surface);
+	}
+
+	.case-play.is-playing {
+		aspect-ratio: auto;
+		height: min(80vh, 720px);
+	}
+
+	.case-play .project-hero-img {
+		height: 100%;
+		border: 0;
+		border-radius: 0;
+	}
+
+	/* Embaixo, no centro: não cobre o nome na capa de marca. */
+	.case-play-btn {
+		position: absolute;
+		inset: auto 0 var(--space-6);
+		width: fit-content;
+		height: fit-content;
+		margin-inline: auto;
+		gap: var(--space-2);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+	}
+
+	.case-play-btn svg {
+		width: 1.1em;
+		height: 1.1em;
+		fill: currentColor;
+	}
+
+	.case-play :global(.case-play-frame) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
 	}
 
 	/* Subtítulos da seção lado a lado, em vez de texto corrido. */

@@ -1,7 +1,8 @@
 ---
 import TechList from './TechList.astro';
+import type { HoverScreen } from '../lib/projects';
 import { splitTechnologies } from '../lib/technologies';
-import { responsiveImage } from '../lib/images';
+import { BLANK_IMAGE, containedImage, responsiveImage } from '../lib/images';
 
 /** C4 — projeto da home em linha grande: capa larga de um lado, texto do outro. */
 interface Props {
@@ -16,10 +17,21 @@ interface Props {
 	reverse?: boolean;
 	/** Primeira linha: capa carrega sem esperar a rolagem. */
 	eager?: boolean;
+	/** F3 — telas do projeto, mostradas no hover (só com mouse). */
+	screen?: HoverScreen;
 }
 
-const { title, slug, description, image, technologies, meta, reverse = false, eager = false } =
-	Astro.props;
+const {
+	title,
+	slug,
+	description,
+	image,
+	technologies,
+	meta,
+	reverse = false,
+	eager = false,
+	screen
+} = Astro.props;
 
 // Só 2–3 ferramentas; as competências ficam no case.
 const tools = splitTechnologies(technologies)
@@ -31,11 +43,18 @@ const cover = await responsiveImage(
 	[480, 800, 1200, 1600],
 	'(max-width: 760px) calc(100vw - 48px), 700px'
 );
+// Capa com as telas: mesmo tamanho da capa. Tela solta: inteira na caixa de 700×437 menos 16px de respiro.
+const screenImage = screen
+	? screen.full
+		? await responsiveImage(screen.src, [480, 800, 1200, 1600], cover.sizes)
+		: await containedImage(screen.src, 668, 405)
+	: undefined;
 ---
 
 <a class:list={['project-row', { 'project-row--reverse': reverse }]} href={`/projetos/${slug}`}>
-	<div class="project-row-media">
+	<div class="project-row-media" data-reveal>
 		<img
+			transition:name={`capa-${slug}`}
 			src={cover.src}
 			srcset={cover.srcset}
 			sizes={cover.sizes}
@@ -46,6 +65,26 @@ const cover = await responsiveImage(
 			loading={eager ? 'eager' : 'lazy'}
 			decoding="async"
 		/>
+		{
+			screenImage && (
+				<picture>
+					<source
+						media="(hover: hover) and (pointer: fine)"
+						srcset={screenImage.srcset}
+						sizes={screenImage.sizes}
+					/>
+					<img
+						class:list={['project-row-screen', { 'project-row-screen--full': screen?.full }]}
+						src={BLANK_IMAGE}
+						width={screenImage.width}
+						height={screenImage.height}
+						alt=""
+						loading="lazy"
+						decoding="async"
+					/>
+				</picture>
+			)
+		}
 	</div>
 	<div class="project-row-text">
 		{meta && <p class="project-row-meta">{meta}</p>}
@@ -76,6 +115,7 @@ const cover = await responsiveImage(
 
 	/* Capa em 16:10, a proporção do molde de capas (C1). */
 	.project-row-media {
+		position: relative;
 		overflow: hidden;
 		aspect-ratio: 16 / 10;
 		border-radius: 8px;
@@ -88,11 +128,34 @@ const cover = await responsiveImage(
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
-	.project-row:hover .project-row-media img {
-		transform: scale(1.03);
+	/* F3 — no hover, a capa dá lugar a uma segunda tela do projeto, inteira. Sem mouse, o <source> não
+	   vale e fica o GIF vazio do src: a tela nem é baixada. */
+	.project-row-media .project-row-screen {
+		display: none;
+		position: absolute;
+		inset: 0;
+		padding: var(--space-4);
+		object-fit: contain;
+		background: var(--surface);
+		opacity: 0;
+		transition: opacity 300ms ease-out;
+	}
+
+	.project-row-media .project-row-screen--full {
+		padding: 0;
+		object-fit: cover;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.project-row-media .project-row-screen {
+			display: block;
+		}
+
+		.project-row:hover .project-row-screen {
+			opacity: 1;
+		}
 	}
 
 	.project-row-text {
@@ -153,7 +216,7 @@ const cover = await responsiveImage(
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.project-row-media img {
+		.project-row-media .project-row-screen {
 			transition: none;
 		}
 	}

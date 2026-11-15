@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 import '@fontsource-variable/inter/wght.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import '../../style.css';
@@ -47,6 +48,19 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 
 		<!-- H1 — Inter variável servida pelo próprio site; o arquivo latino é pré-carregado. -->
 		<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+
+		<!-- F1 — transições entre páginas; a capa do projeto passa de uma página para a outra. -->
+		<ClientRouter />
+		<script is:inline>
+			// A troca de página substitui o <body>: o tema claro volta antes de a nova página aparecer.
+			document.addEventListener('astro:after-swap', function () {
+				try {
+					if (localStorage.getItem('theme') === 'light') {
+						document.body.classList.add('theme-light');
+					}
+				} catch (e) {}
+			});
+		</script>
 	</head>
 	<body>
 		<script is:inline>
@@ -65,57 +79,111 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 		</main>
 		<Footer />
 		<script>
-			// Tema: o botão é um interruptor "Tema escuro" (ligado = escuro).
-			const themeToggle = document.getElementById('theme-toggle');
-			const syncTheme = () => {
-				const light = document.body.classList.contains('theme-light');
-				themeToggle?.setAttribute('aria-checked', light ? 'false' : 'true');
+			import { onPage } from '../lib/page';
+
+			// F1 — só a capa visível nas duas páginas faz a passagem; as que estão fora da tela (na
+			// página que sai ou na que entra, já na posição de rolagem final) não "voam" pela tela.
+			const unnameOffscreen = () => {
+				for (const element of document.querySelectorAll<HTMLElement>(
+					'[data-astro-transition-scope]'
+				)) {
+					const rect = element.getBoundingClientRect();
+					const offscreen = rect.bottom <= 0 || rect.top >= window.innerHeight;
+					element.style.viewTransitionName = offscreen ? 'none' : '';
+				}
 			};
-			syncTheme();
+			document.addEventListener('astro:before-preparation', unnameOffscreen);
+			document.addEventListener('astro:after-swap', unnameOffscreen);
 
-			themeToggle?.addEventListener('click', () => {
-				const light = document.body.classList.toggle('theme-light');
-				try {
-					localStorage.setItem('theme', light ? 'light' : 'dark');
-				} catch {}
-				syncTheme();
-			});
-
-			// Cabeçalho ganha linha inferior depois de rolar.
-			const header = document.querySelector<HTMLElement>('.site-header');
-			const syncScrolled = () => header?.classList.toggle('is-scrolled', window.scrollY > 4);
-			syncScrolled();
-			window.addEventListener('scroll', syncScrolled, { passive: true });
-
-			// Menu do celular: abre/fecha pelo botão, Esc, toque fora, ao navegar ou quando o foco sai.
-			const burger = document.getElementById('nav-burger');
-			if (header && burger) {
-				const setOpen = (open: boolean) => {
-					header.classList.toggle('is-open', open);
-					burger.setAttribute('aria-expanded', String(open));
-					burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+			onPage((signal) => {
+				// Tema: o botão é um interruptor "Tema escuro" (ligado = escuro).
+				const themeToggle = document.getElementById('theme-toggle');
+				const syncTheme = () => {
+					const light = document.body.classList.contains('theme-light');
+					themeToggle?.setAttribute('aria-checked', light ? 'false' : 'true');
 				};
-				const isOpen = () => header.classList.contains('is-open');
+				syncTheme();
 
-				burger.addEventListener('click', () => setOpen(!isOpen()));
-				document.addEventListener('keydown', (event) => {
-					if (event.key === 'Escape' && isOpen()) {
-						setOpen(false);
-						burger.focus();
+				themeToggle?.addEventListener('click', () => {
+					const light = document.body.classList.toggle('theme-light');
+					try {
+						localStorage.setItem('theme', light ? 'light' : 'dark');
+					} catch {}
+					syncTheme();
+				});
+
+				// Cabeçalho ganha linha inferior depois de rolar.
+				const header = document.querySelector<HTMLElement>('.site-header');
+				const syncScrolled = () => header?.classList.toggle('is-scrolled', window.scrollY > 4);
+				syncScrolled();
+				window.addEventListener('scroll', syncScrolled, { passive: true, signal });
+
+				// Menu do celular: abre/fecha pelo botão, Esc, toque fora, ao navegar ou quando o foco sai.
+				const burger = document.getElementById('nav-burger');
+				if (header && burger) {
+					const setOpen = (open: boolean) => {
+						header.classList.toggle('is-open', open);
+						burger.setAttribute('aria-expanded', String(open));
+						burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+					};
+					const isOpen = () => header.classList.contains('is-open');
+
+					burger.addEventListener('click', () => setOpen(!isOpen()));
+					document.addEventListener(
+						'keydown',
+						(event) => {
+							if (event.key === 'Escape' && isOpen()) {
+								setOpen(false);
+								burger.focus();
+							}
+						},
+						{ signal }
+					);
+					document.addEventListener(
+						'click',
+						(event) => {
+							if (isOpen() && !header.contains(event.target as Node)) setOpen(false);
+						},
+						{ signal }
+					);
+					header.addEventListener('focusout', (event) => {
+						if (isOpen() && !header.contains(event.relatedTarget as Node | null)) setOpen(false);
+					});
+					header.querySelectorAll('.nav-link').forEach((link) =>
+						link.addEventListener('click', () => setOpen(false))
+					);
+					// Volta ao layout de computador: menu fechado.
+					window
+						.matchMedia('(min-width: 981px)')
+						.addEventListener('change', () => setOpen(false), { signal });
+				}
+
+				// F2 — capas e imagens grandes abaixo da dobra entram com um deslize curto, uma vez.
+				// Só o que está fora da tela recebe .reveal; sem JS ou com "reduzir movimento", nada some.
+				if (
+					!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+					'IntersectionObserver' in window
+				) {
+					const observer = new IntersectionObserver(
+						(entries) => {
+							for (const entry of entries) {
+								if (!entry.isIntersecting) continue;
+								entry.target.classList.add('is-revealed');
+								observer.unobserve(entry.target);
+							}
+						},
+						{ rootMargin: '0px 0px -8% 0px' }
+					);
+					for (const element of document.querySelectorAll<HTMLElement>(
+						'[data-reveal], .project-rich-text .figma-embed'
+					)) {
+						if (element.getBoundingClientRect().top < window.innerHeight) continue;
+						element.classList.add('reveal');
+						observer.observe(element);
 					}
-				});
-				document.addEventListener('click', (event) => {
-					if (isOpen() && !header.contains(event.target as Node)) setOpen(false);
-				});
-				header.addEventListener('focusout', (event) => {
-					if (isOpen() && !header.contains(event.relatedTarget as Node | null)) setOpen(false);
-				});
-				header.querySelectorAll('.nav-link').forEach((link) =>
-					link.addEventListener('click', () => setOpen(false))
-				);
-				// Volta ao layout de computador: menu fechado.
-				window.matchMedia('(min-width: 981px)').addEventListener('change', () => setOpen(false));
-			}
+					signal.addEventListener('abort', () => observer.disconnect());
+				}
+			});
 		</script>
 	</body>
 </html>

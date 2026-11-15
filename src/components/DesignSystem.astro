@@ -111,39 +111,43 @@ const fontsHref = webFamilies.length
 </section>
 
 <script>
-	// Clipboard API quando disponível; senão, o método antigo via textarea.
-	const copyText = async (text: string) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			return true;
-		} catch {
-			const field = document.createElement('textarea');
-			field.value = text;
-			field.setAttribute('readonly', '');
-			field.style.position = 'fixed';
-			field.style.opacity = '0';
-			document.body.appendChild(field);
-			field.select();
-			const copied = document.execCommand('copy');
-			field.remove();
-			return copied;
-		}
-	};
+	import { onPage } from '../lib/page';
 
-	document.querySelectorAll<HTMLElement>('[data-design-system]').forEach((panel) => {
-		const status = panel.querySelector<HTMLElement>('[data-copy-status]');
-		panel.querySelectorAll<HTMLButtonElement>('.ds-copy').forEach((button) => {
-			const label = button.querySelector<HTMLElement>('.ds-copy-label');
-			const hex = button.dataset.hex ?? '';
-			let timer: number | undefined;
-			button.addEventListener('click', async () => {
-				if (!(await copyText(hex))) return;
-				if (label) label.textContent = 'Copiado!';
-				if (status) status.textContent = `${hex} copiado`;
-				window.clearTimeout(timer);
-				timer = window.setTimeout(() => {
-					if (label) label.textContent = hex;
-				}, 1500);
+	onPage((signal) => {
+		// Clipboard API quando disponível; senão, o método antigo via textarea.
+		const copyText = async (text: string) => {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch {
+				const field = document.createElement('textarea');
+				field.value = text;
+				field.setAttribute('readonly', '');
+				field.style.position = 'fixed';
+				field.style.opacity = '0';
+				document.body.appendChild(field);
+				field.select();
+				const copied = document.execCommand('copy');
+				field.remove();
+				return copied;
+			}
+		};
+
+		document.querySelectorAll<HTMLElement>('[data-design-system]').forEach((panel) => {
+			const status = panel.querySelector<HTMLElement>('[data-copy-status]');
+			panel.querySelectorAll<HTMLButtonElement>('.ds-copy').forEach((button) => {
+				const label = button.querySelector<HTMLElement>('.ds-copy-label');
+				const hex = button.dataset.hex ?? '';
+				let timer: number | undefined;
+				button.addEventListener('click', async () => {
+					if (!(await copyText(hex))) return;
+					if (label) label.textContent = 'Copiado!';
+					if (status) status.textContent = `${hex} copiado`;
+					window.clearTimeout(timer);
+					timer = window.setTimeout(() => {
+						if (label) label.textContent = hex;
+					}, 1500);
+				});
 			});
 		});
 	});

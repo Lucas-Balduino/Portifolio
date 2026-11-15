@@ -45,12 +45,22 @@ title, slug, short_desc, image, repo_url, live_url, technologies[]
                                 # technologies: nomes listados em src/lib/technologies.ts
                                 # viram "Ferramentas" com ícone (simple-icons); o resto
                                 # vira "Competências" em texto. Ferramenta nova = mapear lá.
+                                # image: capa de marca (cor principal do projeto com o
+                                # nome na identidade dele), 1600×1000, feita no Figma.
+hover_image: string opcional    # F3: capa com as telas do projeto (mesmo molde), no
+                                # hover dos cards. Sem ela, o hover mostra a tela abaixo.
 order: number                   # substitui a ordem do array JSON; preservar a ordem atual
+playable: boolean (padrão false)
+                                # D8: true = o projeto (live_url) roda no lugar da capa,
+                                # num iframe que só carrega no botão "Jogar" e recebe o
+                                # foco. Hoje só o JetPack Guy.
 section_titles: record opcional
 gallery: (string | {src, caption})[]
                                 # substitui images_section CSV. Faixa de telas no
                                 # case; `caption` aparece sob a tela e vira o alt.
                                 # Uma legenda curta por tela, descrevendo o que ela mostra.
+                                # Sem hover_image, a primeira tela diferente da capa
+                                # aparece inteira no hover dos cards (F3).
 outcome: string opcional        # D2: uma frase "problema → o que fiz → o que saiu",
                                 # abaixo do título do case e no lugar da descrição no
                                 # card. Só o autor escreve; "pendente" não aparece.

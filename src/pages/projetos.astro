@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { META } from '../site-config';
-import { getSortedProjects, projectMeta } from '../lib/projects';
+import { getSortedProjects, projectMeta, hoverScreen } from '../lib/projects';
 
 const projects = await getSortedProjects();
 ---
@@ -23,6 +23,7 @@ const projects = await getSortedProjects();
 						shortDesc={entry.data.short_desc}
 						outcome={entry.data.outcome}
 						image={entry.data.image}
+						screen={hoverScreen(entry.data)}
 						technologies={entry.data.technologies}
 						meta={projectMeta(entry.data.summary)}
 					/>

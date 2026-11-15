@@ -1,6 +1,7 @@
 ---
 import TechList from './TechList.astro';
-import { responsiveImage } from '../lib/images';
+import type { HoverScreen } from '../lib/projects';
+import { BLANK_IMAGE, containedImage, responsiveImage } from '../lib/images';
 
 interface Props {
 	title: string;
@@ -14,9 +15,12 @@ interface Props {
 	outcome?: string;
 	/** Card em destaque: ocupa a linha inteira, imagem ao lado do texto. */
 	featured?: boolean;
+	/** F3 — telas do projeto, mostradas no hover (só com mouse). */
+	screen?: HoverScreen;
 }
 
-const { title, slug, shortDesc, image, technologies, meta, outcome, featured = false } = Astro.props;
+const { title, slug, shortDesc, image, technologies, meta, outcome, featured = false, screen } =
+	Astro.props;
 const description = outcome && outcome.trim() && outcome.trim() !== 'pendente' ? outcome : shortDesc;
 
 // Card de /projetos: 2 por linha (~540px), 1 por linha no celular.
@@ -25,12 +29,19 @@ const cover = await responsiveImage(
 	[480, 800, 1200],
 	'(max-width: 700px) calc(100vw - 48px), 540px'
 );
+// Capa com as telas: mesmo tamanho da capa. Tela solta: inteira na caixa de 540×304 menos 16px de respiro.
+const screenImage = screen
+	? screen.full
+		? await responsiveImage(screen.src, [480, 800, 1200], cover.sizes)
+		: await containedImage(screen.src, 508, 272)
+	: undefined;
 ---
 
 <!-- O card inteiro é o link para o case; GitHub e demo ficam na ficha do case. -->
 <a class:list={['project-card', { 'project-card--featured': featured }]} href={`/projetos/${slug}`}>
-	<div class="project-card-media">
+	<div class="project-card-media" data-reveal>
 		<img
+			transition:name={`capa-${slug}`}
 			src={cover.src}
 			srcset={cover.srcset}
 			sizes={cover.sizes}
@@ -40,6 +51,26 @@ const cover = await responsiveImage(
 			loading={featured ? 'eager' : 'lazy'}
 			decoding="async"
 		/>
+		{
+			screenImage && (
+				<picture>
+					<source
+						media="(hover: hover) and (pointer: fine)"
+						srcset={screenImage.srcset}
+						sizes={screenImage.sizes}
+					/>
+					<img
+						class:list={['project-card-screen', { 'project-card-screen--full': screen?.full }]}
+						src={BLANK_IMAGE}
+						width={screenImage.width}
+						height={screenImage.height}
+						alt=""
+						loading="lazy"
+						decoding="async"
+					/>
+				</picture>
+			)
+		}
 	</div>
 	<div class="project-card-body">
 		{meta && <p class="project-card-meta">{meta}</p>}
@@ -71,7 +102,6 @@ const cover = await responsiveImage(
 	}
 
 	.project-card:hover {
-		transform: translateY(-4px);
 		border-color: color-mix(in srgb, var(--text) 22%, transparent);
 		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 	}
@@ -82,6 +112,7 @@ const cover = await responsiveImage(
 	}
 
 	.project-card-media {
+		position: relative;
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
 		background: color-mix(in srgb, var(--text) 5%, transparent);
@@ -92,11 +123,40 @@ const cover = await responsiveImage(
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform 600ms cubic-bezier(0.2, 0.9, 0.2, 1);
 	}
 
-	.project-card:hover .project-card-media img {
-		transform: scale(1.04);
+	/* F3 — no hover, a capa dá lugar a uma segunda tela do projeto, inteira. Sem mouse, o <source> não
+	   vale e fica o GIF vazio do src: a tela nem é baixada. */
+	.project-card-media .project-card-screen {
+		display: none;
+		position: absolute;
+		inset: 0;
+		padding: var(--space-4);
+		object-fit: contain;
+		background: var(--surface);
+		opacity: 0;
+		transition: opacity 300ms ease-out;
+	}
+
+	.project-card-media .project-card-screen--full {
+		padding: 0;
+		object-fit: cover;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.project-card-media .project-card-screen {
+			display: block;
+		}
+
+		.project-card:hover .project-card-screen {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.project-card-media .project-card-screen {
+			transition: none;
+		}
 	}
 
 	.project-card-body {
