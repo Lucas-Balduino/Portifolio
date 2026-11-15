@@ -46,7 +46,7 @@ const shots = await Promise.all(
 			)
 		}
 	</div>
-	<div class="shots" tabindex="0" role="region" aria-label={`${heading}: role para o lado para ver mais`}>
+	<div class="shots" data-reveal tabindex="0" role="region" aria-label={`${heading}: role para o lado para ver mais`}>
 		{
 			shots.map((shot, index) => (
 				<figure class="shot">
@@ -99,100 +99,106 @@ const shots = await Promise.all(
 </section>
 
 <script>
-	document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
-		const triggers = Array.from(gallery.querySelectorAll<HTMLButtonElement>('.shot-trigger'));
-		const thumbs = triggers.map((trigger) => trigger.querySelector('img')!);
-		const dialog = gallery.querySelector<HTMLDialogElement>('.lightbox');
-		const stage = gallery.querySelector<HTMLElement>('.lightbox-stage');
-		const image = gallery.querySelector<HTMLImageElement>('.lightbox-img');
-		const counter = gallery.querySelector<HTMLElement>('.lightbox-counter');
-		if (!dialog || !stage || !image || !counter) return;
+	import { onPage } from '../lib/page';
 
-		let current = 0;
-		let lastTrigger: HTMLButtonElement | null = null;
+	onPage((signal) => {
+		document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+			const triggers = Array.from(gallery.querySelectorAll<HTMLButtonElement>('.shot-trigger'));
+			const thumbs = triggers.map((trigger) => trigger.querySelector('img')!);
+			const dialog = gallery.querySelector<HTMLDialogElement>('.lightbox');
+			const stage = gallery.querySelector<HTMLElement>('.lightbox-stage');
+			const image = gallery.querySelector<HTMLImageElement>('.lightbox-img');
+			const counter = gallery.querySelector<HTMLElement>('.lightbox-counter');
+			if (!dialog || !stage || !image || !counter) return;
 
-		const show = (index: number) => {
-			current = (index + thumbs.length) % thumbs.length;
-			const thumb = thumbs[current];
-			image.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
-			image.alt = thumb.alt;
-			const caption = thumb.closest('figure')?.querySelector('figcaption')?.textContent;
-			counter.textContent = `${current + 1} / ${thumbs.length}${caption ? ` · ${caption}` : ''}`;
-			// Pré-carrega as vizinhas para a navegação não piscar.
-			[current - 1, current + 1].forEach((i) => {
-				const neighbor = thumbs[(i + thumbs.length) % thumbs.length];
-				if (neighbor) new Image().src = neighbor.dataset.full || neighbor.src;
-			});
-		};
+			let current = 0;
+			let lastTrigger: HTMLButtonElement | null = null;
 
-		triggers.forEach((trigger, index) => {
-			trigger.addEventListener('click', () => {
-				lastTrigger = trigger;
-				show(index);
-				dialog.showModal();
-			});
-		});
-
-		// Imagens dos cards do case abrem a mesma galeria, na posição da imagem.
-		document.querySelectorAll<HTMLButtonElement>('[data-open-in-gallery]').forEach((button) => {
-			const index = thumbs.findIndex(
-				(thumb) => thumb.dataset.key === button.dataset.openInGallery
-			);
-			if (index === -1) return;
-			button.addEventListener('click', () => {
-				lastTrigger = button;
-				show(index);
-				dialog.showModal();
-			});
-		});
-
-		gallery.querySelector('.lightbox-prev')?.addEventListener('click', () => show(current - 1));
-		gallery.querySelector('.lightbox-next')?.addEventListener('click', () => show(current + 1));
-		gallery.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close());
-
-		dialog.addEventListener('keydown', (event) => {
-			if (event.key === 'ArrowLeft') show(current - 1);
-			if (event.key === 'ArrowRight') show(current + 1);
-		});
-
-		// Clicar fora da imagem fecha.
-		dialog.addEventListener('click', (event) => {
-			if (event.target === dialog || event.target === stage) dialog.close();
-		});
-
-		dialog.addEventListener('close', () => lastTrigger?.focus());
-
-		// Deslizar no celular.
-		let startX: number | null = null;
-		stage.addEventListener('pointerdown', (event) => {
-			startX = event.clientX;
-		});
-		stage.addEventListener('pointerup', (event) => {
-			if (startX === null) return;
-			const deltaX = event.clientX - startX;
-			startX = null;
-			if (Math.abs(deltaX) > 50) show(current + (deltaX < 0 ? 1 : -1));
-		});
-
-		// Faixa de telas: setas rolam quase uma largura; somem nas pontas.
-		const strip = gallery.querySelector<HTMLElement>('.shots');
-		const prev = gallery.querySelector<HTMLButtonElement>('[data-shots-prev]');
-		const next = gallery.querySelector<HTMLButtonElement>('[data-shots-next]');
-		if (strip && prev && next) {
-			const step = (direction: number) =>
-				strip.scrollBy({ left: direction * strip.clientWidth * 0.8, behavior: 'smooth' });
-			prev.addEventListener('click', () => step(-1));
-			next.addEventListener('click', () => step(1));
-			const update = () => {
-				const max = strip.scrollWidth - strip.clientWidth;
-				prev.disabled = strip.scrollLeft <= 4;
-				next.disabled = strip.scrollLeft >= max - 4;
-				gallery.classList.toggle('is-scrollable', max > 4);
+			const show = (index: number) => {
+				current = (index + thumbs.length) % thumbs.length;
+				const thumb = thumbs[current];
+				image.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
+				image.alt = thumb.alt;
+				const caption = thumb.closest('figure')?.querySelector('figcaption')?.textContent;
+				counter.textContent = `${current + 1} / ${thumbs.length}${caption ? ` · ${caption}` : ''}`;
+				// Pré-carrega as vizinhas para a navegação não piscar.
+				[current - 1, current + 1].forEach((i) => {
+					const neighbor = thumbs[(i + thumbs.length) % thumbs.length];
+					if (neighbor) new Image().src = neighbor.dataset.full || neighbor.src;
+				});
 			};
-			strip.addEventListener('scroll', update, { passive: true });
-			new ResizeObserver(update).observe(strip);
-			update();
-		}
+
+			triggers.forEach((trigger, index) => {
+				trigger.addEventListener('click', () => {
+					lastTrigger = trigger;
+					show(index);
+					dialog.showModal();
+				});
+			});
+
+			// Imagens dos cards do case abrem a mesma galeria, na posição da imagem.
+			document.querySelectorAll<HTMLButtonElement>('[data-open-in-gallery]').forEach((button) => {
+				const index = thumbs.findIndex(
+					(thumb) => thumb.dataset.key === button.dataset.openInGallery
+				);
+				if (index === -1) return;
+				button.addEventListener('click', () => {
+					lastTrigger = button;
+					show(index);
+					dialog.showModal();
+				});
+			});
+
+			gallery.querySelector('.lightbox-prev')?.addEventListener('click', () => show(current - 1));
+			gallery.querySelector('.lightbox-next')?.addEventListener('click', () => show(current + 1));
+			gallery.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close());
+
+			dialog.addEventListener('keydown', (event) => {
+				if (event.key === 'ArrowLeft') show(current - 1);
+				if (event.key === 'ArrowRight') show(current + 1);
+			});
+
+			// Clicar fora da imagem fecha.
+			dialog.addEventListener('click', (event) => {
+				if (event.target === dialog || event.target === stage) dialog.close();
+			});
+
+			dialog.addEventListener('close', () => lastTrigger?.focus());
+
+			// Deslizar no celular.
+			let startX: number | null = null;
+			stage.addEventListener('pointerdown', (event) => {
+				startX = event.clientX;
+			});
+			stage.addEventListener('pointerup', (event) => {
+				if (startX === null) return;
+				const deltaX = event.clientX - startX;
+				startX = null;
+				if (Math.abs(deltaX) > 50) show(current + (deltaX < 0 ? 1 : -1));
+			});
+
+			// Faixa de telas: setas rolam quase uma largura; somem nas pontas.
+			const strip = gallery.querySelector<HTMLElement>('.shots');
+			const prev = gallery.querySelector<HTMLButtonElement>('[data-shots-prev]');
+			const next = gallery.querySelector<HTMLButtonElement>('[data-shots-next]');
+			if (strip && prev && next) {
+				const step = (direction: number) =>
+					strip.scrollBy({ left: direction * strip.clientWidth * 0.8, behavior: 'smooth' });
+				prev.addEventListener('click', () => step(-1));
+				next.addEventListener('click', () => step(1));
+				const update = () => {
+					const max = strip.scrollWidth - strip.clientWidth;
+					prev.disabled = strip.scrollLeft <= 4;
+					next.disabled = strip.scrollLeft >= max - 4;
+					gallery.classList.toggle('is-scrollable', max > 4);
+				};
+				strip.addEventListener('scroll', update, { passive: true });
+				const stripObserver = new ResizeObserver(update);
+				stripObserver.observe(strip);
+				signal.addEventListener('abort', () => stripObserver.disconnect());
+				update();
+			}
+		});
 	});
 </script>
 

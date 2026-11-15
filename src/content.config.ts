@@ -17,11 +17,16 @@ const projects = defineCollection({
 		title: z.string().min(1),
 		slug: z.string().trim().min(1, 'slug não pode ser vazio'),
 		short_desc: z.string().min(1),
+		// Capa de marca: cor do projeto com o nome na identidade dele (molde no Figma, 1600×1000).
 		image: posixPath,
+		// F3 — capa com as telas do projeto (mesmo molde), mostrada no hover dos cards.
+		hover_image: posixPath.optional(),
 		repo_url: z.string(),
 		live_url: z.string(),
 		technologies: z.array(z.string().min(1)),
 		order: z.number().int(),
+		// D8 — true: o case mostra o projeto (live_url) no lugar da capa, carregado no botão "Jogar".
+		playable: z.boolean().default(false),
 		section_titles: z
 			.object({
 				introduction: z.string().optional(),

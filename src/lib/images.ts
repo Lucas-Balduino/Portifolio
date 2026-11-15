@@ -66,3 +66,20 @@ export async function singleImage(
 	const image = await getImage({ src: meta, width: Math.min(width, meta.width), format });
 	return image.src;
 }
+
+/** GIF transparente de 1px: `src` de reserva quando a imagem de verdade vem de um `<source>`. */
+export const BLANK_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+
+/**
+ * Imagem inteira dentro de uma caixa (`object-fit: contain`): largura em que ela aparece e
+ * versões 1x/2x. Usada na segunda tela do hover dos projetos (F3).
+ */
+export async function containedImage(
+	path: string,
+	boxWidth: number,
+	boxHeight: number
+): Promise<ResponsiveImage> {
+	const meta = projectImage(path);
+	const width = Math.round(Math.min(boxWidth, (boxHeight * meta.width) / meta.height));
+	return responsiveImage(path, [width, width * 2], `${width}px`);
+}
