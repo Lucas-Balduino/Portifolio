@@ -50,7 +50,7 @@ body{
   padding:var(--space-5);
 }
 .header-inner, .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
-.site-header, .site-footer, .card, .contact-form, .contact-info, .badge, .nav-link, .link-muted, .btn-theme, .btn, .btn-project, .skill-tag, .language-item {
+.site-header, .site-footer, .card, .badge, .nav-link, .link-muted, .btn-theme, .btn, .btn-project {
   transition: background-color var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -182,104 +182,8 @@ body.theme-dark .btn-theme::before{
 .card-link:hover{ background:var(--accent); color:var(--bg); }
 .card-link--primary:hover{ filter:brightness(1.08); }
 
-/* About Page */
-.about-page{ max-width:var(--column); }
-.about-header{ display:grid; grid-template-columns: 1fr 200px; gap:var(--space-6); align-items:start; margin-bottom:var(--space-7); }
-.about-info h1{ margin:0 0 var(--space-2) 0; font-size:var(--text-xl); }
-.about-photo{ text-align:center; }
-.profile-photo{ width:180px; height:180px; border-radius:50%; object-fit:cover; box-shadow:0 10px 30px var(--glass); }
-
-.about-content{ display:flex; flex-direction:column; gap:var(--space-7); }
-.about-section h2{ margin:0 0 var(--space-4) 0; color:var(--accent); font-size:var(--text-lg); }
-.about-section p{ margin:0 0 var(--space-4) 0; line-height:1.6; }
-
-.education-list, .experience-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--space-4); }
-.education-list li, .experience-list li{ 
-  padding:var(--space-4) 0 0; 
-  border-top:1px solid var(--line); 
-  display:flex; 
-  flex-direction:column; 
-  gap:var(--space-1); 
-}
-.education-list strong, .experience-list strong{ color:var(--accent); font-size:var(--text-md); }
-.institution, .description{ color:var(--muted); font-size:var(--text-sm); }
-.period{ color:var(--muted); font-size:var(--text-sm); font-style:italic; }
-
-.skills-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:var(--space-5); }
-.skill-category h3{ margin:0 0 var(--space-3) 0; color:var(--accent); font-size:var(--text-md); }
-.skill-tags{ display:flex; flex-wrap:wrap; gap:var(--space-2); }
-.skill-tag{ 
-  background:var(--surface); 
-  color:var(--accent); 
-  padding:var(--space-2) var(--space-3); 
-  border-radius:5px; 
-  font-size:var(--text-sm); 
-  font-weight:600; 
-  border:1px solid var(--glass);
-}
-
-.languages-list{ display:flex; flex-direction:column; }
-.language-item{ 
-  display:flex; 
-  justify-content:space-between; 
-  align-items:center; 
-  padding:var(--space-3) 0; 
-  border-top:1px solid var(--line); 
-}
-.language-name{ font-weight:600; color:var(--accent); }
-.language-level{ color:var(--muted); font-size:var(--text-sm); }
-
-.about-actions{ display:flex; gap:var(--space-4); margin-top:var(--space-4); }
-
 /* Contact Page */
 .contact-page{ max-width:var(--column); }
-.contact-page h1{ margin:0 0 var(--space-2) 0; font-size:var(--text-xl); }
-.contact-page .muted{ margin-bottom:var(--space-6); }
-
-.contact-info{ 
-  margin-bottom:var(--space-7);
-}
-.contact-info p{ margin:0 0 var(--space-2) 0; }
-.contact-info p:last-child{ margin-bottom:0; }
-.contact-info a{ color:var(--accent); text-decoration:none; font-weight:600; }
-.contact-info a:hover{ text-decoration:underline; }
-
-.contact-form{ 
-  display:flex;
-  flex-direction:column;
-  gap:var(--space-2);
-}
-
-/* Rótulo perto do seu campo; o espaço maior fica entre um campo e o próximo rótulo. */
-.contact-form label{ 
-  display:block; 
-  margin-top:var(--space-4); 
-  font-weight:600; 
-  color:var(--accent); 
-}
-.contact-form input, .contact-form textarea{ 
-  width:100%; 
-  padding:var(--space-3); 
-  border:1px solid color-mix(in srgb, var(--text) 18%, transparent); 
-  border-radius:6px; 
-  background:var(--bg); 
-  color:var(--text); 
-  font-family:inherit; 
-  font-size:var(--text-base);
-  transition:border-color var(--transition);
-}
-.contact-form input:focus, .contact-form textarea:focus{ 
-  outline:none; 
-  border-color:var(--accent); 
-  box-shadow:0 0 0 3px rgba(17,17,17,0.1);
-}
-body.theme-dark .contact-form input:focus, 
-body.theme-dark .contact-form textarea:focus{ 
-  box-shadow:0 0 0 3px rgba(255,255,255,0.1);
-}
-
-.contact-form label:first-child{ margin-top:0; }
-.form-actions{ display:flex; gap:var(--space-4); margin-top:var(--space-5); }
 
 /* Projects List Page */
 .projects-list .section-head h1{ margin:0 0 var(--space-2) 0; font-size:var(--text-xl); }
@@ -446,47 +350,13 @@ body.theme-dark .contact-form textarea:focus{
   .grid{ grid-template-columns: 1fr 300px; }
   .nav-burger{ display:grid }
   .header-inner{align-items:center}
-  .about-header{ grid-template-columns: 1fr; text-align:center; }
-  .skills-grid{ grid-template-columns: 1fr; }
 }
 @media (max-width:700px){
   .grid{ grid-template-columns:1fr }
   .hero-photo{ max-width:260px }
   .projects-grid{ grid-template-columns: 1fr }
   .projects-list-grid{ grid-template-columns: 1fr; }
-  .about-actions{ flex-direction:column; }
-  .form-actions{ flex-direction:column; }
   .project-rich-text pre code{ font-size:var(--text-xs); }
   .figma-embed--desktop{ min-height:300px; }
   .figma-embed--mobile{ max-width:min(100%, 360px); min-height:560px; }
-}
-
-/* Form de contato — mensagens de status */
-.contact-status {
-  padding: var(--space-3) var(--space-4);
-  border-radius: 6px;
-  margin-bottom: var(--space-5);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  line-height: 1.4;
-}
-.contact-status--success {
-  background-color: rgba(34, 197, 94, 0.15);
-  color: #166534;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-}
-.theme-dark .contact-status--success {
-  background-color: rgba(34, 197, 94, 0.2);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.3);
-}
-.contact-status--error {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #991b1b;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-.theme-dark .contact-status--error {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  border: 1px solid rgba(248, 113, 113, 0.3);
 }

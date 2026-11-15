@@ -12,7 +12,7 @@ body {
 	line-height: var(--leading-display);
 }
 
-.about-info h1,
+.about-page h1,
 .contact-page h1,
 .projects-list .section-head h1,
 .project-hero h1 {

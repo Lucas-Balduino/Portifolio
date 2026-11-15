@@ -20,12 +20,12 @@ export const META = {
 	about: {
 		title: 'Sobre mim — Lucas',
 		description:
-			'Lucas Gonçalves Balduino — estudante de Design (UnB) e Ciência da Computação. UX/UI, front-end e acessibilidade.'
+			'Lucas Gonçalves Balduino estuda Design na UnB e Ciência da Computação no UniCEUB. Como trabalha e o que procura: estágio em UX/UI e front-end.'
 	},
 	contact: {
 		title: 'Contato — Lucas',
 		description:
-			'Entre em contato com Lucas para projetos freelance, colaborações e oportunidades em front-end e UI/UX.'
+			'Fale com Lucas Balduino sobre estágio em UX/UI e front-end ou projetos freelance: email, LinkedIn e GitHub.'
 	},
 	notFound: {
 		title: 'Página não encontrada — Lucas',

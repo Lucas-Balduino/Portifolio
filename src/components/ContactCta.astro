@@ -1,15 +1,21 @@
 ---
-/** C5 — fechamento da home e de cada case: título grande, email com copiar e os chamados. */
+/**
+ * C5 — fechamento da home, do Sobre e de cada case: título grande, email com copiar e os chamados.
+ * Com `page`, vira o conteúdo da página de Contato (E2): título h1, sem linha em cima e sem o
+ * botão que leva à própria página.
+ */
 interface Props {
 	text?: string;
+	page?: boolean;
 }
 
-const { text = 'Sobre uma vaga, um projeto ou algum dos cases acima.' } = Astro.props;
+const { text = 'Sobre uma vaga, um projeto ou algum dos cases acima.', page = false } = Astro.props;
 const email = 'lucasgbalduino@gmail.com';
+const Heading = page ? 'h1' : 'h2';
 ---
 
-<section class="contact-cta">
-	<h2>Vamos conversar?</h2>
+<section class:list={['contact-cta', { 'contact-cta--page': page }]}>
+	<Heading>{page ? 'Contato' : 'Vamos conversar?'}</Heading>
 	<p class="contact-cta-text">{text}</p>
 	<div class="contact-cta-row">
 		<p class="contact-email">
@@ -46,7 +52,7 @@ const email = 'lucasgbalduino@gmail.com';
 			</button>
 		</p>
 		<div class="contact-cta-actions">
-			<a class="btn-project" href="/contato">Entrar em contato</a>
+			{!page && <a class="btn-project" href="/contato">Entrar em contato</a>}
 			<a
 				class="btn ghost"
 				href="https://www.linkedin.com/in/lucas-balduino-661073327"
@@ -102,6 +108,19 @@ const email = 'lucasgbalduino@gmail.com';
 		border-top: 1px solid var(--line);
 	}
 
+	.contact-cta--page {
+		margin: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	/* Na página estreita de Contato, email e botões empilhados em vez de nas pontas da coluna. */
+	.contact-cta--page .contact-cta-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.contact-cta h1,
 	.contact-cta h2 {
 		margin: 0 0 var(--space-3);
 		font-family: var(--font-display);
@@ -109,6 +128,11 @@ const email = 'lucasgbalduino@gmail.com';
 		font-weight: 700;
 		line-height: var(--leading-heading);
 		letter-spacing: var(--tracking-heading);
+	}
+
+	/* Fechamento: menor que o título da página (24–36px), para não competir com o conteúdo acima. */
+	.contact-cta h2 {
+		font-size: clamp(var(--text-lg), 1.2rem + 1.5vw, 2.25rem);
 	}
 
 	.contact-cta-text {
