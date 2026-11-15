@@ -1,6 +1,8 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import '@fontsource-variable/inter/wght.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import '../../style.css';
 import '../styles/tokens.css';
 import '../styles/identity.css';
@@ -43,10 +45,8 @@ const ogImageAbs = ogImage ? absoluteUrl(ogImage) : absoluteUrl(defaultOgImage);
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageAbs} />
 
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
-			rel="stylesheet"
-		/>
+		<!-- H1 — Inter variável servida pelo próprio site; o arquivo latino é pré-carregado. -->
+		<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
 	</head>
 	<body>
 		<script is:inline>

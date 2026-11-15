@@ -2,7 +2,8 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { canonicalUrl } from '../site-config';
 
-const staticPaths = ['/', '/projetos', '/sobre', '/contato'];
+// H4 — o currículo é página pública (link no Sobre), então entra no sitemap.
+const staticPaths = ['/', '/projetos', '/sobre', '/contato', '/curriculo'];
 
 export const GET: APIRoute = async () => {
 	const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);

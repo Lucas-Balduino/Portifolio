@@ -1,7 +1,7 @@
 ---
 import TechList from './TechList.astro';
 import { splitTechnologies } from '../lib/technologies';
-import { imageSize } from '../lib/image-size';
+import { responsiveImage } from '../lib/images';
 
 /** C4 — projeto da home em linha grande: capa larga de um lado, texto do outro. */
 interface Props {
@@ -25,17 +25,24 @@ const { title, slug, description, image, technologies, meta, reverse = false, ea
 const tools = splitTechnologies(technologies)
 	.tools.slice(0, 3)
 	.map((tool) => tool.label);
-const src = `/${image.replace(/^\/+/, '')}`;
-const size = imageSize(image);
+// Capa em 2/3 da largura (~700px); no celular, a largura toda.
+const cover = await responsiveImage(
+	image,
+	[480, 800, 1200, 1600],
+	'(max-width: 760px) calc(100vw - 48px), 700px'
+);
 ---
 
 <a class:list={['project-row', { 'project-row--reverse': reverse }]} href={`/projetos/${slug}`}>
 	<div class="project-row-media">
 		<img
-			src={src}
+			src={cover.src}
+			srcset={cover.srcset}
+			sizes={cover.sizes}
 			alt=""
-			width={size?.width}
-			height={size?.height}
+			width={cover.width}
+			height={cover.height}
+			fetchpriority={eager ? 'high' : undefined}
 			loading={eager ? 'eager' : 'lazy'}
 			decoding="async"
 		/>

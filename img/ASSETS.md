@@ -1,2 +1,4 @@
-# Adicione `img/og-image.png` (1200×630px) para preview em redes sociais.
-# Sugestão: foto + nome "Lucas" + tagline "Front-end • UX • Código limpo"
+# img/
+
+Só o que não é imagem de case: `FotoMinha.jpg`, `og-image.png` (1200×630, preview das páginas sem capa) e `favicon.svg`.
+As imagens dos cases ficam em `src/assets/img/`; o Open Graph de cada case sai da capa dele (1200px, JPG).

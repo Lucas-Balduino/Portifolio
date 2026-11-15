@@ -21,14 +21,17 @@ interface Props {
 
 const { id, heading, colors, fonts, link } = Astro.props;
 
-// Texto branco ou escuro conforme a luminância da cor (WCAG).
+// Texto branco ou escuro: o que tiver mais contraste com a cor (WCAG).
+const DARK_LUMINANCE = 0.0056; // #111111
 const textOn = (hex: string) => {
 	const channel = (i: number) => {
 		const value = parseInt(hex.slice(i, i + 2), 16) / 255;
 		return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
 	};
 	const luminance = 0.2126 * channel(1) + 0.7152 * channel(3) + 0.0722 * channel(5);
-	return luminance > 0.4 ? '#111111' : '#ffffff';
+	const onWhite = 1.05 / (luminance + 0.05);
+	const onDark = (luminance + 0.05) / (DARK_LUMINANCE + 0.05);
+	return onDark > onWhite ? '#111111' : '#ffffff';
 };
 
 // Só as famílias do Google Fonts são carregadas, e só nesta página.
@@ -52,7 +55,7 @@ const fontsHref = webFamilies.length
 					{colors.map((color) => {
 						const hex = color.hex.toUpperCase();
 						return (
-							<li class="ds-color" style={`background:${hex};color:${textOn(hex)}`}>
+							<li class="ds-color" style={`background:${hex};color:${textOn(hex)};--ds-chip:${textOn(hex) === '#ffffff' ? '#000' : '#fff'}`}>
 								<span class="ds-color-name">{color.name}</span>
 								<button
 									type="button"
@@ -215,7 +218,8 @@ const fontsHref = webFamilies.length
 		padding: var(--space-1) var(--space-2);
 		border: 0;
 		border-radius: 6px;
-		background: color-mix(in srgb, currentColor 14%, transparent);
+		/* Fundo do botão escurece sob texto branco e clareia sob texto escuro: o contraste só aumenta. */
+		background: color-mix(in srgb, var(--ds-chip) 16%, transparent);
 		color: inherit;
 		font: inherit;
 		font-size: var(--text-xs);
@@ -226,7 +230,7 @@ const fontsHref = webFamilies.length
 	}
 
 	.ds-copy:hover {
-		background: color-mix(in srgb, currentColor 24%, transparent);
+		background: color-mix(in srgb, var(--ds-chip) 28%, transparent);
 	}
 
 	.ds-copy:focus-visible {

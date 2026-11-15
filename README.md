@@ -23,7 +23,7 @@ Portifolio/
 ├── src/pages/              # Home, projetos, detalhe, sobre, contato
 ├── src/content/projects/   # Cases em MDX
 ├── src/layouts/            # Layout, header, footer
-├── public/img/             # Imagens servidas no build
+├── src/assets/img/         # Imagens dos cases (o build gera WebP em vários tamanhos)
 ├── public/Resume/          # CurriculoPT.pdf
 ├── style.css               # Tokens e estilos (importados pelo Layout)
 └── astro.config.mjs

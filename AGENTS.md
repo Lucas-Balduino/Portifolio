@@ -35,7 +35,7 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 ## Onde está o conteúdo / o código
 
 - Código e páginas: `src/`, `astro.config.mjs`, `package.json`, `style.css`
-- Cases: `src/content/projects/*.mdx` + imagens em `public/img/` (e `img/` de origem)
+- Cases: `src/content/projects/*.mdx` + imagens em `src/assets/img/` (o Astro gera WebP; no MDX o caminho é `img/...`). `img/` na raiz só tem foto, og-image e favicon
 - CV: `public/Resume/CurriculoPT.pdf` (cópia de `Resume/`)
 - Spec: `docs/context/`
 - Não misturar copy de case na spec nem copiar o AgentHub para este repo
