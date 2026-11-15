@@ -38,7 +38,7 @@ Fundo liso (`--bg`), sem brilho radial. Seleção de texto, contorno de foco e b
 
 | Camada | Agora | Horizonte |
 |---|---|---|
-| UI | Inter (Google Fonts 300–800), `system-ui` fallback | Inter no corpo e nos títulos; display própria `(pendente)` — Syne descartada |
+| UI | Inter variável servida pelo próprio site (`@fontsource-variable/inter`, arquivo latino pré-carregado), `system-ui` fallback | Inter no corpo e nos títulos; display própria `(pendente)` — Syne descartada |
 | Escala de tipo | 7 degraus em `tokens.css`: `--text-xs` 12 · `--text-sm` 14 · `--text-base` 16 · `--text-md` 18 · `--text-lg` 24 · `--text-xl` 32–48 (título de página) · `--text-display` 44–76 (título da home). Nenhum `font-size` solto fora dos tokens (exceto `/curriculo`, que é A4) | Fonte display `(pendente)` — B7 |
 | Espaço | Escala `--space-1`…`--space-9` (4 · 8 · 12 · 16 · 24 · 32 · 48 · 72 · 112px); ritmos `--rhythm-item` (12), `--rhythm-group` (32), `--rhythm-section` (72–112) | — |
 | Grade | Uma largura para todas as páginas: `--container: 1100px`, conteúdo alinhado ao "lucas." do cabeçalho. Texto longo limitado a `--measure` (68ch) e colunas de texto a `--column` (46rem), sempre à esquerda | — |

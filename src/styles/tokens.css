@@ -11,7 +11,7 @@
 	--switch-bg: #2a2a2c;
 	--switch-thumb: #f5f5f6;
 	/* Syne descartada pelo autor; títulos voltam para Inter até escolher outra display. */
-	--font-display: 'Inter', system-ui, sans-serif;
+	--font-display: 'Inter Variable', 'Inter', system-ui, sans-serif;
 	color-scheme: dark;
 
 	/* B1 — escala tipográfica: 7 degraus. Nenhum font-size solto fora daqui. */

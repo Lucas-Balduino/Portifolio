@@ -1,5 +1,5 @@
 ---
-import { imageSize } from '../lib/image-size';
+import { imageKey, projectImage, responsiveImage, singleImage } from '../lib/images';
 
 interface Props {
 	id?: string;
@@ -10,13 +10,24 @@ interface Props {
 
 const { id, title, heading, images } = Astro.props;
 const total = images.length;
-const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
-const shots = images.map(({ src, caption }, index) => ({
-	src: publicSrc(src),
-	caption,
-	alt: caption ?? `${title} — tela ${index + 1} de ${total}`,
-	size: imageSize(src)
-}));
+// A faixa tem altura fixa (520px; 420px no celular): a largura de cada tela sai da proporção.
+const shots = await Promise.all(
+	images.map(async ({ src, caption }, index) => {
+		const meta = projectImage(src);
+		const at = (height: number) => Math.round((height * meta.width) / meta.height);
+		return {
+			key: imageKey(src),
+			image: await responsiveImage(
+				src,
+				[at(420), at(520), at(840), at(1040)],
+				`(max-width: 700px) ${at(420)}px, ${at(520)}px`
+			),
+			full: await singleImage(src, 1600),
+			caption,
+			alt: caption ?? `${title} — tela ${index + 1} de ${total}`
+		};
+	})
+);
 ---
 
 <section class="project-images" id={id} data-gallery>
@@ -46,10 +57,14 @@ const shots = images.map(({ src, caption }, index) => ({
 						aria-label={`Ampliar: ${shot.alt}`}
 					>
 						<img
-							src={shot.src}
+							src={shot.image.src}
+							srcset={shot.image.srcset}
+							sizes={shot.image.sizes}
 							alt={shot.alt}
-							width={shot.size?.width}
-							height={shot.size?.height}
+							width={shot.image.width}
+							height={shot.image.height}
+							data-key={shot.key}
+							data-full={shot.full}
 							loading="lazy"
 							decoding="async"
 						/>
@@ -99,14 +114,14 @@ const shots = images.map(({ src, caption }, index) => ({
 		const show = (index: number) => {
 			current = (index + thumbs.length) % thumbs.length;
 			const thumb = thumbs[current];
-			image.src = thumb.currentSrc || thumb.src;
+			image.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
 			image.alt = thumb.alt;
 			const caption = thumb.closest('figure')?.querySelector('figcaption')?.textContent;
 			counter.textContent = `${current + 1} / ${thumbs.length}${caption ? ` · ${caption}` : ''}`;
 			// Pré-carrega as vizinhas para a navegação não piscar.
 			[current - 1, current + 1].forEach((i) => {
 				const neighbor = thumbs[(i + thumbs.length) % thumbs.length];
-				if (neighbor) new Image().src = neighbor.src;
+				if (neighbor) new Image().src = neighbor.dataset.full || neighbor.src;
 			});
 		};
 
@@ -121,7 +136,7 @@ const shots = images.map(({ src, caption }, index) => ({
 		// Imagens dos cards do case abrem a mesma galeria, na posição da imagem.
 		document.querySelectorAll<HTMLButtonElement>('[data-open-in-gallery]').forEach((button) => {
 			const index = thumbs.findIndex(
-				(thumb) => thumb.getAttribute('src') === button.dataset.openInGallery
+				(thumb) => thumb.dataset.key === button.dataset.openInGallery
 			);
 			if (index === -1) return;
 			button.addEventListener('click', () => {

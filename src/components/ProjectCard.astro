@@ -1,5 +1,6 @@
 ---
 import TechList from './TechList.astro';
+import { responsiveImage } from '../lib/images';
 
 interface Props {
 	title: string;
@@ -18,26 +19,27 @@ interface Props {
 const { title, slug, shortDesc, image, technologies, meta, outcome, featured = false } = Astro.props;
 const description = outcome && outcome.trim() && outcome.trim() !== 'pendente' ? outcome : shortDesc;
 
-const imageUrls = import.meta.glob<{ default: string }>('../../img/**/*.{png,jpg,jpeg}', {
-	eager: true,
-	query: '?url',
-	import: 'default'
-});
-
-const resolveImage = (posixPath: string) => {
-	const match = Object.entries(imageUrls).find(([key]) =>
-		key.replace(/\\/g, '/').endsWith(`/${posixPath}`)
-	);
-	return match?.[1] ?? '';
-};
-
-const imageSrc = resolveImage(image) || resolveImage('img/ImagemEmDesenvolvimento.jpg');
+// Card de /projetos: 2 por linha (~540px), 1 por linha no celular.
+const cover = await responsiveImage(
+	image,
+	[480, 800, 1200],
+	'(max-width: 700px) calc(100vw - 48px), 540px'
+);
 ---
 
 <!-- O card inteiro é o link para o case; GitHub e demo ficam na ficha do case. -->
 <a class:list={['project-card', { 'project-card--featured': featured }]} href={`/projetos/${slug}`}>
 	<div class="project-card-media">
-		<img src={imageSrc} alt="" loading={featured ? 'eager' : 'lazy'} />
+		<img
+			src={cover.src}
+			srcset={cover.srcset}
+			sizes={cover.sizes}
+			width={cover.width}
+			height={cover.height}
+			alt=""
+			loading={featured ? 'eager' : 'lazy'}
+			decoding="async"
+		/>
 	</div>
 	<div class="project-card-body">
 		{meta && <p class="project-card-meta">{meta}</p>}

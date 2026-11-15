@@ -100,3 +100,5 @@ Sobre, contato, hero: copy no layout/página, não no modelo de projeto. i18n ho
 - Agência de Viagens **retirada do site pelo autor** (por enquanto). O MDX e a imagem estão no histórico do git; voltar só se o autor pedir.
 - Não inventar URL, hex, data de formatura diferente da que já está em `sobre.html`, nem atuação de grupo não confirmada.
 - Path de imagem: sempre `/` (Windows Explorer gera `\` — rejeitar).
+- Onde ficam as imagens: `src/assets/img/`. No MDX (`image`, `gallery`, imagem do card) o caminho é relativo a `src/assets/`: `img/Kinetic/Kinetic.png`. O build gera WebP em vários tamanhos com largura e altura; caminho que não existe quebra o build com a mensagem do arquivo.
+- Protótipo do Figma: `<div class="figma-embed figma-embed--mobile|desktop"><iframe src="https://embed.figma.com/..." loading="lazy" title="..." allowfullscreen></iframe></div>`. O protótipo aparece direto na página (decisão do autor: sem botão para carregar); `loading="lazy"` faz ele carregar quando o visitante chega perto.

@@ -6,7 +6,13 @@ import Gallery from '../../components/Gallery.astro';
 import CaseSummary from '../../components/CaseSummary.astro';
 import DesignSystem from '../../components/DesignSystem.astro';
 import ContactCta from '../../components/ContactCta.astro';
-import { imageSize } from '../../lib/image-size';
+import {
+	imageKey,
+	projectImage,
+	responsiveImage,
+	singleImage,
+	type ResponsiveImage
+} from '../../lib/images';
 
 export async function getStaticPaths() {
 	const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -44,7 +50,6 @@ const splitH2Sections = (markdown: string) => {
 };
 
 const toHtml = (markdown: string) => micromark(markdown, { allowDangerousHtml: true });
-const publicSrc = (posixPath: string) => `/${posixPath.replace(/^\/+/, '')}`;
 /** "Decisões de Design" → "decisoes-de-design", para os links da barra de seções. */
 const slugify = (text: string) =>
 	text
@@ -59,9 +64,13 @@ const galleryTitle = data.section_titles?.images ?? 'Telas';
 const designTitle = data.design_system?.title ?? 'Design System';
 const sections = splitH2Sections(body);
 const galleryImages = data.gallery.map((item) => (typeof item === 'string' ? { src: item } : item));
-const gallerySrcs = new Set(galleryImages.map((image) => publicSrc(image.src)));
+const galleryKeys = new Set(galleryImages.map((image) => imageKey(image.src)));
 
-type Card = { title: string; html: string; image?: { src: string; alt: string; inGallery: boolean } };
+type Card = {
+	title: string;
+	html: string;
+	image?: { key: string; alt: string; inGallery: boolean; img?: ResponsiveImage };
+};
 
 const IMAGE_LINE = /^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/;
 
@@ -89,8 +98,8 @@ const splitCards = (markdown: string) => {
 			let image: Card['image'];
 			if (imageIndex !== -1) {
 				const [, alt, src] = IMAGE_LINE.exec(lines[imageIndex].trim())!;
-				const normalized = publicSrc(src);
-				image = { src: normalized, alt, inGallery: gallerySrcs.has(normalized) };
+				const key = imageKey(src);
+				image = { key, alt, inGallery: galleryKeys.has(key) };
 				lines.splice(imageIndex, 1);
 			}
 			return { title, html: toHtml(lines.join('\n').trim()), image };
@@ -130,20 +139,46 @@ if (visualBlocks.length > 0 && !blocks.some((block) => block.type !== 'section')
 	blocks.splice(firstSection === -1 ? 0 : firstSection + 1, 0, ...visualBlocks);
 }
 
-const coverSrc = publicSrc(data.image);
-const coverSize = imageSize(data.image);
+// Imagens dos cards de decisão: altura fixa de 240px, largura pela proporção da tela.
+for (const block of blocks) {
+	if (block.type !== 'section' || !block.cards) continue;
+	for (const card of block.cards) {
+		if (!card.image) continue;
+		const meta = projectImage(card.image.key);
+		const width = Math.round((240 * meta.width) / meta.height);
+		card.image.img = await responsiveImage(
+			card.image.key,
+			[width, width * 2],
+			`min(${width}px, calc(100vw - 48px))`
+		);
+	}
+}
+
+// A5 — capa na largura da grade (1100px), em WebP e com largura/altura.
+const cover = await responsiveImage(
+	data.image,
+	[640, 960, 1280, 1920],
+	'(max-width: 1148px) calc(100vw - 48px), 1100px'
+);
+const ogImage = await singleImage(data.image, 1200, 'jpg');
 const outcome = isFilled(data.outcome) ? data.outcome : undefined;
 const githubHref = data.repo_url.trim();
 const liveHref = data.live_url.trim();
 const liveLabel = liveHref.includes('figma.com') ? 'Ver protótipo' : 'Ver demo';
 const nextProject = next && next.data.slug !== data.slug ? next.data : undefined;
-const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
+const nextCover = nextProject
+	? await responsiveImage(
+			nextProject.image,
+			[480, 800, 1280],
+			'(max-width: 760px) calc(100vw - 48px), 640px'
+		)
+	: undefined;
 ---
 
 <Layout
 	title={`${data.title} — Lucas`}
 	description={data.short_desc}
-	ogImage={publicSrc(data.image)}
+	ogImage={ogImage}
 >
 	<article class="project-detail">
 		<header class="project-hero">
@@ -178,10 +213,12 @@ const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
 				<figure class="project-image">
 					<img
 						class="project-hero-img"
-						src={coverSrc}
+						src={cover.src}
+						srcset={cover.srcset}
+						sizes={cover.sizes}
 						alt={data.title}
-						width={coverSize?.width}
-						height={coverSize?.height}
+						width={cover.width}
+						height={cover.height}
 						fetchpriority="high"
 					/>
 				</figure>
@@ -248,14 +285,32 @@ const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
 													<button
 														type="button"
 														class="case-card-media"
-														data-open-in-gallery={card.image.src}
+														data-open-in-gallery={card.image.key}
 														aria-label={`Ampliar imagem: ${card.image.alt || card.title}`}
 													>
-														<img src={card.image.src} alt={card.image.alt} loading="lazy" />
+														<img
+															src={card.image.img!.src}
+															srcset={card.image.img!.srcset}
+															sizes={card.image.img!.sizes}
+															width={card.image.img!.width}
+															height={card.image.img!.height}
+															alt={card.image.alt}
+															loading="lazy"
+															decoding="async"
+														/>
 													</button>
 												) : (
 													<div class="case-card-media">
-														<img src={card.image.src} alt={card.image.alt} loading="lazy" />
+														<img
+															src={card.image.img!.src}
+															srcset={card.image.img!.srcset}
+															sizes={card.image.img!.sizes}
+															width={card.image.img!.width}
+															height={card.image.img!.height}
+															alt={card.image.alt}
+															loading="lazy"
+															decoding="async"
+														/>
 													</div>
 												))}
 											<div class="case-card-body">
@@ -291,10 +346,12 @@ const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
 					</span>
 					<span class="case-next-media">
 						<img
-							src={publicSrc(nextProject.image)}
+							src={nextCover!.src}
+							srcset={nextCover!.srcset}
+							sizes={nextCover!.sizes}
 							alt=""
-							width={nextSize?.width}
-							height={nextSize?.height}
+							width={nextCover!.width}
+							height={nextCover!.height}
 							loading="lazy"
 						/>
 					</span>
@@ -893,7 +950,7 @@ const nextSize = nextProject ? imageSize(nextProject.image) : undefined;
 		border-radius: 4px;
 		background: var(--text);
 		color: var(--bg);
-		font-family: 'Inter', system-ui, sans-serif;
+		font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
 		font-size: var(--text-xs);
 		font-weight: 600;
 		white-space: nowrap;

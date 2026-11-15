@@ -52,6 +52,6 @@ Rotas Astro, PT na raiz, EN em `/en/…`:
 
 - `/` home · `/projetos` lista · `/projetos/[slug]` detalhe · `/sobre` · `/contato`
 - `/en/` e equivalentes
-- Sem `admin/`. Conteúdo em `src/content/projects/*.mdx`. Imagens em `public/img/` (ou equivalente Astro). `Resume/` continua arquivo estático baixável.
+- Sem `admin/`. Conteúdo em `src/content/projects/*.mdx`. Imagens dos cases em `src/assets/img/`, otimizadas pelo `astro:assets` (WebP, `srcset`, largura/altura). `Resume/` continua arquivo estático baixável.
 
 Isto não autoriza scaffold nesta conversa da spec.

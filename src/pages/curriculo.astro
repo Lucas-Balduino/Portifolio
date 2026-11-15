@@ -4,6 +4,8 @@
  * (`npm run cv:pdf`), que substitui public/Resume/CurriculoPT.pdf.
  * Os projetos vêm dos cases (summary), então o currículo acompanha o que está no site.
  */
+import '@fontsource-variable/inter/wght.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import TechList from '../components/TechList.astro';
 import fotoMinha from '../../img/FotoMinha.jpg?url';
 import { getSortedProjects } from '../lib/projects';
@@ -86,10 +88,7 @@ const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim
 			name="description"
 			content="Currículo de Lucas Gonçalves Balduino: designer UX/UI e desenvolvedor front-end em formação."
 		/>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-			rel="stylesheet"
-		/>
+		<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
 	</head>
 	<body>
 		<nav class="cv-toolbar" aria-label="Ações do currículo">
@@ -285,7 +284,7 @@ const isFilled = (value?: string) => Boolean(value && value.trim() && value.trim
 		padding: 0 0 3rem;
 		background: #d4d4d8;
 		color: var(--text);
-		font-family: 'Inter', system-ui, sans-serif;
+		font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
 		line-height: 1.45;
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
