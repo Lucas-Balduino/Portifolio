@@ -53,7 +53,7 @@ Não há `05-editorial-guidelines.md`: este repo não é caderno de notas.
 
 ## Comandos esperados
 
-Astro (`astro@7.2.2`, `@astrojs/react@6.0.2`, npm). Node **≥22.12** (local: 22.23.2). Produção: `https://lucasbalduino.vercel.app`.
+Astro (`astro@7.4.12`, `@astrojs/react@6.0.6`, `@astrojs/mdx@^7.0.8`, npm). Node **≥22.23.4** (exigido pelo Astro 7.4; local: 22.23.5). Produção: `https://lucasbalduino.vercel.app`.
 
 ```bash
 npm install
