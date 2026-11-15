@@ -1,8 +1,8 @@
 ## Portfólio — Lucas Balduino
 
-Site em Astro (`astro@7.2.2` + `@astrojs/react@6.0.2`, npm). Produção: [https://lucasbalduino.vercel.app](https://lucasbalduino.vercel.app).
+Site em Astro (`astro@7.4.12` + `@astrojs/react@6.0.6`, npm). Produção: [https://lucasbalduino.vercel.app](https://lucasbalduino.vercel.app).
 
-Cases em `src/content/projects/*.mdx`. Requer **Node ≥ 22.12** (`.nvmrc`).
+Cases em `src/content/projects/*.mdx`. Requer **Node ≥ 22.23.4** (`.nvmrc`).
 
 ### Desenvolvimento
 
