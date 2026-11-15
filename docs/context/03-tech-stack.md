@@ -16,7 +16,7 @@ Separar **agora** e **quando**. Não scaffoldar o “quando” para desbloquear 
 | i18n | Detecção `navigator.language`; dicionário EN/ES em `main.js`; sem seletor | PT é o default do HTML |
 | Tema | Light default; `.theme-dark` no `body`; persistência `localStorage` | Tokens em `style.css` |
 | Gerenciador de pacotes | **npm** (2.1) | Decisão do autor; Kinetic também usa npm |
-| Runtime | **Node ≥ 22.12** (`.nvmrc`) | Astro 7 |
+| Runtime | **Node ≥ 22.23.4** (`.nvmrc`) | Mínimo exigido pelo Astro 7.4 (o CLI recusa versões abaixo) |
 
 ## Quando passar à migração (Fase 2 do ROADMAP)
 
@@ -24,7 +24,7 @@ Critério (não data): spec + ROADMAP SDD prontos **e** o autor destravar o proj
 
 | Decisão | Escolha | Por quê |
 |---|---|---|
-| Framework | **Astro 7 + ilhas React** (A1; `astro@7.2.2`, `@astrojs/react@6.0.2`) | React já usado no Kinetic; islands sem SPA inteira; OG por rota |
+| Framework | **Astro 7 + ilhas React** (A1; `astro@7.4.12`, `@astrojs/react@6.0.6`, `@astrojs/mdx@^7.0.8`) | React já usado no Kinetic; islands sem SPA inteira; OG por rota |
 | Conteúdo | **MDX + Content Collections** (A2) | Cases longos em string JSON sofrem; schema no build; admin HTML aposenta |
 | Estilo / UI | CSS do próprio site no início (paridade); dark-first na fase seguinte (A4) | Não misturar scaffold com redesign |
 | Deploy | **Vercel** (A3), output estático | Preview por PR; URL final `(pendente)` |
